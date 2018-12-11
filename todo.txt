@@ -1,0 +1,7 @@
+write tests!
+
+dendrite segments
+	- single proximal = active synapses, linear summation, above threshold?
+	- multiple distal = logical or, of:
+		- single distal = active synapses, linear summation, above threshold?
+
