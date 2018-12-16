@@ -1,2 +1,8 @@
-INSERT INTO htm.region (id) VALUES
-	(1);
+/**
+ * Region
+ */
+
+INSERT 
+  INTO htm.region (id) 
+  VALUES (1);
+

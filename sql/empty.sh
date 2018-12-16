@@ -1,4 +1,5 @@
 #!/bin/sh
+SQL="./"
 
-psql -f util/empty.sql
+psql -f $SQL/teardown/empty.sql
 

@@ -1,12 +1,11 @@
 CREATE TABLE htm.neuron (
-	id        integer           NOT NULL PRIMARY KEY,
- 	region_id integer           NOT NULL,
-	x_coord   integer           NOT NULL,
-	y_coord   integer           NOT NULL,
-	
-  FOREIGN KEY (region_id) 
-  	REFERENCES htm.region(id) 
-  	ON UPDATE CASCADE 
-  	ON DELETE CASCADE
+  id        INT NOT NULL PRIMARY KEY,
+  column_id INT NOT NULL,
+  y_coord   INT NOT NULL,
+
+  FOREIGN KEY (column_id)
+    REFERENCES htm.column(id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
 );
 

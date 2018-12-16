@@ -1,7 +1,15 @@
 #!/bin/sh
+SQL="./"
+DATA="$SQL/data/simple"
 
-psql -f data/simple/region.sql
-psql -f data/simple/neuron.sql
-psql -f data/simple/dendrite.sql
-psql -f data/simple/synapse.sql
+psql -f $DATA/region.sql
+psql -f $DATA/column.sql
+psql -f $DATA/neuron.sql
+psql -f $DATA/dendrite.sql
+psql -f $DATA/synapse.sql
+psql -f $DATA/input.sql
+psql -f $DATA/link_dendrite_column.sql
+psql -f $DATA/link_dendrite_neuron.sql
+psql -f $DATA/link_input_synapse.sql
+psql -f $DATA/link_neuron_synapse.sql
 

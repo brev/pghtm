@@ -1,18 +1,26 @@
 #!/bin/sh
+SQL="./"
+SCHEMA="$SQL/schema"
 
-psql -f schema/htm.sql
+psql -f $SCHEMA/htm.sql
 
-psql -f schema/types/neuron.sql
-psql -f schema/types/dendrite.sql
+psql -f $SCHEMA/types/neuron.sql
 
-psql -f schema/tables/region.sql
-psql -f schema/tables/neuron.sql
-psql -f schema/tables/dendrite.sql
-psql -f schema/tables/synapse.sql
+psql -f $SCHEMA/tables/region.sql
+psql -f $SCHEMA/tables/column.sql
+psql -f $SCHEMA/tables/neuron.sql
+psql -f $SCHEMA/tables/dendrite.sql
+psql -f $SCHEMA/tables/synapse.sql
+psql -f $SCHEMA/tables/input.sql
+psql -f $SCHEMA/tables/link_dendrite_column.sql
+psql -f $SCHEMA/tables/link_dendrite_neuron.sql
+psql -f $SCHEMA/tables/link_input_synapse.sql
+psql -f $SCHEMA/tables/link_neuron_synapse.sql
 
-psql -f schema/functions/dendrite.sql
-psql -f schema/functions/synapse.sql
+psql -f $SCHEMA/functions/htm.sql
+psql -f $SCHEMA/functions/dendrite.sql
+psql -f $SCHEMA/functions/synapse.sql
 
-psql -f schema/views/synapse_connected.sql
-psql -f schema/views/dendrite_activated.sql
+#psql -f $SCHEMA/views/synapse_connected.sql
+#psql -f $SCHEMA/views/dendrite_activated.sql
 

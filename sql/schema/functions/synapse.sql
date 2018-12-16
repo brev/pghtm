@@ -1,16 +1,11 @@
-CREATE FUNCTION htm.synapse_permanence_threshold()
-RETURNS NUMERIC
-AS $$ 
-  BEGIN
-    RETURN 0.3;
-  END; 
-$$ LANGUAGE plpgsql;
 
 CREATE FUNCTION htm.synapse_weight(permanence NUMERIC)
 RETURNS BOOL
 AS $$ 
-  BEGIN
-    RETURN permanence >= htm.synapse_permanence_threshold();
-  END; 
+DECLARE
+  ThresholdSynapsePermanence INT := htm.configNumeric('ThresholdSynapsePermanence');
+BEGIN
+  RETURN permanence >= ThresholdSynapsePermanence;
+END; 
 $$ LANGUAGE plpgsql;
 

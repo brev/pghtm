@@ -1,11 +1,14 @@
-CREATE TABLE htm.synapse (
+CREATE TABLE htm.link_dendrite_column(
   id          INT NOT NULL PRIMARY KEY,
   dendrite_id INT NOT NULL,
-  permanence  NUMERIC(3,2) NOT NULL,
+  column_id   INT NOT NULL,
 
-  CHECK ((permanence >= 0.00) AND (permanence <= 1.00)),
   FOREIGN KEY (dendrite_id)
     REFERENCES htm.dendrite(id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+  FOREIGN KEY (column_id)
+    REFERENCES htm.column(id)
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );

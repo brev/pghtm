@@ -1,4 +1,5 @@
 #!/bin/sh
+SQL="./"
 
-psql -f util/destroy.sql
+psql -f $SQL/teardown/destroy.sql
 
