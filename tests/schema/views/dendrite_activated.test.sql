@@ -1,5 +1,5 @@
 /**
- * Dendrites (Activated) View Test
+ * Dendrite (Activated) View Test
  */
 
 BEGIN;

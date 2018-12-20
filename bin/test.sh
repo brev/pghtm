@@ -2,3 +2,4 @@
 
 ./test_schema.sh
 ./test_data.sh
+

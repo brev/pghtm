@@ -23,4 +23,5 @@ psql -f $SCHEMA/functions/synapse.sql
 
 psql -f $SCHEMA/views/synapse_connected.sql
 psql -f $SCHEMA/views/dendrite_activated.sql
+psql -f $SCHEMA/views/neuron_activated.sql
 
