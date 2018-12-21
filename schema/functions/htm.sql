@@ -47,8 +47,8 @@ RETURNS NUMERIC
 AS $$ 
 BEGIN
   CASE key
-    -- permanence level required for synapse to be active
-    WHEN 'ThresholdSynapsePermanence'
+    -- permanence level required for synapse to be connected
+    WHEN 'ThresholdSynapsePermanence'  -- nupic=connectedPerm
       THEN RETURN 0.50;
     
     -- Dummy data for unit testing this function
