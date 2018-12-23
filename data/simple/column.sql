@@ -1,5 +1,5 @@
 /**
- * Column
+ * Column Data
  */
 
 DO

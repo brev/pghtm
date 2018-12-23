@@ -1,5 +1,5 @@
 /** 
- * Link: Dendrite to Neuron
+ * Link: Dendrite to Neuron Data
  */
 
 DO

@@ -17,6 +17,7 @@ psql -f $SCHEMA/tables/link_dendrite_column.sql
 psql -f $SCHEMA/tables/link_dendrite_neuron.sql
 psql -f $SCHEMA/tables/link_input_synapse.sql
 psql -f $SCHEMA/tables/link_neuron_synapse.sql
+psql -f $SCHEMA/tables/spatial_pooler.sql
 
 psql -f $SCHEMA/functions/htm.sql
 psql -f $SCHEMA/functions/dendrite.sql

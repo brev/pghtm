@@ -1,5 +1,5 @@
 /**
- * Link: Axon from Input to Synapse
+ * Link: Axon from Input to Synapse Data
  */
 
 DO

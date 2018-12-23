@@ -1,5 +1,5 @@
 /** 
- * Link: Axon from Neuron to Synapse
+ * Link: Axon from Neuron to Synapse Data
  */
 
 DO

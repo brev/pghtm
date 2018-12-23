@@ -1,5 +1,5 @@
 /**
- * Link: Dendrite to Column
+ * Link: Dendrite to Column Data
  */
 
 DO
