@@ -19,7 +19,7 @@ BEGIN
         synapseId := htm.count_unloop(dendriteId, localSynapseId, CountSynapse);
         INSERT 
           INTO htm.synapse (id, dendrite_id, permanence) 
-          VALUES (synapseId, dendriteId, 0.00);
+          VALUES (synapseId, dendriteId, RANDOM());
       END LOOP;
     END LOOP;
   END LOOP;
@@ -29,7 +29,7 @@ BEGIN
       synapseId := htm.count_unloop(dendriteId + columnId, localSynapseId, CountSynapse);
       INSERT 
         INTO htm.synapse (id, dendrite_id, permanence) 
-        VALUES (synapseId, dendriteId + columnId, 0.00);
+        VALUES (synapseId, dendriteId + columnId, RANDOM());
     END LOOP;
   END LOOP;
 END

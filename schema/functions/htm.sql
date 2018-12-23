@@ -47,8 +47,14 @@ RETURNS NUMERIC
 AS $$ 
 BEGIN
   CASE key
-    -- permanence level required for synapse to be connected
-    WHEN 'ThresholdSynapsePermanence'  -- nupic=connectedPerm
+    -- decrement for synapse permanence during learning 
+    WHEN 'DeltaDecSynapsePermanence'
+      THEN RETURN 0.01;
+    -- increment for synapse permanence during learning 
+    WHEN 'DeltaIncSynapsePermanence'
+      THEN RETURN 0.01;
+    -- permanence level required for synapse to be connected (connectedPerm)
+    WHEN 'ThresholdSynapsePermanence'
       THEN RETURN 0.50;
     
     -- Dummy data for unit testing this function
