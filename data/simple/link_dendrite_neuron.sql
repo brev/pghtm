@@ -5,8 +5,8 @@
 DO
 $$
 DECLARE
-  CountDendrite INT := htm.config_int('DataSimpleCountDendrite');
-  CountNeuron INT := htm.config_int('DataSimpleCountNeuron');
+  CountDendrite INT := htm.config('CountDendrite');
+  CountNeuron INT := htm.config('CountNeuron');
   linkId INT;
 BEGIN
   FOR neuronId IN 1..CountNeuron LOOP

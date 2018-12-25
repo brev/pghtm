@@ -4,23 +4,24 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(32);  -- Test count
+SELECT plan(30);  -- Test count
 
 
-SELECT has_function('config_int', ARRAY['character varying']);
-SELECT function_lang_is('config_int', 'plpgsql');
-SELECT function_returns('config_int', 'integer');
-SELECT is(config_int('UnitTestDummyData'), 777, 'config_int() works directly');
+SELECT has_function('config', ARRAY['character varying']);
+SELECT function_lang_is('config', 'plpgsql');
+SELECT function_returns('config', 'character varying');
+SELECT volatility_is('config', 'immutable');
+SELECT is(config('UnitTestDummyData'), 777::varchar, 'config() works directly');
 SELECT is(
-  config_int('DataSimpleCountNeuron'), 
-  config_int('DataSimpleCountColumn') * config_int('DataSimpleCountRow'),
-  'config_int() rows * columns = neurons'
+  config('CountNeuron')::INT, 
+  config('CountColumn')::INT * config('CountRow')::INT,
+  'config() rows * columns = neurons'
 );
-
-SELECT has_function('config_numeric', ARRAY['character varying']);
-SELECT function_lang_is('config_numeric', 'plpgsql');
-SELECT function_returns('config_numeric', 'numeric');
-SELECT is(config_numeric('UnitTestDummyData'), 6.66, 'config_numeric() works');
+SELECT throws_ok(
+  'SELECT config(''loremipsum'')', 
+  'No value for key loremipsum', 
+  'Errors on bad key'
+);
 
 SELECT has_function('count_unloop', ARRAY['integer', 'integer', 'integer']);
 SELECT function_lang_is('count_unloop', 'plpgsql');

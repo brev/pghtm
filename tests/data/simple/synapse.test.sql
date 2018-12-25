@@ -11,14 +11,14 @@ SELECT row_eq(
   $$ SELECT COUNT(id) FROM synapse; $$, 
   ROW((
     (
-      config_int('DataSimpleCountNeuron') * 
-      config_int('DataSimpleCountDendrite') *
-      config_int('DataSimpleCountSynapse')
+      config('CountNeuron')::INT * 
+      config('CountDendrite')::INT *
+      config('CountSynapse')::INT
     ) + (
-      config_int('DataSimpleCountColumn') *
-      config_int('DataSimpleCountSynapse')
+      config('CountColumn')::INT *
+      config('CountSynapse')::INT
     )
-  )::bigint), 
+  )::BIGINT), 
   'Synapse has valid data'
 );
 

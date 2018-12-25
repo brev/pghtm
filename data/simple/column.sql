@@ -5,7 +5,7 @@
 DO
 $$
 DECLARE
-  CountColumn INT := htm.config_int('DataSimpleCountColumn');
+  CountColumn INT := htm.config('CountColumn');
 BEGIN
   FOR columnId IN 1..CountColumn LOOP
     INSERT 

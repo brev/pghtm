@@ -11,26 +11,29 @@ UPDATE synapse
   SET permanence = 0.00;
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM synapse_connected; $$,
-  ROW(0::bigint),
-  'Synapse_Connected starts empty'
+  ROW(0::BIGINT),
+  'Synapse_Connected starts unconnected'
 );
 
 UPDATE synapse 
-  SET permanence = (config_numeric('ThresholdSynapsePermanence') - 0.10)
+  SET permanence = (
+    config('connectedPerm')::NUMERIC - 
+    config('DeltaDecSynapsePermanence')::NUMERIC
+  )
   WHERE id = 1;
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM synapse_connected; $$,
-  ROW(0::bigint),
-  'Synapse_Connected stays empty when permanence is low'
+  ROW(0::BIGINT),
+  'Synapse_Connected stays unconnected when permanence is low'
 );
 
 UPDATE synapse 
-  SET permanence = config_numeric('ThresholdSynapsePermanence')
+  SET permanence = config('connectedPerm')::NUMERIC
   WHERE id = 1;
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM synapse_connected; $$,
-  ROW(1::bigint),
-  'Synapse_Connected becomes connected when permanence hits threshold'
+  ROW(0::BIGINT),
+  'Synapse_Connected stays unconnected when permanence hits threshold'
 );
 
 UPDATE synapse 
@@ -38,8 +41,8 @@ UPDATE synapse
   WHERE id = 1;
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM synapse_connected; $$,
-  ROW(1::bigint),
-  'Synapse_Connected stays connected when permanence maxxed'
+  ROW(1::BIGINT),
+  'Synapse_Connected becomes connected when permanence crosses threshold'
 );
 
 

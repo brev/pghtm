@@ -9,7 +9,7 @@ SELECT plan(1);  -- Test count
 
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM input; $$, 
-  ROW(1::bigint), 
+  ROW(1::BIGINT), 
   'Input has valid data'
 );
 

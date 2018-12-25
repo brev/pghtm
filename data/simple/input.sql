@@ -5,7 +5,7 @@
 DO
 $$
 DECLARE
-  WidthInput INT := htm.config_int('DataSimpleWidthInput');
+  WidthInput INT := htm.config('WidthInput');
 BEGIN
   INSERT 
     INTO htm.input (id, length, indexes) 

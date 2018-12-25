@@ -5,8 +5,8 @@
 DO 
 $$
 DECLARE
-  CountColumn INT := htm.config_int('DataSimpleCountColumn');
-  CountRow INT := htm.config_int('DataSimpleCountRow');
+  CountColumn INT := htm.config('CountColumn');
+  CountRow INT := htm.config('CountRow');
   neuronId INT;
 BEGIN 
   FOR columnId IN 1..CountColumn LOOP

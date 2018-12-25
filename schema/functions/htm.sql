@@ -1,71 +1,44 @@
 /**
- *
+ * HTM Global Schema Functions.
  */
-CREATE FUNCTION htm.config_int(key VARCHAR)
-RETURNS INT
+
+
+/**
+ * HTM - Get config value.
+ * @returns VARCHAR, so cast accordingly on usage, like: htm.config('CountColumn')::INT
+ */
+CREATE FUNCTION htm.config(keyIn VARCHAR)
+RETURNS VARCHAR 
 AS $$ 
 DECLARE
-  Columns INT := 3;
-  Rows INT := 3;
+  height INT := 3;
+  width INT := 3;   
+  cells INT := height * width;
+  result NUMERIC := (SELECT value FROM (VALUES 
+      ('connectedPerm',               0.50),    -- Synapse permanence level threshold for connection
+      ('CountColumn',                 width),   -- # of columms per region
+      ('CountDendrite',               4),       -- # of dendrites per neuron
+      ('CountNeuron',                 cells),   -- # of neurons per region (rows x cols)
+      ('CountRow',                    height),  -- # of rows per region
+      ('CountSynapse',                9),       -- # of synapses per dendrite
+      ('DeltaDecSynapsePermanence',   0.01),    -- decrement for synapse permanence during learning 
+      ('DeltaIncSynapsePermanence',   0.01),    -- increment for synapse permanence during learning 
+      ('ThresholdDendriteSynapse',    4),       -- # of active synapses on active dendrite
+      ('WidthInput',                  21),      -- Bit Width of Input SDR
+      ('UnitTestDummyData',           777)      -- Dummy data for unit testing this function
+    ) AS config_tmp (key, value)
+    WHERE key = keyIn
+  );
 BEGIN
-  CASE key
-    -- # of columms per region
-    WHEN 'DataSimpleCountColumn'
-      THEN RETURN Columns; 
-    -- # of dendrites per neuron
-    WHEN 'DataSimpleCountDendrite'
-      THEN RETURN 4; 
-    -- # of neurons per region (rows x cols)
-    WHEN 'DataSimpleCountNeuron'
-      THEN RETURN (Columns * Rows); 
-    -- # of rows per region
-    WHEN 'DataSimpleCountRow'
-      THEN RETURN Rows;
-    -- # of synapses per dendrite
-    WHEN 'DataSimpleCountSynapse'
-      THEN RETURN 9; 
-    -- Bit Width of Input SDR
-    WHEN 'DataSimpleWidthInput'
-      THEN RETURN 21; 
-    
-    -- # of active synapses on active dendrite
-    WHEN 'ThresholdDendriteSynapse'
-      THEN RETURN 4;
-
-    -- Dummy data for unit testing this function
-    WHEN 'UnitTestDummyData'
-      THEN RETURN 777;
-  END CASE;
+  IF result IS NULL THEN
+    RAISE EXCEPTION 'No value for key %', keyIn;
+  END IF;
+  RETURN result;
 END; 
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql IMMUTABLE;
 
 /**
- *
- */
-CREATE FUNCTION htm.config_numeric(key VARCHAR)
-RETURNS NUMERIC
-AS $$ 
-BEGIN
-  CASE key
-    -- decrement for synapse permanence during learning 
-    WHEN 'DeltaDecSynapsePermanence'
-      THEN RETURN 0.01;
-    -- increment for synapse permanence during learning 
-    WHEN 'DeltaIncSynapsePermanence'
-      THEN RETURN 0.01;
-    -- permanence level required for synapse to be connected (connectedPerm)
-    WHEN 'ThresholdSynapsePermanence'
-      THEN RETURN 0.50;
-    
-    -- Dummy data for unit testing this function
-    WHEN 'UnitTestDummyData'
-      THEN RETURN 6.66;
-  END CASE;
-END; 
-$$ LANGUAGE plpgsql;
-
-/**
- *
+ * HTM - Unroll index counts inside nested loops, into a single new sequence index/ID.
  */
 CREATE FUNCTION htm.count_unloop(outerCount INT, innerCount INT, innerMax INT)
 RETURNS INT
@@ -76,7 +49,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
- *
+ * HTM - Generate a random integer between low and high constraints.
  */
 CREATE FUNCTION htm.random_range(low INT, high INT) 
 RETURNS INT 
@@ -87,7 +60,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
- *
+ * HTM - Wrap array index around the array, either direction.
  */
 CREATE FUNCTION htm.wrap_array_index(target INT, max INT) 
 RETURNS INT 

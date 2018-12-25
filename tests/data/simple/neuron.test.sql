@@ -9,7 +9,7 @@ SELECT plan(1);  -- Test count
 
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM neuron; $$, 
-  ROW(config_int('DataSimpleCountNeuron')::bigint), 
+  ROW(config('CountNeuron')::BIGINT), 
   'Neuron has valid data'
 );
 

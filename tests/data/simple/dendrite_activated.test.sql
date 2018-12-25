@@ -11,7 +11,7 @@ UPDATE synapse
   SET permanence = 0.00;
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM dendrite_activated; $$,
-  ROW(0::bigint),
+  ROW(0::BIGINT),
   'Dendrite_Activated starts empty'
 );
 
@@ -21,11 +21,11 @@ UPDATE synapse
     SELECT id
     FROM synapse
     WHERE dendrite_id = 1
-    LIMIT (config_int('ThresholdDendriteSynapse') - 1)
+    LIMIT (config('ThresholdDendriteSynapse')::INT - 1)
   );
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM dendrite_activated; $$,
-  ROW(0::bigint),
+  ROW(0::BIGINT),
   'Dendrite_Activated stays empty when synapse count is low'
 );
 
@@ -35,11 +35,11 @@ UPDATE synapse
     SELECT id
     FROM synapse
     WHERE dendrite_id = 1
-    LIMIT config_int('ThresholdDendriteSynapse')
+    LIMIT config('ThresholdDendriteSynapse')::INT
   );
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM dendrite_activated; $$,
-  ROW(1::bigint),
+  ROW(1::BIGINT),
   'Dendrite_Activated fills when synapse count hits threshold'
 );
 
@@ -48,7 +48,7 @@ UPDATE synapse
   WHERE dendrite_id = 1;
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM dendrite_activated; $$,
-  ROW(1::bigint),
+  ROW(1::BIGINT),
   'Dendrite_Activated stays filled when synapse count is maxxed'
 );
 

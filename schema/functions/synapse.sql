@@ -3,9 +3,9 @@ CREATE FUNCTION htm.synapse_weight(permanence NUMERIC)
 RETURNS BOOL
 AS $$ 
 DECLARE
-  ThresholdSynapsePermanence NUMERIC := htm.config_numeric('ThresholdSynapsePermanence');
+  connectedPerm NUMERIC := htm.config('connectedPerm');
 BEGIN
-  RETURN permanence >= ThresholdSynapsePermanence;
+  RETURN permanence > connectedPerm;
 END; 
 $$ LANGUAGE plpgsql;
 

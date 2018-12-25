@@ -11,11 +11,11 @@ SELECT row_eq(
   $$ SELECT COUNT(id) FROM dendrite; $$, 
   ROW((
     (
-      config_int('DataSimpleCountNeuron') *
-      config_int('DataSimpleCountDendrite')
+      config('CountNeuron')::INT *
+      config('CountDendrite')::INT
     ) + 
-    config_int('DataSimpleCountColumn')
-  )::bigint), 
+    config('CountColumn')::INT
+  )::BIGINT), 
   'Dendrite has valid data'
 );
 

@@ -12,22 +12,22 @@ SELECT function_lang_is('dendrite_activation', 'plpgsql');
 SELECT function_returns('dendrite_activation', 'boolean');
 SELECT is(dendrite_activation(0), false, 'dendrite_activation() works min');
 SELECT is(
-  dendrite_activation(config_int('ThresholdDendriteSynapse') - 1), 
+  dendrite_activation(config('ThresholdDendriteSynapse')::INT - 1), 
   false,
-  'dendrite_activation() works under'
+  'dendrite_activation() false under threshold'
 );
 SELECT is(
-  dendrite_activation(config_int('ThresholdDendriteSynapse')), 
+  dendrite_activation(config('ThresholdDendriteSynapse')::INT), 
+  false,
+  'dendrite_activation() false on threshold'
+);
+SELECT is(
+  dendrite_activation(config('ThresholdDendriteSynapse')::INT + 1), 
   true,
-  'dendrite_activation() works on'
+  'dendrite_activation() true beyond threshold'
 );
 SELECT is(
-  dendrite_activation(config_int('ThresholdDendriteSynapse') + 1), 
-  true,
-  'dendrite_activation() works over'
-);
-SELECT is(
-  dendrite_activation(config_int('DataSimpleCountSynapse')), 
+  dendrite_activation(config('CountSynapse')::INT), 
   true,
   'dendrite_activation() works max'
 );

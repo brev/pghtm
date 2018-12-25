@@ -10,9 +10,9 @@ SELECT plan(1);  -- Test count
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM link_input_synapse; $$, 
   ROW((
-    config_int('DataSimpleCountColumn') *
-    config_int('DataSimpleCountSynapse')
-  )::bigint), 
+    config('CountColumn')::INT *
+    config('CountSynapse')::INT
+  )::BIGINT), 
   'Link_Input_Synapse has valid data'
 );
 

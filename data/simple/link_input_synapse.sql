@@ -5,11 +5,11 @@
 DO
 $$
 DECLARE
-  CountColumn INT := htm.config_int('DataSimpleCountColumn');
-  CountDendrite INT := htm.config_int('DataSimpleCountDendrite');
-  CountNeuron INT := htm.config_int('DataSimpleCountNeuron');
-  CountSynapse INT := htm.config_int('DataSimpleCountSynapse');
-  WidthInput INT := htm.config_int('DataSimpleWidthInput');
+  CountColumn INT := htm.config('CountColumn');
+  CountDendrite INT := htm.config('CountDendrite');
+  CountNeuron INT := htm.config('CountNeuron');
+  CountSynapse INT := htm.config('CountSynapse');
+  WidthInput INT := htm.config('WidthInput');
   InputPerColumn INT := ROUND(WidthInput / CountColumn);
   InputColumnCenter INT := ROUND((WidthInput / CountColumn) / 2);
   SynapseCenter INT := ROUND(CountSynapse / 2);

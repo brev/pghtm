@@ -12,19 +12,22 @@ SELECT function_lang_is('synapse_weight', 'plpgsql');
 SELECT function_returns('synapse_weight', 'boolean');
 SELECT is(synapse_weight(0.00), false, 'synapse_weight() works min');
 SELECT is(
-  synapse_weight(config_numeric('ThresholdSynapsePermanence') - 0.01), 
+  synapse_weight(config('connectedPerm')::NUMERIC - 0.01), 
   false,
-  'synapse_weight() works under'
+  'synapse_weight() false under threshold'
 );
 SELECT is(
-  synapse_weight(config_numeric('ThresholdSynapsePermanence')), 
-  true,
-  'synapse_weight() works on'
+  synapse_weight(config('connectedPerm')::NUMERIC), 
+  false,
+  'synapse_weight() false on threshold'
 );
 SELECT is(
-  synapse_weight(config_numeric('ThresholdSynapsePermanence') + 0.01), 
+  synapse_weight(
+    config('connectedPerm')::NUMERIC + 
+    config('DeltaIncSynapsePermanence')::NUMERIC
+  ), 
   true,
-  'synapse_weight() works over'
+  'synapse_weight() true beyond threshold'
 );
 SELECT is(synapse_weight(1.00), true, 'synapse_weight() works max');
 

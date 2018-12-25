@@ -5,9 +5,9 @@
 DO
 $$
 DECLARE
-  CountColumn INT := htm.config_int('DataSimpleCountColumn');
-  CountDendrite INT := htm.config_int('DataSimpleCountDendrite');
-  CountNeuron INT := htm.config_int('DataSimpleCountNeuron');
+  CountColumn INT := htm.config('CountColumn');
+  CountDendrite INT := htm.config('CountDendrite');
+  CountNeuron INT := htm.config('CountNeuron');
   lastDendriteId INT := CountNeuron * CountDendrite;
 BEGIN
   FOR columnId IN 1..CountColumn LOOP

@@ -11,7 +11,7 @@ UPDATE synapse
   SET permanence = 0.00;
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM neuron_activated; $$,
-  ROW(0::bigint),
+  ROW(0::BIGINT),
   'Neuron_Activated starts empty'
 );
 
@@ -25,7 +25,7 @@ UPDATE synapse
   );
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM neuron_activated; $$,
-  ROW(1::bigint),
+  ROW(1::BIGINT),
   'Neuron_Activated row fills with a single active dendrite'
 );
 
@@ -38,7 +38,7 @@ UPDATE synapse
   );
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM neuron_activated; $$,
-  ROW(1::bigint),
+  ROW(1::BIGINT),
   'Neuron_Activated row stays filled when active dendrites maxxed'
 );
 
@@ -46,7 +46,7 @@ UPDATE synapse
   SET permanence = 1.00;
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM neuron_activated; $$,
-  ROW(config_int('DataSimpleCountNeuron')::bigint),
+  ROW(config('CountNeuron')::BIGINT),
   'Neuron_Activated all rows maxxed with active dendrites'
 );
 
