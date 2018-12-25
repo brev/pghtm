@@ -18,7 +18,7 @@ SELECT row_eq(
 UPDATE synapse 
   SET permanence = (
     config('connectedPerm')::NUMERIC - 
-    config('DeltaDecSynapsePermanence')::NUMERIC
+    config('synPermActiveInc')::NUMERIC
   )
   WHERE id = 1;
 SELECT row_eq(

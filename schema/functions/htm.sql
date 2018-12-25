@@ -11,21 +11,23 @@ CREATE FUNCTION htm.config(keyIn VARCHAR)
 RETURNS VARCHAR 
 AS $$ 
 DECLARE
-  height INT := 3;
-  width INT := 3;   
+  height INT := 1;
+  width INT := 100;   
   cells INT := height * width;
-  result NUMERIC := (SELECT value FROM (VALUES 
-      ('connectedPerm',               0.50),    -- Synapse permanence level threshold for connection
-      ('CountColumn',                 width),   -- # of columms per region
-      ('CountDendrite',               4),       -- # of dendrites per neuron
-      ('CountNeuron',                 cells),   -- # of neurons per region (rows x cols)
-      ('CountRow',                    height),  -- # of rows per region
-      ('CountSynapse',                9),       -- # of synapses per dendrite
-      ('DeltaDecSynapsePermanence',   0.01),    -- decrement for synapse permanence during learning 
-      ('DeltaIncSynapsePermanence',   0.01),    -- increment for synapse permanence during learning 
-      ('ThresholdDendriteSynapse',    4),       -- # of active synapses on active dendrite
-      ('WidthInput',                  21),      -- Bit Width of Input SDR
-      ('UnitTestDummyData',           777)      -- Dummy data for unit testing this function
+  result NUMERIC := (SELECT value FROM 
+    (VALUES 
+      ('connectedPerm',             0.50),    -- Synapse permanence level threshold for connection
+      ('CountColumn',               width),   -- # of columms per region
+      ('CountDendrite',             4),       -- # of dendrites per neuron
+      ('CountNeuron',               cells),   -- # of neurons per region (rows x cols)
+      ('CountRow',                  height),  -- # of rows per region
+      ('CountSynapse',              9),       -- # of synapses per dendrite
+      ('sp_dutyCyclePeriod',        1000),    -- Spatial Pooler duty cycle period
+      ('synPermActiveDec',          0.01),    -- Synapse permanence decrement during learning 
+      ('synPermActiveInc',          0.01),    -- Synapse permanence increment during learning 
+      ('ThresholdDendriteSynapse',  4),       -- Threshold for # of active synapses to connect dendrite
+      ('WidthInput',                width),   -- Input SDR Bit Width
+      ('UnitTestData',              777)      -- Unit testing example data
     ) AS config_tmp (key, value)
     WHERE key = keyIn
   );

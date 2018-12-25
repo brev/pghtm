@@ -24,7 +24,7 @@ SELECT is(
 SELECT is(
   synapse_weight(
     config('connectedPerm')::NUMERIC + 
-    config('DeltaIncSynapsePermanence')::NUMERIC
+    config('synPermActiveInc')::NUMERIC
   ), 
   true,
   'synapse_weight() true beyond threshold'

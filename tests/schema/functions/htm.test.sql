@@ -11,7 +11,7 @@ SELECT has_function('config', ARRAY['character varying']);
 SELECT function_lang_is('config', 'plpgsql');
 SELECT function_returns('config', 'character varying');
 SELECT volatility_is('config', 'immutable');
-SELECT is(config('UnitTestDummyData'), 777::varchar, 'config() works directly');
+SELECT is(config('UnitTestData'), 777::varchar, 'config() works directly');
 SELECT is(
   config('CountNeuron')::INT, 
   config('CountColumn')::INT * config('CountRow')::INT,
