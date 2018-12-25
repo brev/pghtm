@@ -20,7 +20,7 @@ SELECT col_type_is('synapse', 'dendrite_id', 'integer');
 SELECT col_not_null('synapse', 'dendrite_id');
 SELECT col_is_fk('synapse', 'dendrite_id');
 
-SELECT col_type_is('synapse', 'permanence', 'numeric(3,2)');
+SELECT col_type_is('synapse', 'permanence', 'numeric');
 SELECT col_not_null('synapse', 'permanence');
 SELECT col_has_check('synapse', 'permanence');
 

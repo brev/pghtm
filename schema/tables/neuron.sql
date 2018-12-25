@@ -1,3 +1,7 @@
+/**
+ * Neuron Table
+ */
+
 CREATE TABLE htm.neuron (
   id        INT NOT NULL PRIMARY KEY,
   column_id INT NOT NULL,

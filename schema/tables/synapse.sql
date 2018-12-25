@@ -1,3 +1,7 @@
+/**
+ * Synapse Table
+ */
+
 CREATE TABLE htm.synapse (
   id          INT NOT NULL PRIMARY KEY,
   dendrite_id INT NOT NULL,

@@ -4,11 +4,13 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(15);  -- Test count
+SELECT plan(18);  -- Test count
 
 
 SELECT has_table('column');
-SELECT columns_are('column', ARRAY['id', 'region_id', 'x_coord', 'activedutycycle']);
+SELECT columns_are('column', ARRAY[
+  'id', 'region_id', 'x_coord', 'activedutycycle', 'overlapdutycycle'
+]);
 SELECT has_pk('column');
 SELECT has_fk('column');
 
@@ -25,7 +27,11 @@ SELECT col_not_null('column', 'x_coord');
 
 SELECT col_type_is('column', 'activedutycycle', 'numeric');
 SELECT col_not_null('column', 'activedutycycle');
-SELECT col_has_check('column', 'activeDutyCyce');
+SELECT col_has_check('column', 'activedutycycle');
+
+SELECT col_type_is('column', 'overlapdutycycle', 'numeric');
+SELECT col_not_null('column', 'overlapdutycycle');
+SELECT col_has_check('column', 'overlapdutycycle');
 
 
 SELECT * FROM finish();
