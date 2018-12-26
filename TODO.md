@@ -3,7 +3,7 @@
 ### SP Phase 1
 
 * Synapse Data fill
-  * small random range around connectedPerm
+  * small random range around ThresholdSynapse
   * bias towards 90-deg vertical overhead connections between column/input
   * input spread is random, not linear.  make sure no orphans after change.
     * poolPct also

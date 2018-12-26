@@ -5,7 +5,9 @@
 
 /**
  * HTM - Get config value.
- * @returns VARCHAR, so cast accordingly on usage, like: htm.config('CountColumn')::INT
+ * @returns VARCHAR, so cast on usage, like: 
+ *  SQL:      SELECT htm.config('key')::INT;
+ *  plpgsql:  val INT := htm.config('key');
  */
 CREATE FUNCTION htm.config(keyIn VARCHAR)
 RETURNS VARCHAR 
@@ -14,20 +16,34 @@ DECLARE
   height INT := 1;
   width INT := 100;   
   cells INT := height * width;
+  spread NUMERIC := 0.5;
+  synapses INT := width * spread;
   result NUMERIC := (SELECT value FROM 
     (VALUES 
-      ('connectedPerm',             0.50),    -- Synapse permanence level threshold for connection
-      ('CountColumn',               width),   -- # of columms per region
-      ('CountDendrite',             4),       -- # of dendrites per neuron
-      ('CountNeuron',               cells),   -- # of neurons per region (rows x cols)
-      ('CountRow',                  height),  -- # of rows per region
-      ('CountSynapse',              9),       -- # of synapses per dendrite
-      ('sp_dutyCyclePeriod',        1000),    -- Spatial Pooler duty cycle period
-      ('synPermActiveDec',          0.01),    -- Synapse permanence decrement during learning 
-      ('synPermActiveInc',          0.01),    -- Synapse permanence increment during learning 
-      ('ThresholdDendriteSynapse',  4),       -- Threshold for # of active synapses to connect dendrite
-      ('WidthInput',                width),   -- Input SDR Bit Width
-      ('UnitTestData',              777)      -- Unit testing example data
+      -- HTM
+      ('CountColumn',       width),     -- # of columms per region
+      ('CountDendrite',     4),         -- # of dendrites per neuron
+      ('CountNeuron',       cells),     -- # of neurons per region (rows x cols)
+      ('CountRow',          height),    -- # of rows per region
+      ('CountSynapse',      synapses),  -- # of synapses per dendrite 
+      ('SynapseDecrement',  0.01),      -- Synapse learning permanence decrement
+                                          -- nupic sp:synPermActiveDec
+      ('SynapseIncrement',  0.01),      -- Synapse learning permanence increment
+                                          -- nupic sp:synPermActiveInc
+      ('ThresholdDendrite', 4),         -- # of active synapses to connect dendrite
+      ('ThresholdSynapse',  0.3),       -- Synapse connection permanence threshold
+                                          -- nupic sp:synPermConnected=0.1 
+                                          -- nupic tp:connectedPerm=0.5
+      ('WidthInput',        width),     -- Input SDR Bit Width 
+
+      -- Spatial Pooler
+      ('dutyCyclePeriod',   1000),    -- Duty cycle period
+      ('globalInhibition',  1),       -- Global inhibition boolean toggle
+                                        -- TODO topology not coded yet
+      ('potentialPct',      spread),  -- % of input bits each column may connect
+
+      -- Other
+      ('UnitTestData', 777)   -- Unit testing example data
     ) AS config_tmp (key, value)
     WHERE key = keyIn
   );
@@ -40,7 +56,7 @@ END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
 /**
- * HTM - Unroll index counts inside nested loops, into a single new sequence index/ID.
+ * HTM - Unroll index counts from inside nested loops to a single index count.
  */
 CREATE FUNCTION htm.count_unloop(outerCount INT, innerCount INT, innerMax INT)
 RETURNS INT

@@ -6,6 +6,7 @@ psql -f $SCHEMA/htm.sql
 
 psql -f $SCHEMA/types/neuron.sql
 psql -f $SCHEMA/types/dendrite.sql
+psql -f $SCHEMA/types/synapse.sql
 
 psql -f $SCHEMA/tables/region.sql
 psql -f $SCHEMA/tables/column.sql

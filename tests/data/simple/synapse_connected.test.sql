@@ -17,7 +17,7 @@ SELECT row_eq(
 
 UPDATE synapse 
   SET permanence = (
-    config('connectedPerm')::NUMERIC - 
+    config('ThresholdSynapse')::NUMERIC - 
     config('synPermActiveInc')::NUMERIC
   )
   WHERE id = 1;
@@ -28,7 +28,7 @@ SELECT row_eq(
 );
 
 UPDATE synapse 
-  SET permanence = config('connectedPerm')::NUMERIC
+  SET permanence = config('ThresholdSynapse')::NUMERIC
   WHERE id = 1;
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM synapse_connected; $$,

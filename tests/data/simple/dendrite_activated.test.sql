@@ -21,7 +21,7 @@ UPDATE synapse
     SELECT id
     FROM synapse
     WHERE dendrite_id = 1
-    LIMIT (config('ThresholdDendriteSynapse')::INT - 1)
+    LIMIT (config('ThresholdDendrite')::INT - 1)
   );
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM dendrite_activated; $$,
@@ -35,7 +35,7 @@ UPDATE synapse
     SELECT id
     FROM synapse
     WHERE dendrite_id = 1
-    LIMIT config('ThresholdDendriteSynapse')::INT
+    LIMIT config('ThresholdDendrite')::INT
   );
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM dendrite_activated; $$,
