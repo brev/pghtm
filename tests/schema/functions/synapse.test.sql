@@ -12,7 +12,10 @@ SELECT function_lang_is('synapse_weight', 'plpgsql');
 SELECT function_returns('synapse_weight', 'boolean');
 SELECT is(synapse_weight(0.00), false, 'synapse_weight() works min');
 SELECT is(
-  synapse_weight(config('ThresholdSynapse')::NUMERIC - 0.01), 
+  synapse_weight(
+    config('ThresholdSynapse')::NUMERIC - 
+    config('SynapseDecrement')::NUMERIC
+  ), 
   false,
   'synapse_weight() false under threshold'
 );
@@ -24,7 +27,7 @@ SELECT is(
 SELECT is(
   synapse_weight(
     config('ThresholdSynapse')::NUMERIC + 
-    config('synPermActiveInc')::NUMERIC
+    config('SynapseIncrement')::NUMERIC
   ), 
   true,
   'synapse_weight() true beyond threshold'
