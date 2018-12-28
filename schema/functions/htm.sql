@@ -13,12 +13,12 @@ CREATE FUNCTION htm.config(keyIn VARCHAR)
 RETURNS VARCHAR 
 AS $$ 
 DECLARE
-  height INT := 1;
-  width INT := 100;   
-  cells INT := height * width;
-  spread NUMERIC := 0.5;
-  synapses INT := width * spread;
-  result NUMERIC := (SELECT value FROM 
+  height CONSTANT INT := 1;
+  width CONSTANT INT := 100;   
+  cells CONSTANT INT := height * width;
+  spread CONSTANT NUMERIC := 0.5;
+  synapses CONSTANT INT := width * spread;
+  result CONSTANT NUMERIC := (SELECT value FROM 
     (VALUES 
       -- HTM
       ('CountColumn',       width),     -- # of columms per region

@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(10);  -- Test count
+SELECT plan(20);  -- Test count
 
 
 SELECT has_table('input');
@@ -14,18 +14,18 @@ SELECT columns_are(
 );
 SELECT has_pk('input');
 
-SELECT col_type_is('input', 'id', 'timestampz');
+SELECT col_type_is('input', 'id', 'timestamp with time zone');
 SELECT col_not_null('input', 'id');
 SELECT col_has_default('input', 'id');
 SELECT col_default_is('input', 'id', 'now()');
 SELECT col_is_pk('input', 'id');
 
-SELECT col_type_is('input', 'created', 'timestampz');
+SELECT col_type_is('input', 'created', 'timestamp with time zone');
 SELECT col_not_null('input', 'created');
 SELECT col_has_default('input', 'created');
 SELECT col_default_is('input', 'created', 'now()');
 
-SELECT col_type_is('input', 'updated', 'timestampz');
+SELECT col_type_is('input', 'updated', 'timestamp with time zone');
 SELECT col_not_null('input', 'updated');
 SELECT col_has_default('input', 'updated');
 SELECT col_default_is('input', 'updated', 'now()');

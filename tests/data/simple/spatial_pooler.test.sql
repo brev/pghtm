@@ -12,7 +12,11 @@ SELECT row_eq(
   ROW(0::VARCHAR),
   'Spatial Pooler starts with valid compute_iterations data'
 );
-SELECT is(spatial_pooler_compute(), TRUE, 'spatial_pooler_compute() works');
+SELECT is(
+  spatial_pooler_compute(ARRAY[0,1,2]), 
+  TRUE, 
+  'spatial_pooler_compute() works'
+);
 SELECT row_eq(
   $$ SELECT value FROM spatial_pooler WHERE key = 'compute_iterations'; $$,
   ROW(1::VARCHAR),
