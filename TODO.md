@@ -1,11 +1,11 @@
 # Current
 
-* link_input_synapse needs check unique (input_index, synapse_id)
-
-## SP Phase 1
-
-* start tracking column active duty cycles
-
+* SP Phase 1
+  * Do something with our new overlap query in sp compute function. 
+  * Boosting needs to be added.
+* General
+  * Add function and trigger to auto-update "updated" timestampz columns.
+  * Replace view tests: test synapse > dendrite > nueuron collapses other way.
 
 # Future
 
@@ -15,4 +15,6 @@
 * SP Phase 2
   * Add topology AKA local column inhibition 
     * radius (aka? input spread. calc with.), etc.
+    * Inputs directly below column should be weighted slightly higher on init
+      than inputs further away from column center.
 

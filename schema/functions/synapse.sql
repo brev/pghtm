@@ -1,5 +1,5 @@
 
-CREATE FUNCTION htm.synapse_weight(permanence NUMERIC)
+CREATE FUNCTION htm.synapse_connection(permanence NUMERIC)
 RETURNS BOOL
 AS $$ 
 DECLARE
