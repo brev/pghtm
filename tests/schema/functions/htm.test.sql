@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(30);  -- Test count
+SELECT plan(35);  -- Test count
 
 
 SELECT has_function('config', ARRAY['character varying']);
@@ -33,11 +33,27 @@ SELECT is(count_unloop(2, 1, 3), 4, 'count_unloop() works 4');
 SELECT is(count_unloop(2, 2, 3), 5, 'count_unloop() works 5');
 SELECT is(count_unloop(2, 3, 3), 6, 'count_unloop() works 6');
 
-SELECT has_function('random_range', ARRAY['integer', 'integer']);
-SELECT function_lang_is('random_range', 'plpgsql');
-SELECT function_returns('random_range', 'integer');
-SELECT cmp_ok(random_range(5,7), '>=', 5, 'random_range() works lo');
-SELECT cmp_ok(random_range(5,7), '<=', 7, 'random_range() works hi');
+SELECT has_function('random_range_int', ARRAY['integer', 'integer']);
+SELECT function_lang_is('random_range_int', 'plpgsql');
+SELECT function_returns('random_range_int', 'integer');
+SELECT cmp_ok(random_range_int(5, 7), '>=', 5, 'random_range_int() works lo');
+SELECT cmp_ok(random_range_int(5, 7), '<=', 7, 'random_range_int() works hi');
+
+SELECT has_function('random_range_numeric', ARRAY['numeric', 'numeric']);
+SELECT function_lang_is('random_range_numeric', 'plpgsql');
+SELECT function_returns('random_range_numeric', 'numeric');
+SELECT cmp_ok(
+  random_range_numeric(7.0, 9.0), 
+  '>=', 
+  7.0, 
+  'random_range_numeric() works lo'
+);
+SELECT cmp_ok(
+  random_range_numeric(7.0, 9.0), 
+  '<=', 
+  9.0, 
+  'random_range_numeric() works hi'
+);
 
 SELECT has_function('wrap_array_index', ARRAY['integer', 'integer']);
 SELECT function_lang_is('wrap_array_index', 'plpgsql');

@@ -1,8 +1,9 @@
 # Current
 
+* link_input_synapse needs check unique (input_index, synapse_id)
+
 ## SP Phase 1
 
-* Synapse Data fill: perm small random value around ThresholdSynapse
 * start tracking column active duty cycles
 
 

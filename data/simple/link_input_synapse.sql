@@ -20,7 +20,7 @@ BEGIN
         INTO htm.link_input_synapse(id, input_index, synapse_id)
         VALUES (
           linkId, 
-          htm.random_range(1, WidthInput), 
+          htm.random_range_int(1, WidthInput), 
           SynapseStart + linkId
         );
     END LOOP;

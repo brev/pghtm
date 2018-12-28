@@ -69,11 +69,22 @@ $$ LANGUAGE plpgsql;
 /**
  * HTM - Generate a random integer between low and high constraints.
  */
-CREATE FUNCTION htm.random_range(low INT, high INT) 
+CREATE FUNCTION htm.random_range_int(low INT, high INT) 
 RETURNS INT 
 AS $$
 BEGIN
-   RETURN FLOOR(RANDOM() * (high - low + 1) + low);
+   RETURN FLOOR((RANDOM() * (high - low + 1)) + low);
+END;
+$$ LANGUAGE plpgsql;
+
+/**
+ * HTM - Generate a random float between low and high constraints.
+ */
+CREATE FUNCTION htm.random_range_numeric(low NUMERIC, high NUMERIC) 
+RETURNS NUMERIC
+AS $$
+BEGIN
+   RETURN (RANDOM() * (high - low)) + low;
 END;
 $$ LANGUAGE plpgsql;
 

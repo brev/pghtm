@@ -12,7 +12,7 @@ DECLARE
   neuronId INT;
 BEGIN
   FOR synapseId IN 1..TotalSynapse LOOP
-    neuronId := htm.random_range(1, CountNeuron); 
+    neuronId := htm.random_range_int(1, CountNeuron); 
     INSERT
       INTO htm.link_neuron_synapse(id, neuron_id, synapse_id)
       VALUES (synapseId, neuronId, synapseId);
