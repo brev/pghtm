@@ -2,7 +2,11 @@
  * Dendrite Functions
  */
 
-CREATE FUNCTION htm.dendrite_activation(synapse_count BIGINT)
+
+/**
+ *
+ */
+CREATE FUNCTION htm.dendrite_activated(synapse_count BIGINT)
 RETURNS BOOL
 AS $$
 DECLARE

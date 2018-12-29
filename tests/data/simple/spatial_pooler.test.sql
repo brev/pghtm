@@ -13,9 +13,9 @@ SELECT row_eq(
   'Spatial Pooler starts with valid compute_iterations data'
 );
 SELECT is(
-  spatial_pooler_compute(ARRAY[0,1,2]), 
-  TRUE, 
-  'spatial_pooler_compute() works'
+  sp_compute(ARRAY[0,1,2]), 
+  1, 
+  'sp_compute() works'
 );
 SELECT row_eq(
   $$ SELECT value FROM spatial_pooler WHERE key = 'compute_iterations'; $$,
@@ -24,19 +24,19 @@ SELECT row_eq(
 );
 
 SELECT is(
-  spatial_pooler_get('unit_test_data'), 
+  sp_get('unit_test_data'), 
   555::VARCHAR, 
-  'spatial_pooler_get() works'
+  'sp_get() works'
 );
 SELECT is(
-  spatial_pooler_set('unit_test_data', 444::VARCHAR), 
+  sp_set('unit_test_data', 444::VARCHAR), 
   TRUE, 
-  'spatial_pooler_set() seemed to work'
+  'sp_set() seemed to work'
 );
 SELECT is(
-  spatial_pooler_get('unit_test_data'), 
+  sp_get('unit_test_data'), 
   444::VARCHAR, 
-  'spatial_pooler_set() confirmed working'
+  'sp_set() confirmed working'
 );
 
 

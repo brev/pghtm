@@ -1,11 +1,12 @@
 # Current
 
-* SP Phase 1
-  * Do something with our new overlap query in sp compute function. 
-  * Boosting needs to be added.
 * General
   * Add function and trigger to auto-update "updated" timestampz columns.
+* SP Phase 1
+  * sp-learn min0 and max1
   * Replace view tests: test synapse > dendrite > nueuron collapses other way.
+  * Flags for sp-global-inhib and sp-learn
+  * Duty Cycles and Boosting needs to be added.
 
 # Future
 
