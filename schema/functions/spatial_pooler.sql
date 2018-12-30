@@ -36,7 +36,7 @@ $$ LANGUAGE plpgsql;
  * Spatial Pooler - Figure active columns. 
  *  Calculate overlap scores for each column: get count of connected Synapses 
  *    that are attached to active Input bits.
- *  Apply global inhibition to sparsify result.
+ *  Apply global inhibition to sparsify result. TODO:config('globalInhibit')
  */
 CREATE FUNCTION htm.sp_column_active(input_indexes INT[])
 RETURNS INT[]
@@ -62,7 +62,7 @@ BEGIN
           IN (SELECT unnest(input_indexes))
       GROUP BY col.id
       ORDER BY COUNT(synapse.id) DESC   -- overlap
-      LIMIT colsave                     -- inhibit
+      LIMIT colsave                     -- global inhibit
     )
   );
   RETURN column_indexes;
@@ -101,22 +101,26 @@ $$ LANGUAGE plpgsql;
  * Spatial Pooler - Single step of computation.
  */
 CREATE FUNCTION htm.sp_compute(input_indexes INT[])
-RETURNS INT
+RETURNS INT[]
 AS $$ 
 DECLARE
+  learning CONSTANT BOOL := htm.config('spLearn');
   iterations INT := htm.sp_get('compute_iterations');
   active_columns INT[];
 BEGIN
   -- Get winning columns (Overlap and Inhibition)
   active_columns := htm.sp_column_active(input_indexes);
 
-  -- Learning TODO cfg flag
-  PERFORM htm.sp_learn(active_columns);
+  -- Learning
+  IF learning THEN 
+    PERFORM htm.sp_learn(active_columns);
+  END IF;
 
-  -- All done, update compute iteration count and return
-  iterations := iterations + 1;
-  PERFORM htm.sp_set('compute_iterations', iterations::VARCHAR);
-  RETURN iterations;
+  -- Update compute iteration count
+  PERFORM htm.sp_set('compute_iterations', (iterations + 1)::VARCHAR);
+
+  -- Return indexes of active columns
+  RETURN active_columns;
 END; 
 $$ LANGUAGE plpgsql;
 

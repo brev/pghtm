@@ -13,8 +13,8 @@ SELECT row_eq(
   'Spatial Pooler starts with valid compute_iterations data'
 );
 SELECT is(
-  sp_compute(ARRAY[0,1,2]), 
-  1, 
+  pg_typeof(sp_compute(ARRAY[0,1,2])), 
+  'integer[]', 
   'sp_compute() works'
 );
 SELECT row_eq(

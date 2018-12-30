@@ -41,14 +41,14 @@ DECLARE
       ('WidthInput',        width),     -- Input SDR Bit Width 
 
       -- Spatial Pooler
-      ('dutyCyclePeriod',   1000),      -- Duty cycle period
-      ('globalInhibition',  TRUE::INT),   -- Global inhibition boolean toggle
+      ('dutyCyclePeriod',   1000),    -- Duty cycle period
+      ('globalInhibition',  1),       -- Global inhibition boolean toggle
                                         -- TODO topology not coded yet
-      ('ThresholdColumn',   colWin),    -- Number of top active columns to save
-                                          -- during Inhibition - IDEAL 2%
-                                          -- nupic sp:numActiveColumnsPerInhArea
-      ('potentialPct',      spread),    -- % of input bits each column may connect
-
+      ('potentialPct',      spread),  -- % of in bits each column may connect
+      ('spLearn',           1),       -- SP learning on?
+      ('ThresholdColumn',   colWin),  -- Number of top active columns to win 
+                                        -- during Inhibition - IDEAL 2%
+                                        -- nupic sp:numActiveColumnsPerInhArea
       -- Other
       ('UnitTestData', 777)   -- Unit testing example data
     ) AS config_tmp (key, value)

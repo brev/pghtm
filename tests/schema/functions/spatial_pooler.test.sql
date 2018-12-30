@@ -27,7 +27,7 @@ SELECT function_returns('sp_learn', 'boolean');
 
 SELECT has_function('sp_compute', ARRAY['integer[]']);
 SELECT function_lang_is('sp_compute', 'plpgsql');
-SELECT function_returns('sp_compute', 'integer');
+SELECT function_returns('sp_compute', 'integer[]');
 
 
 SELECT * FROM finish();
