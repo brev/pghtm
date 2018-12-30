@@ -31,9 +31,9 @@ DECLARE
   result NUMERIC;
 BEGIN
   IF connected THEN
-    result := permanence + inc;  
+    result := LEAST(permanence + inc, 1.0);  
   ELSE
-    result := permanence - dec;
+    result := GREATEST(permanence - dec, 0.0);
   END IF;
   RETURN result;
 END; 

@@ -8,8 +8,8 @@ DECLARE
   WidthInput INT := htm.config('WidthInput');
 BEGIN
   INSERT 
-    INTO htm.input (id, length, indexes) 
-    VALUES (NOW(), WidthInput, ARRAY[0, 1, 2]);
+    INTO htm.input (id, indexes) 
+    VALUES (NOW(), ARRAY[0, 1, 2]);
 END
 $$;
 

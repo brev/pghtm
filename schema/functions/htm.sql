@@ -97,6 +97,18 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
+ * HTM - Auto-update "modified" column to now().
+ */
+CREATE FUNCTION htm.update_modified_column() 
+RETURNS TRIGGER
+AS $$
+BEGIN
+  NEW.modified = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+/**
  * HTM - Wrap array index around the array, either direction.
  */
 CREATE FUNCTION htm.wrap_array_index(target INT, max INT) 

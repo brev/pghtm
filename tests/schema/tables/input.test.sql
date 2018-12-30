@@ -4,13 +4,13 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(20);  -- Test count
+SELECT plan(18);  -- Test count
 
 
 SELECT has_table('input');
 SELECT columns_are(
   'input', 
-  ARRAY['id', 'created', 'updated', 'length', 'indexes']
+  ARRAY['id', 'created', 'modified', 'indexes']
 );
 SELECT has_pk('input');
 
@@ -25,13 +25,10 @@ SELECT col_not_null('input', 'created');
 SELECT col_has_default('input', 'created');
 SELECT col_default_is('input', 'created', 'now()');
 
-SELECT col_type_is('input', 'updated', 'timestamp with time zone');
-SELECT col_not_null('input', 'updated');
-SELECT col_has_default('input', 'updated');
-SELECT col_default_is('input', 'updated', 'now()');
-
-SELECT col_type_is('input', 'length', 'integer');
-SELECT col_not_null('input', 'length');
+SELECT col_type_is('input', 'modified', 'timestamp with time zone');
+SELECT col_not_null('input', 'modified');
+SELECT col_has_default('input', 'modified');
+SELECT col_default_is('input', 'modified', 'now()');
 
 SELECT col_type_is('input', 'indexes', 'integer[]');
 SELECT col_not_null('input', 'indexes');
