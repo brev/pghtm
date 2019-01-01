@@ -1,8 +1,9 @@
 # Current
 
 * SP Phase 1
-  * Replace view tests: test synapse > dendrite > nueuron collapses other way.
   * Visualizations
+  * Replace view tests: test synapse > dendrite > nueuron collapses other way.
+  * SP function tests
   * Duty Cycles and Boosting needs to be added.
 
 # Future

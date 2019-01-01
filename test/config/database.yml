@@ -1,0 +1,6 @@
+piggly:
+  adapter: postgresql
+  database: brev
+  username:
+  password:
+  host: localhost
