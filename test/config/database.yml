@@ -1,6 +1,6 @@
 piggly:
   adapter: postgresql
-  database: brev
+  database: htmdb
   username:
   password:
   host: localhost

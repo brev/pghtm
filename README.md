@@ -30,7 +30,8 @@ Hierarchical Temporal Memory (HTM) in PostgreSQL.
 ### Development @ Mac OS/X
 
 Reccomended Sources:
-* **Homebrew**: Postgres, Perl, Ruby, Node.js
+* **System**: Perl
+* **Homebrew**: Postgres, Ruby, Node.js
 * **Homebrew Cask**: Docker
 
 ```bash
@@ -52,10 +53,10 @@ make
 make installcheck
 make install
 psql -c "CREATE EXTENSION pgtap;"
-## pg_prove - sql unit testing tool
-cpan App::cpanminus
-cpan Test::Pod::Coverage
-cpan TAP::Parser::SourceHandler::pgTAP
+## pg_prove - sql unit testing tool (TODO ditch `sudo` somehow)
+sudo cpan App::cpanminus
+sudo cpan Test::Pod::Coverage
+sudo cpan TAP::Parser::SourceHandler::pgTAP
 popd
 
 # pgHTM - this schema
@@ -84,9 +85,11 @@ piggly report --select /htm/ -f piggly/coverage.txt
 ## Open in Browser: piggly/reports/index.html
 
 # hasura - graphql layer on top of postgres
+brew cask install docker
+## Start Docker.app from your Mac GUI Applications folder
 pushd viz/graphql/
 ## Modify docker-run.sh, set HASURA_GRAPHQL_DATABASE_URL to DB connection info.
-##  On Mac: postgres://host.docker.internal/htmdb
+##  On Mac, like: postgres://host.docker.internal/htmdb
 ./docker-run.sh
 popd
 ## Open graphql layer in Browser: http://localhost:8080/console
