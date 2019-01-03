@@ -1,94 +1,101 @@
 # pgHTM
 
+Hierarchical Temporal Memory (HTM) in PostgreSQL.
 
-## Installation
 
+# Requirements
 
-### Requirements
-
-#### User & Production
+## Production / Users
 
 * PostgreSQL - Database Engine
 * pgHTM - This Schema
 
-#### Admin & Visualization
+## Admin / Visualization
 
 * Docker - Container Engine
-* Node.js & npm/Yarn - Javscript Engine
+* Node.js & npm or yarn - Javscript Engine
 * Hasura - GraphQL API Layer for Postgres
 * React (create-react-app) - Web Browser UI Engine
 
-#### Development & Testing
+## Development & Testing
 
 * Perl & CPAN - Perl Engine
 * Ruby, Gems, Activerecord - Ruby Engine
-* pgTAP + pg_prove - Unit Testing (everything)
+* pgTAP + pg_prove - Unit Testing (full schema)
 * piggly - Code Coverage (plpgsql functions only)
 
 
-### Instructions
+# Installation
 
-#### Development @ Mac OS/X
+## Development @ Mac OS/X
 
 Reccomended Sources:
-* brew => Postgres, Node, Ruby
-* brew cask => Docker
-* osx => Perl
+* *Homebrew*: Postgres, Perl, Ruby, Node.js
+* *Homebrew Cask*: Docker
 
 ```bash
-cd src/
+# clone repo into pghtm/ subdir of your src/ code dir
+pushd src/
+git clone git@github.com:brev/pghtm.git
 
-# postgres
+# postgres - db engine
 brew install postgresql
-export DBNAME=`whoami`  # db name is username (simple default)
-createdb $DBNAME
+pg_ctl -D /usr/local/var/postgres start   # start postgres
+export PGDATABASE=htmdb   # important! psql client & scripts expecting this
+createdb
 
-# pgtap
+# pgtap - sql unit testing
+brew install perl
 git clone https://github.com/theory/pgtap.git
-cd pgtap/
+pushd pgtap/
 make
 make installcheck
 make install
 psql -c "CREATE EXTENSION pgtap;"
-cd ..
+## pg_prove - sql unit testing tool
+cpan App::cpanminus
+cpan Test::Pod::Coverage
+cpan TAP::Parser::SourceHandler::pgTAP
+popd
 
-# pg_prove
-sudo cpan App::cpanminus
-sudo cpan Test::Pod::Coverage
-sudo cpan TAP::Parser::SourceHandler::pgTAP
-
-# pgHTM
-cd pghtm/bin/
+# pgHTM - this schema
+pushd pghtm/
+pushd bin/
 ./create.sh
 ./fill.sh
 ./test_schema.sh
 ./test_data_init.sh
-cd ..
+popd
+## Run 1 compute cycle of Spatial Pooler on example row in `input` table.
+psql -c "WITH input AS (SELECT indexes FROM htm.input LIMIT 1) SELECT htm.sp_compute(indexes) FROM input;"
 
-# piggly
-gem install piggly
-gem install activerecord
-## Modify pghtm/test/config/database.yml. Use DBNAME, etc.
+# piggly - plpgsql code coverage reporting
+brew install ruby
+## Hack on GEM_HOME and GEM_PATH env vars to get homebrew ruby+gems working.
+gem install piggly activerecord
+## Modify pghtm/test/config/database.yml, update with DB connection info.
 piggly trace --select /htm/ --database test/config/database.yml
-cd bin/
+pushd bin/
 ./test_schema.sh 2> ../piggly/coverage.txt
 ./test_data_init.sh 2>> ../piggly/coverage.txt
-cd ..
+popd
 piggly untrace --select /htm/ --database test/config/database.yml
 piggly report --select /htm/ -f piggly/coverage.txt
 ## Open in Browser: piggly/reports/index.html
 
-# hasura graphql
-cd viz/
-cd graphql/
-## Modify docker-run.sh, set HASURA_GRAPHQL_DATABASE_URL.
-##  On Mac: postgres://USERNAME@host.docker.internal:5432/DBNAME
+# hasura - graphql layer on top of postgres
+pushd viz/graphql/
+## Modify docker-run.sh, set HASURA_GRAPHQL_DATABASE_URL to DB connection info.
+##  On Mac: postgres://host.docker.internal/htmdb
 ./docker-run.sh
+popd
 ## Open graphql layer in Browser: http://localhost:8080/console
-##  Select DATA tab, change Schema to "htm", follow auto-import.
-cd ../
-cd webui/
+##  Select DATA tab, change Schema to "htm", enable auto-imports of schema.
+
+# web ui - visualize htm state
+pushd viz/webui/
 npm start
+popd
 ## Open web UI layer in Browser: http://localhost:3000
 ```
 

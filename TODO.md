@@ -2,13 +2,15 @@
 
 * SP Phase 1
   * Visualizations
+    * sync jake
   * Replace view tests: test synapse > dendrite > nueuron collapses other way.
   * SP function tests
-  * Duty Cycles and Boosting needs to be added.
+  * Finish SP1: Add Duty Cycles and Boosting.
 
 # Future
 
 * "IN (SELECT unnest(input_indexes))": can check array for key instead?
+* ANALYZE EXPLAIN all queries, look for speedups
 * pg int's not unsigned.  
   * for input indexes[], you've now got a trinary if u want!
 * 3 state not as enum/type, but as true/false/null ?
@@ -17,4 +19,6 @@
     * radius (aka? input spread. calc with.), etc.
     * Inputs directly below column should be weighted slightly higher on init
       than inputs further away from column center.
+* Externalize and speed up plpgsql stuff as C Extensions.
+  * Continue on to full NuPIC Integration???
 
