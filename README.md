@@ -84,19 +84,21 @@ piggly untrace --select /htm/ --database test/config/database.yml
 piggly report --select /htm/ -f piggly/coverage.txt
 ## Open in Browser: piggly/reports/index.html
 
-# hasura - graphql layer on top of postgres
+# hasura - graphql layer on top of postgres for webui viz
 brew cask install docker
 ## Start Docker.app from your Mac GUI Applications folder
 pushd viz/graphql/
 ## Modify docker-run.sh, set HASURA_GRAPHQL_DATABASE_URL to DB connection info.
-##  On Mac, like: postgres://host.docker.internal/htmdb
+##  On Mac, like: postgres://USERNAME@host.docker.internal/htmdb
 ./docker-run.sh
 popd
 ## Open graphql layer in Browser: http://localhost:8080/console
-##  Select DATA tab, change Schema to "htm", enable auto-imports of schema.
+##  Select DATA tab, change Schema to "htm". Use buttons to Add All Tables, 
+##  and Track All Relations.
 
-# web ui - visualize htm state
+# web ui - visualize htm state via graphql
 pushd viz/webui/
+npm install
 npm start
 popd
 ## Open web UI layer in Browser: http://localhost:3000
