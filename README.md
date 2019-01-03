@@ -67,8 +67,6 @@ pushd bin/
 ./test_schema.sh
 ./test_data_init.sh
 popd
-## Run 1 compute cycle of Spatial Pooler on example row in `input` table.
-psql -c "WITH input AS (SELECT indexes FROM htm.input LIMIT 1) SELECT htm.sp_compute(indexes) FROM input;"
 
 # piggly - plpgsql code coverage reporting
 brew install ruby
@@ -100,5 +98,10 @@ pushd viz/webui/
 npm start
 popd
 ## Open web UI layer in Browser: http://localhost:3000
+
+# Usage: pgHTM
+## Run 1 compute cycle of Spatial Pooler on example row in `input` table.
+##  FYI: Initial data tests (above) will fail after HTM state starts changing.
+psql -c "WITH input AS (SELECT indexes FROM htm.input LIMIT 1) SELECT htm.sp_compute(indexes) FROM input;"
 ```
 
