@@ -3,35 +3,35 @@
 Hierarchical Temporal Memory (HTM) in PostgreSQL.
 
 
-# Requirements
+## Requirements
 
-## Production / Users
+### Production / Users
 
 * PostgreSQL - Database Engine
 * pgHTM - This Schema
 
-## Admin / Visualization
-
-* Docker - Container Engine
-* Node.js & npm or yarn - Javscript Engine
-* Hasura - GraphQL API Layer for Postgres
-* React (create-react-app) - Web Browser UI Engine
-
-## Development & Testing
+### Development & Testing
 
 * Perl & CPAN - Perl Engine
 * Ruby, Gems, Activerecord - Ruby Engine
 * pgTAP + pg_prove - Unit Testing (full schema)
 * piggly - Code Coverage (plpgsql functions only)
 
+### Admin / Visualization
 
-# Installation
+* Docker - Container Engine
+* Node.js & npm or yarn - Javscript Engine
+* Hasura - GraphQL API Layer for Postgres
+* React (create-react-app) - Web Browser UI Engine
 
-## Development @ Mac OS/X
+
+## Installation
+
+### Development @ Mac OS/X
 
 Reccomended Sources:
-* *Homebrew*: Postgres, Perl, Ruby, Node.js
-* *Homebrew Cask*: Docker
+* **Homebrew**: Postgres, Perl, Ruby, Node.js
+* **Homebrew Cask**: Docker
 
 ```bash
 # clone repo into pghtm/ subdir of your src/ code dir
