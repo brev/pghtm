@@ -1,8 +1,8 @@
 # pgHTM
 
-## PRIVATE! Not for public.
-
 Hierarchical Temporal Memory (HTM) in PostgreSQL.
+
+**PRIVATE! Not yet for public consumption.**
 
 
 ## Requirements
