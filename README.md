@@ -1,8 +1,8 @@
 # pgHTM
 
-## PRIVATE! Not for public.
-
 Hierarchical Temporal Memory (HTM) in PostgreSQL.
+
+**PRIVATE! Not yet for public consumption.**
 
 
 ## Requirements
@@ -48,7 +48,6 @@ export PGDATABASE=htmdb   # important! psql client & scripts expecting this
 createdb
 
 # pgtap - sql unit testing
-brew install perl
 git clone https://github.com/theory/pgtap.git
 pushd pgtap/
 make
