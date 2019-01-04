@@ -1,11 +1,8 @@
 # Current
 
 * SP Phase 1
+  * Add Duty Cycles and Boosting.
   * Visualizations
-    * sync jake
-  * Replace view tests: test synapse > dendrite > nueuron collapses other way.
-  * SP function tests
-  * Finish SP1: Add Duty Cycles and Boosting.
 
 # Future
 

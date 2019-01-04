@@ -104,8 +104,8 @@ popd
 ## Open web UI layer in Browser: http://localhost:3000
 
 # Usage: pgHTM
-## Run 1 compute cycle of Spatial Pooler on example row in `input` table.
-##  FYI: Initial data tests (above) will fail after HTM state starts changing.
+## Run 1 test compute cycle of Spatial Pooler on example row in `input` table.
+##  FYI: After this, the initial data tests (above) will no longer pass.
 psql -c "WITH input AS (SELECT indexes FROM htm.input LIMIT 1) SELECT htm.sp_compute(indexes) FROM input;"
 ```
 
