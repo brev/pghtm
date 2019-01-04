@@ -100,7 +100,7 @@ pushd viz/webui/
 npm install
 npm start
 popd
-## Open web UI layer in Browser: http://localhost:3000
+## Open web UI layer in Browser: http://localhost:3000/spatialpooler/
 
 # Usage: pgHTM
 ## Run 1 test compute cycle of Spatial Pooler on example row in `input` table.
