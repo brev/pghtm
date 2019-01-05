@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(19);  -- Test count
+SELECT plan(15);  -- Test count
 
 
 SELECT has_table('synapse');
@@ -26,13 +26,9 @@ SELECT col_is_fk('synapse', 'dendrite_id');
 SELECT col_type_is('synapse', 'permanence', 'numeric');
 SELECT col_not_null('synapse', 'permanence');
 SELECT col_has_check('synapse', 'permanence');
-SELECT col_has_default('synapse', 'permanence');
-SELECT col_default_is('synapse', 'permanence', 0.0);
 
 SELECT col_type_is('synapse', 'state', 'synapse_state');
 SELECT col_not_null('synapse', 'state');
-SELECT col_has_default('synapse', 'state');
-SELECT col_default_is('synapse', 'state', 'disconnected');
 
 
 SELECT * FROM finish();

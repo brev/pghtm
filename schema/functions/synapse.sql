@@ -77,9 +77,7 @@ CREATE FUNCTION htm.synapse_update_field_state()
 RETURNS TRIGGER
 AS $$
 BEGIN
-  IF NEW.state IS NULL THEN
-    NEW.state = htm.synapse_state_collapse(NEW.permanence);
-  END IF;
+  NEW.state = htm.synapse_state_collapse(NEW.permanence);
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

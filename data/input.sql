@@ -5,7 +5,7 @@
 DO
 $$
 DECLARE
-  WidthInput INT := htm.config('WidthInput');
+  InputWidth INT := htm.config('InputWidth');
 BEGIN
   INSERT 
     INTO htm.input (id, indexes) 

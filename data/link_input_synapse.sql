@@ -9,7 +9,7 @@ DECLARE
   DendriteCount INT := htm.config('DendriteCount');
   NeuronCount INT := htm.config('NeuronCount');
   SynapseCount INT := htm.config('SynapseCount');
-  WidthInput INT := htm.config('WidthInput');
+  InputWidth INT := htm.config('InputWidth');
   SynapseStart INT := DendriteCount * NeuronCount * SynapseCount;
   linkId INT;
 BEGIN
@@ -20,7 +20,7 @@ BEGIN
         INTO htm.link_input_synapse(id, input_index, synapse_id)
         VALUES (
           linkId, 
-          htm.random_range_int(1, WidthInput), 
+          htm.random_range_int(1, InputWidth), 
           SynapseStart + linkId
         );
     END LOOP;

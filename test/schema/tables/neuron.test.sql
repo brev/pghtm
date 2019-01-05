@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(16);  -- Test count
+SELECT plan(14);  -- Test count
 
 
 SELECT has_table('neuron');
@@ -25,8 +25,6 @@ SELECT col_not_null('neuron', 'y_coord');
 
 SELECT col_type_is('neuron', 'state', 'neuron_state');
 SELECT col_not_null('neuron', 'state');
-SELECT col_has_default('neuron', 'state');
-SELECT col_default_is('neuron', 'state', 'inactive');
 
 
 SELECT * FROM finish();

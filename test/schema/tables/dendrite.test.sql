@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(10);  -- Test count
+SELECT plan(8);  -- Test count
 
 
 SELECT has_table('dendrite');
@@ -17,8 +17,6 @@ SELECT col_is_pk('dendrite', 'id');
 
 SELECT col_type_is('dendrite', 'class', 'dendrite_class');
 SELECT col_not_null('dendrite', 'class');
-SELECT col_has_default('dendrite', 'class');
-SELECT col_default_is('dendrite', 'class', 'distal');
 
 
 SELECT * FROM finish();
