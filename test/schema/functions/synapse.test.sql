@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(15);  -- Test count
+SELECT plan(18);  -- Test count
 
 
 SELECT has_function('synapse_connected', ARRAY['numeric']);

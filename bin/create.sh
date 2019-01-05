@@ -26,4 +26,5 @@ psql -f $SCHEMA/functions/synapse.sql
 psql -f $SCHEMA/functions/spatial_pooler.sql
 
 psql -f $SCHEMA/triggers/input.sql
+psql -f $SCHEMA/triggers/synapse.sql
 
