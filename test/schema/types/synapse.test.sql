@@ -1,5 +1,5 @@
 /**
- * Input Trigger Test
+ * Synapse Types Test
  */
 
 BEGIN;
@@ -7,7 +7,7 @@ SET search_path TO htm, public;
 SELECT plan(1);  -- Test count
 
 
-SELECT has_trigger('input', 'update_input_modified');
+SELECT has_type('synapse_state');
 
 
 SELECT * FROM finish();

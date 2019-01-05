@@ -39,3 +39,17 @@ BEGIN
 END; 
 $$ LANGUAGE plpgsql;
 
+/**
+ * HTM - Auto-update htm.synapse "state" column/field (from threshold calcs).
+ */
+CREATE FUNCTION htm.synapse_update_field_state()
+RETURNS TRIGGER
+AS $$
+BEGIN
+  IF NEW.state IS NULL THEN
+    -- NEW.state = get_state_from_perm(NEW.permanence)
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+

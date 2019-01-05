@@ -1,7 +1,6 @@
 /**
  * Link Dendrite to Column Table
  */
-
 CREATE TABLE htm.link_dendrite_column(
   id          INT NOT NULL PRIMARY KEY,
   dendrite_id INT NOT NULL,

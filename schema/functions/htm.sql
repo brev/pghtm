@@ -97,9 +97,9 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
- * HTM - Auto-update "modified" column to now().
+ * HTM - Auto-update a "modified" column/field (like htm.input table) to now().
  */
-CREATE FUNCTION htm.update_modified_column() 
+CREATE FUNCTION htm.update_field_modified() 
 RETURNS TRIGGER
 AS $$
 BEGIN

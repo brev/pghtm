@@ -1,6 +1,6 @@
 #!/bin/sh
 SQL=".."
-DATA="$SQL/data/simple"
+DATA="$SQL/data"
 
 psql -f $DATA/region.sql
 psql -f $DATA/column.sql

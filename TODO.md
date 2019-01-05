@@ -1,8 +1,17 @@
 # Current
 
+* finish: functions/synapse/ htm.synapse_update_field_state()
+* Perf compare: set synapse.state in insert query, or let self auto via trigger?
+* Are insert & update triggers separate?
 * SP Phase 1
   * Add Duty Cycles and Boosting.
   * Visualizations
+* Add some output notes to data fill scripts, schema, etc.
+* Add some debug and timing output+options to important functions.
+* Can test triggers from data side!  check for self-inflicted values on CRUD.
+* problem if you do bin/empty then bin/fill again:
+  * maybe: spatial_pooler table aint getting destroyed? immutability probs?
+    * `psql:../data/spatial_pooler.sql:9: ERROR:  duplicate key value violates unique constraint "spatial_pooler_pkey". DETAIL:  Key (key)=(compute_iterations) already exists.`
 
 # Future
 

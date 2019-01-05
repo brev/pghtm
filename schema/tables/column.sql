@@ -1,7 +1,6 @@
 /**
  * Column Table
  */
-
 CREATE TABLE htm.column (
   id                INT NOT NULL PRIMARY KEY,
   region_id         INT NOT NULL, 

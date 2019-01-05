@@ -60,6 +60,10 @@ SELECT is(
   'synapse_permanence_learn() learns up to max 1.0'
 );
 
+SELECT has_function('synapse_update_field_state');
+SELECT function_lang_is('synapse_update_field_state', 'plpgsql');
+SELECT function_returns('synapse_update_field_state', 'trigger');
+
 
 SELECT * FROM finish();
 ROLLBACK;  -- Don't save test data
