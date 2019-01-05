@@ -5,17 +5,17 @@
 DO
 $$
 DECLARE
-  CountColumn INT := htm.config('CountColumn');
-  CountDendrite INT := htm.config('CountDendrite');
-  CountNeuron INT := htm.config('CountNeuron');
-  CountSynapse INT := htm.config('CountSynapse');
+  ColumnCount INT := htm.config('ColumnCount');
+  DendriteCount INT := htm.config('DendriteCount');
+  NeuronCount INT := htm.config('NeuronCount');
+  SynapseCount INT := htm.config('SynapseCount');
   WidthInput INT := htm.config('WidthInput');
-  SynapseStart INT := CountDendrite * CountNeuron * CountSynapse;
+  SynapseStart INT := DendriteCount * NeuronCount * SynapseCount;
   linkId INT;
 BEGIN
-  FOR localColumnId IN 1..CountColumn LOOP
-    FOR localSynapseId IN 1..CountSynapse LOOP
-      linkId := htm.count_unloop(localColumnId, localSynapseId, CountSynapse);
+  FOR localColumnId IN 1..ColumnCount LOOP
+    FOR localSynapseId IN 1..SynapseCount LOOP
+      linkId := htm.count_unloop(localColumnId, localSynapseId, SynapseCount);
       INSERT
         INTO htm.link_input_synapse(id, input_index, synapse_id)
         VALUES (

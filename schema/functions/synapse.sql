@@ -5,15 +5,15 @@
 
 /**
  * Check if a synapse is considered connected (above permanence threshold) 
- *  or not.
+ *  or not (potential/disconnected).
  */
 CREATE FUNCTION htm.synapse_connected(permanence NUMERIC)
 RETURNS BOOL
 AS $$ 
 DECLARE
-  ThresholdSynapse CONSTANT NUMERIC := htm.config('ThresholdSynapse');
+  SynapseThreshold CONSTANT NUMERIC := htm.config('SynapseThreshold');
 BEGIN
-  RETURN permanence > ThresholdSynapse;
+  RETURN permanence > SynapseThreshold;
 END; 
 $$ LANGUAGE plpgsql;
 
@@ -40,14 +40,45 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
- * HTM - Auto-update htm.synapse "state" column/field (from threshold calcs).
+ * Check if a synapse is considered at least potential (maybe connected) 
+ *  (above permanence minimum) or disconnected.
+ */
+CREATE FUNCTION htm.synapse_potential(permanence NUMERIC)
+RETURNS BOOL
+AS $$ 
+DECLARE
+  SynapseMinimum CONSTANT NUMERIC := htm.config('SynapseMinimum');
+BEGIN
+  RETURN permanence > SynapseMinimum;
+END; 
+$$ LANGUAGE plpgsql;
+
+/**
+ * Detect htm.synapse.state type to use, based on permanance threshold calcs.
+ */
+CREATE FUNCTION htm.synapse_state_collapse(permanence NUMERIC)
+RETURNS htm.SYNAPSE_STATE
+AS $$
+BEGIN
+  IF htm.synapse_connected(permanence) THEN
+    RETURN 'connected';
+  ELSIF htm.synapse_potential(permanence) THEN
+    RETURN 'potential';
+  ELSE
+    RETURN 'disconnected';
+  END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+/**
+ * Auto-update htm.synapse "state" column/field (from threshold calcs).
  */
 CREATE FUNCTION htm.synapse_update_field_state()
 RETURNS TRIGGER
 AS $$
 BEGIN
   IF NEW.state IS NULL THEN
-    -- NEW.state = get_state_from_perm(NEW.permanence)
+    NEW.state = htm.synapse_state_collapse(NEW.permanence);
   END IF;
   RETURN NEW;
 END;

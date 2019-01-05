@@ -14,9 +14,9 @@ RETURNS VARCHAR
 AS $$ 
 DECLARE
   height CONSTANT INT := 1;         -- Region/Column/Input height # rows
+  pctWin CONSTANT NUMERIC := 0.04;  -- % of SP winner columns not inhibited
   spread CONSTANT NUMERIC := 0.5;   -- SP column can connect to this % of input
   width CONSTANT INT := 100;        -- Region/Input width # cols
-  pctWin CONSTANT NUMERIC := 0.04;  -- % of SP winner columns not inhibited
 
   cells CONSTANT INT := height * width;     -- Total count of neurons
   colWin CONSTANT INT := width * pctWin;    -- # of SP winner cols not inhibited
@@ -25,21 +25,25 @@ DECLARE
   result CONSTANT NUMERIC := (SELECT value FROM 
     (VALUES 
       -- HTM
-      ('CountColumn',       width),     -- # of columms per region
-      ('CountDendrite',     4),         -- # of dendrites per neuron
-      ('CountNeuron',       cells),     -- # of neurons per region (rows x cols)
-      ('CountRow',          height),    -- # of rows per region
-      ('CountSynapse',      synapses),  -- # of synapses per dendrite 
+      ('ColumnCount',       width),     -- # of columms per region
+      ('DendriteCount',     4),         -- # of dendrites per neuron
+      ('DendriteThreshold', 4),         -- # active synapse for dendrite connect
+      ('InputWidth',        width),     -- Input SDR Bit Width 
+      ('NeuronCount',       cells),     -- # of neurons per region (rows x cols)
+      ('RowCount',          height),    -- # of rows per region
+      ('SynapseCount',      synapses),  -- # of synapses per dendrite 
       ('SynapseDecrement',  0.01),      -- Synapse learning permanence decrement
                                           -- nupic sp:synPermActiveDec
       ('SynapseIncrement',  0.01),      -- Synapse learning permanence increment
                                           -- nupic sp:synPermActiveInc
-      ('ThresholdDendrite', 4),         -- # active synapse for dendrite connect
-      ('ThresholdSynapse',  0.3),       -- Synapse connect permanence threshold
+      ('SynapseMinimum',    0.0),       -- Synapse potential perm min threshold,
+                                          -- > is potential or connected
+                                          -- <= is disconnected
+      ('SynapseThreshold',  0.3),       -- Synapse connect permanence threshold
+                                          -- > is connected
+                                          -- <= is potential or disconnected
                                           -- nupic sp:synPermConnected=0.1 
                                           -- nupic tp:connectedPerm=0.5
-      ('WidthInput',        width),     -- Input SDR Bit Width 
-
       -- Spatial Pooler
       ('dutyCyclePeriod',   1000),    -- Duty cycle period
       ('globalInhibition',  1),       -- Global inhibition boolean toggle
@@ -58,7 +62,6 @@ BEGIN
   IF result IS NULL THEN
     RAISE EXCEPTION 'No value for key %', keyIn;
   END IF;
-
   RETURN result;
 END; 
 $$ LANGUAGE plpgsql IMMUTABLE;

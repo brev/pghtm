@@ -32,7 +32,7 @@ SELECT col_default_is('synapse', 'permanence', 0.0);
 SELECT col_type_is('synapse', 'state', 'synapse_state');
 SELECT col_not_null('synapse', 'state');
 SELECT col_has_default('synapse', 'state');
-SELECT col_default_is('synapse', 'state', 'unconnected');
+SELECT col_default_is('synapse', 'state', 'disconnected');
 
 
 SELECT * FROM finish();

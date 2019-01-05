@@ -10,9 +10,9 @@ CREATE FUNCTION htm.dendrite_activated(synapse_count BIGINT)
 RETURNS BOOL
 AS $$
 DECLARE
-  ThresholdDendrite CONSTANT INT := htm.config('ThresholdDendrite');
+  DendriteThreshold CONSTANT INT := htm.config('DendriteThreshold');
 BEGIN
-  RETURN synapse_count > ThresholdDendrite;
+  RETURN synapse_count > DendriteThreshold;
 END;
 $$ LANGUAGE plpgsql;
 

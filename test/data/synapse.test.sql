@@ -11,12 +11,12 @@ SELECT row_eq(
   $$ SELECT COUNT(id) FROM synapse; $$, 
   ROW((
     (
-      config('CountNeuron')::INT * 
-      config('CountDendrite')::INT *
-      config('CountSynapse')::INT
+      config('NeuronCount')::INT * 
+      config('DendriteCount')::INT *
+      config('SynapseCount')::INT
     ) + (
-      config('CountColumn')::INT *
-      config('CountSynapse')::INT
+      config('ColumnCount')::INT *
+      config('SynapseCount')::INT
     )
   )::BIGINT), 
   'Synapse has valid count total'
@@ -26,10 +26,10 @@ SELECT row_eq($$
   SELECT COUNT(id) 
     FROM synapse 
     WHERE permanence < (
-      config('ThresholdSynapse')::NUMERIC - config('SynapseDecrement')::NUMERIC
+      config('SynapseThreshold')::NUMERIC - config('SynapseDecrement')::NUMERIC
     )
     OR permanence > (
-      config('ThresholdSynapse')::NUMERIC + config('SynapseIncrement')::NUMERIC
+      config('SynapseThreshold')::NUMERIC + config('SynapseIncrement')::NUMERIC
     ); 
   $$,
   ROW(0::BIGINT),

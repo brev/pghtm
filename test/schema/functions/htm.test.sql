@@ -13,8 +13,8 @@ SELECT function_returns('config', 'character varying');
 SELECT volatility_is('config', 'immutable');
 SELECT is(config('UnitTestData'), 777::varchar, 'config() works directly');
 SELECT is(
-  config('CountNeuron')::INT, 
-  config('CountColumn')::INT * config('CountRow')::INT,
+  config('NeuronCount')::INT, 
+  config('ColumnCount')::INT * config('RowCount')::INT,
   'config() rows * columns = neurons'
 );
 SELECT throws_ok(

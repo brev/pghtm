@@ -33,10 +33,10 @@ SELECT row_eq($$
   SELECT COUNT(id) > 0
     FROM synapse
     WHERE permanence < (
-      config('ThresholdSynapse')::NUMERIC - config('SynapseDecrement')::NUMERIC
+      config('SynapseThreshold')::NUMERIC - config('SynapseDecrement')::NUMERIC
     )
     OR permanence > (
-      config('ThresholdSynapse')::NUMERIC + config('SynapseIncrement')::NUMERIC
+      config('SynapseThreshold')::NUMERIC + config('SynapseIncrement')::NUMERIC
     );
   $$,
   ROW(FALSE::BOOLEAN),
@@ -51,10 +51,10 @@ SELECT row_eq($$
   SELECT COUNT(id) > 0
     FROM synapse
     WHERE permanence < (
-      config('ThresholdSynapse')::NUMERIC - config('SynapseDecrement')::NUMERIC
+      config('SynapseThreshold')::NUMERIC - config('SynapseDecrement')::NUMERIC
     )
     OR permanence > (
-      config('ThresholdSynapse')::NUMERIC + config('SynapseIncrement')::NUMERIC
+      config('SynapseThreshold')::NUMERIC + config('SynapseIncrement')::NUMERIC
     );
   $$,
   ROW(TRUE::BOOLEAN),
