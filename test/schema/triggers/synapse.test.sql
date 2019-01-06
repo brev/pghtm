@@ -4,10 +4,12 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(1);  -- Test count
+SELECT plan(2);  -- Test count
 
 
-SELECT has_trigger('synapse', 'update_synapse_state');
+SELECT has_trigger('synapse', 'trigger_synapse_state_change');
+
+SELECT has_trigger('synapse', 'trigger_synapse_dendrite_state_change');
 
 
 SELECT * FROM finish();

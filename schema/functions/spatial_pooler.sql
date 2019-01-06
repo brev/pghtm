@@ -28,6 +28,7 @@ BEGIN
   UPDATE htm.spatial_pooler 
     SET value = valueIn
     WHERE key = keyIn;
+
   RETURN FOUND;
 END; 
 $$ LANGUAGE plpgsql;
@@ -53,9 +54,10 @@ BEGIN
         ON link_dendrite_column.column_id = col.id
       JOIN htm.dendrite
         ON dendrite.id = link_dendrite_column.dendrite_id
+        AND dendrite.class = 'proximal'
       JOIN htm.synapse
         ON synapse.dendrite_id = dendrite.id
-        AND htm.synapse_connected(synapse.permanence)
+        AND synapse.state = 'connected'
       JOIN htm.link_input_synapse
         ON link_input_synapse.synapse_id = synapse.id
         AND link_input_synapse.input_index 
@@ -65,6 +67,7 @@ BEGIN
       LIMIT colsave                     -- global inhibit
     )
   );
+
   RETURN column_indexes;
 END; 
 $$ LANGUAGE plpgsql;
@@ -83,6 +86,7 @@ BEGIN
     FROM htm.synapse
     JOIN htm.dendrite
       ON dendrite.id = synapse.dendrite_id
+      AND dendrite.class = 'proximal'
     JOIN htm.link_dendrite_column
       ON link_dendrite_column.dendrite_id = dendrite.id
       AND link_dendrite_column.column_id IN (
@@ -93,6 +97,7 @@ BEGIN
     SET permanence = synapse_next.new_permanence
     FROM synapse_next
     WHERE synapse.id = synapse_next.synapse_id;
+
   RETURN FOUND;
 END; 
 $$ LANGUAGE plpgsql;

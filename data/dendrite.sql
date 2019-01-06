@@ -14,15 +14,15 @@ BEGIN
     FOR localId IN 1..DendriteCount LOOP
       dendriteId := htm.count_unloop(neuronId, localId, DendriteCount);
       INSERT
-        INTO htm.dendrite (id, class) 
-        VALUES (dendriteId, 'distal');
+        INTO htm.dendrite (id, class, state) 
+        VALUES (dendriteId, 'distal', FALSE);
     END LOOP;
   END LOOP;
 
   FOR columnId IN 1..ColumnCount LOOP
     INSERT
-      INTO htm.dendrite (id, class) 
-      VALUES (dendriteId + columnId, 'proximal');
+      INTO htm.dendrite (id, class, state) 
+      VALUES (dendriteId + columnId, 'proximal', FALSE);
   END LOOP;
 END
 $$;

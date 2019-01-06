@@ -55,9 +55,9 @@ SELECT cmp_ok(
   'random_range_numeric() works hi'
 );
 
-SELECT has_function('update_field_modified');
-SELECT function_lang_is('update_field_modified', 'plpgsql');
-SELECT function_returns('update_field_modified', 'trigger');
+SELECT has_function('schema_modified_update');
+SELECT function_lang_is('schema_modified_update', 'plpgsql');
+SELECT function_returns('schema_modified_update', 'trigger');
 
 SELECT has_function('wrap_array_index', ARRAY['integer', 'integer']);
 SELECT function_lang_is('wrap_array_index', 'plpgsql');

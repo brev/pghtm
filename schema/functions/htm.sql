@@ -13,21 +13,23 @@ CREATE FUNCTION htm.config(keyIn VARCHAR)
 RETURNS VARCHAR 
 AS $$ 
 DECLARE
-  height CONSTANT INT := 1;         -- Region/Column/Input height # rows
-  pctWin CONSTANT NUMERIC := 0.04;  -- % of SP winner columns not inhibited
-  spread CONSTANT NUMERIC := 0.5;   -- SP column can connect to this % of input
-  width CONSTANT INT := 100;        -- Region/Input width # cols
+  height CONSTANT INT := 1;           -- Region/Column/Input height # rows
+  pctColWin CONSTANT NUMERIC := 0.04; -- % SP winner columns not inhibited
+  pctDndWin CONSTANT NUMERIC := 0.25; -- % connect synapses for connect dendrite
+  spread CONSTANT NUMERIC := 0.5;     -- SP col can connect to this % of input
+  width CONSTANT INT := 100;          -- Region/Input width # cols
 
-  cells CONSTANT INT := height * width;     -- Total count of neurons
-  colWin CONSTANT INT := width * pctWin;    -- # of SP winner cols not inhibited
-  synapses CONSTANT INT := width * spread;  -- Synapses per Dendrite
- 
+  cells CONSTANT INT := height * width;         -- Total count of neurons
+  colWin CONSTANT INT := width * pctColWin;     -- # SP win cols not inhibited
+  synapses CONSTANT INT := width * spread;      -- Synapses per Dendrite
+  dndWin CONSTANT INT := synapses * pctDndWin;  -- # connected synapses for 
+                                                  -- connected dendrite 
   result CONSTANT NUMERIC := (SELECT value FROM 
     (VALUES 
       -- HTM
       ('ColumnCount',       width),     -- # of columms per region
       ('DendriteCount',     4),         -- # of dendrites per neuron
-      ('DendriteThreshold', 4),         -- # active synapse for dendrite connect
+      ('DendriteThreshold', dndWin),    -- # connect synapse for dendrite connect
       ('InputWidth',        width),     -- Input SDR Bit Width 
       ('NeuronCount',       cells),     -- # of neurons per region (rows x cols)
       ('RowCount',          height),    -- # of rows per region
@@ -48,7 +50,7 @@ DECLARE
       ('dutyCyclePeriod',   1000),    -- Duty cycle period
       ('globalInhibition',  1),       -- Global inhibition boolean toggle
                                         -- TODO topology not coded yet
-      ('potentialPct',      spread),  -- % of in bits each column may connect
+      ('potentialPct',      spread),  -- % input bits each column may connect
       ('spLearn',           1),       -- SP learning on?
       ('ThresholdColumn',   colWin),  -- Number of top active columns to win 
                                         -- during Inhibition - IDEAL 2%
@@ -102,7 +104,7 @@ $$ LANGUAGE plpgsql;
 /**
  * HTM - Auto-update a "modified" column/field (like htm.input table) to now().
  */
-CREATE FUNCTION htm.update_field_modified() 
+CREATE FUNCTION htm.schema_modified_update() 
 RETURNS TRIGGER
 AS $$
 BEGIN

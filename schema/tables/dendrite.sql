@@ -3,6 +3,7 @@
  */
 CREATE TABLE htm.dendrite (
   id    INT NOT NULL PRIMARY KEY,
-  class htm.DENDRITE_CLASS NOT NULL
+  class htm.DENDRITE_CLASS NOT NULL,
+  state BOOLEAN NOT NULL
 );
 

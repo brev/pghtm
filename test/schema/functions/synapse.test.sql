@@ -115,10 +115,10 @@ SELECT is(
   'synapse_state_collapse() works max'
 );
 
--- test synapse_update_field_state()
-SELECT has_function('synapse_update_field_state');
-SELECT function_lang_is('synapse_update_field_state', 'plpgsql');
-SELECT function_returns('synapse_update_field_state', 'trigger');
+-- test synapse_state_update()
+SELECT has_function('synapse_state_update');
+SELECT function_lang_is('synapse_state_update', 'plpgsql');
+SELECT function_returns('synapse_state_update', 'trigger');
 
 
 SELECT * FROM finish();

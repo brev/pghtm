@@ -73,7 +73,7 @@ $$ LANGUAGE plpgsql;
 /**
  * Auto-update htm.synapse "state" column/field (from threshold calcs).
  */
-CREATE FUNCTION htm.synapse_update_field_state()
+CREATE FUNCTION htm.synapse_state_update()
 RETURNS TRIGGER
 AS $$
 BEGIN
