@@ -34,7 +34,7 @@ BEGIN
               htm.config('SynapseIncrement')::NUMERIC
             )),
             'unconnected',
-            'false'
+            FALSE
           );
       END LOOP;
     END LOOP;
@@ -61,7 +61,7 @@ BEGIN
             htm.config('SynapseIncrement')::NUMERIC
           )),
           'unconnected',
-          'false'
+          FALSE
         );
     END LOOP;
   END LOOP;
@@ -70,7 +70,7 @@ BEGIN
   ALTER TABLE htm.synapse ENABLE TRIGGER USER;
 
   -- cause recently missed triggers to re-fire on entire new dataset at once
-  UPDATE htm.synapse;
+  UPDATE htm.synapse SET permanence = permanence;
 END
 $$;
 

@@ -19,5 +19,5 @@ CREATE TRIGGER trigger_input_synapse_input_change
   AFTER INSERT 
   ON htm.input
   FOR EACH ROW 
-    EXECUTE PROCEDURE htm.synapse_input_change();
+    EXECUTE PROCEDURE htm.synapse_input_update();
 

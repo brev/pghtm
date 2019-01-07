@@ -78,6 +78,21 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
+ * HTM - Get ideal duty cycle period value from several options.
+ * @SpatialPooler
+ */
+CREATE FUNCTION htm.duty_cycle_period() 
+RETURNS INTEGER
+AS $$
+DECLARE
+  cool CONSTANT INTEGER := htm.sp_get('compute_iteration');
+  warm CONSTANT INTEGER := htm.config('dutyCyclePeriod');
+BEGIN
+  RETURN LEAST (cool, warm);
+END;
+$$ LANGUAGE plpgsql;
+
+/**
  * HTM - Generate a random integer between low and high constraints.
  */
 CREATE FUNCTION htm.random_range_int(low INT, high INT) 
@@ -96,6 +111,24 @@ RETURNS NUMERIC
 AS $$
 BEGIN
    RETURN (RANDOM() * (high - low)) + low;
+END;
+$$ LANGUAGE plpgsql;
+
+/**
+ * HTM - Calculate a running moving average (for duty cycle calculations)
+ * @SpatialPooler
+ */
+CREATE FUNCTION htm.running_moving_average(
+  previous NUMERIC, 
+  next NUMERIC, 
+  period INTEGER
+) 
+RETURNS NUMERIC
+AS $$
+DECLARE
+  safePeriod CONSTANT INT := GREATEST(1, period);
+BEGIN
+   RETURN (((safePeriod - 1) * previous) + next) / safePeriod;
 END;
 $$ LANGUAGE plpgsql;
 

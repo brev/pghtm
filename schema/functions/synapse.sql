@@ -26,7 +26,7 @@ CREATE FUNCTION htm.synapse_input_update()
 RETURNS TRIGGER
 AS $$
 BEGIN
-  WITH synapse_next IN (
+  WITH synapse_next AS (
     SELECT
       synapse.id AS synapse_id,
       (
@@ -35,7 +35,7 @@ BEGIN
       ) AS new_input
     FROM htm.synapse
     JOIN htm.link_input_synapse
-      ON link_input_synapse.synapse_id = synapse.id;
+      ON link_input_synapse.synapse_id = synapse.id
   )
   UPDATE htm.synapse
     SET input = synapse_next.new_input

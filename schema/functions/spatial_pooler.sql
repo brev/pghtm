@@ -147,7 +147,7 @@ RETURNS INT[]
 AS $$ 
 DECLARE
   learning CONSTANT BOOL := htm.config('spLearn');
-  iterations INT := htm.sp_get('compute_iterations');
+  iteration INT := htm.sp_get('compute_iteration');
   active_columns INT[];
 BEGIN
   -- Get winning columns (Overlap and Inhibition)
@@ -159,7 +159,7 @@ BEGIN
   END IF;
 
   -- Update compute iteration count
-  PERFORM htm.sp_set('compute_iterations', (iterations + 1)::VARCHAR);
+  PERFORM htm.sp_set('compute_iteration', (iteration + 1)::VARCHAR);
 
   -- Return indexes of active columns
   RETURN active_columns;

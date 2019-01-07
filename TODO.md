@@ -1,8 +1,7 @@
 # Current
 
 * SP Phase 1
-  * synapse.input=true --> column.overlap fill
-  * overlapDutyCycle
+  * overlapDutyCycle - new value 0 or 1 based on dendrite threshold or ?? BAMI.
   * trigger_column_state
     - state (active)
     - active duty
@@ -10,15 +9,17 @@
   * Visualizations
 * Move config to tables so webui can access/see/change settings?
 * Can test triggers from data side!  check for self-inflicted values on CRUD.
-  * input.modified, synapse.state, synapse.input
+  * input.modified, synapse.state, synapse.input, column.overlap
 
 # Future
 
+* Tag dox w/@SpatialPooler, etc.
+* Sane DEFAULTS 
 * problem if you do bin/empty then bin/fill again:
   * maybe: spatial_pooler table aint getting destroyed? immutability probs?
     * psql:../data/spatial_pooler.sql:9: ERROR:  
       duplicate key value violates unique constraint "spatial_pooler_pkey". 
-      DETAIL:  Key (key)=(compute_iterations) already exists.
+      DETAIL:  Key (key)=(compute_iteration) already exists.
 * Add some output notes to data fill scripts, schema, etc.
 * Add some debug and timing output+options to important functions.
 * Perf compare: set synapse.state in insert query, or let self auto via trigger?

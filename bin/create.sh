@@ -20,6 +20,7 @@ psql -f $SCHEMA/tables/link_neuron_synapse.sql
 psql -f $SCHEMA/tables/spatial_pooler.sql
 
 psql -f $SCHEMA/functions/htm.sql
+psql -f $SCHEMA/functions/column.sql
 psql -f $SCHEMA/functions/synapse.sql
 psql -f $SCHEMA/functions/spatial_pooler.sql
 

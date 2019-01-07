@@ -68,19 +68,19 @@ SELECT row_eq($$
 );
 
 SELECT is(
-  sp_get('compute_iterations'), 
-  0::VARCHAR, 
-  'Spatial Pooler starts with valid compute_iterations data'
+  sp_get('compute_iteration'), 
+  1::VARCHAR, 
+  'Spatial Pooler starts with valid compute_iteration data'
 );
 SELECT is(
   array_length(sp_compute(ARRAY[0,1,2]), 1),
   config('ColumnThreshold')::INTEGER,
-  'sp_compute() works during compute_iterations increment test'
+  'sp_compute() works during compute_iteration increment test'
 );
 SELECT is(
-  sp_get('compute_iterations'), 
-  1::VARCHAR, 
-  'Spatial Pooler ends with valid compute_iterations data'
+  sp_get('compute_iteration'), 
+  2::VARCHAR, 
+  'Spatial Pooler ends with valid compute_iteration data'
 );
 
 
