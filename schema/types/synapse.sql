@@ -8,6 +8,6 @@
 CREATE TYPE htm.SYNAPSE_STATE AS ENUM (
   'connected',
   'potential',
-  'disconnected'
+  'unconnected'
 );
 

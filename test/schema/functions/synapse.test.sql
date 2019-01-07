@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(33);  -- Test count
+SELECT plan(36);  -- Test count
 
 
 -- test synapse_connected()
@@ -34,6 +34,11 @@ SELECT is(
   'synapse_connected() true beyond threshold'
 );
 SELECT is(synapse_connected(1.00), true, 'synapse_connected() works max');
+
+-- test synapse_input_update()
+SELECT has_function('synapse_input_update');
+SELECT function_lang_is('synapse_input_update', 'plpgsql');
+SELECT function_returns('synapse_input_update', 'trigger');
 
 -- test synapse_permanence_learn()
 SELECT has_function('synapse_permanence_learn', ARRAY['numeric']);
@@ -80,12 +85,12 @@ SELECT function_lang_is('synapse_state_collapse', 'plpgsql');
 SELECT function_returns('synapse_state_collapse', 'synapse_state');
 SELECT is(
   synapse_state_collapse(0.00), 
-  'disconnected', 
+  'unconnected', 
   'synapse_state_collapse() works zero'
 );
 SELECT is(
   synapse_state_collapse(config('SynapseMinimum')::NUMERIC), 
-  'disconnected', 
+  'unconnected', 
   'synapse_state_collapse() works min'
 );
 SELECT is(

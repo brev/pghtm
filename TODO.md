@@ -1,19 +1,19 @@
 # Current
 
 * SP Phase 1
+  * synapse.input=true --> column.overlap fill
   * overlapDutyCycle
   * trigger_column_state
     - state (active)
     - active duty
-  * Add Duty Cycles and Boosting.
+  * Boosting.
   * Visualizations
 * Move config to tables so webui can access/see/change settings?
 * Can test triggers from data side!  check for self-inflicted values on CRUD.
-  * input.modified, synapse.state
+  * input.modified, synapse.state, synapse.input
 
 # Future
 
-* Synapse naming: "Disconnected" ? vs. "Unconnected" (BAMI)
 * problem if you do bin/empty then bin/fill again:
   * maybe: spatial_pooler table aint getting destroyed? immutability probs?
     * psql:../data/spatial_pooler.sql:9: ERROR:  

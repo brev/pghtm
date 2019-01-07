@@ -2,10 +2,11 @@
  * Synapse Table
  */
 CREATE TABLE htm.synapse (
-  id          INT NOT NULL PRIMARY KEY,
-  dendrite_id INT NOT NULL,
+  id          INTEGER NOT NULL PRIMARY KEY,
+  dendrite_id INTEGER NOT NULL,
   permanence  NUMERIC NOT NULL,
   state       htm.SYNAPSE_STATE NOT NULL,
+  input       BOOLEAN NOT NULL,
 
   CHECK ((permanence >= 0.0) AND (permanence <= 1.0)),
   FOREIGN KEY (dendrite_id)

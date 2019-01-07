@@ -37,10 +37,10 @@ DECLARE
                                           -- nupic sp:synPermActiveInc
       ('SynapseMinimum',    0.0),       -- Synapse potential perm min threshold,
                                           -- > is potential or connected
-                                          -- <= is disconnected
+                                          -- <= is unconnected
       ('SynapseThreshold',  0.3),       -- Synapse connect permanence threshold
                                           -- > is connected
-                                          -- <= is potential or disconnected
+                                          -- <= is potential or unconnected
                                           -- nupic sp:synPermConnected=0.1 
                                           -- nupic tp:connectedPerm=0.5
       -- Spatial Pooler

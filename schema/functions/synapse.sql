@@ -5,7 +5,7 @@
 
 /**
  * Check if a synapse is considered connected (above permanence threshold) 
- *  or not (potential/disconnected).
+ *  or not (potential/unconnected).
  */
 CREATE FUNCTION htm.synapse_connected(permanence NUMERIC)
 RETURNS BOOL
@@ -15,6 +15,35 @@ DECLARE
 BEGIN
   RETURN permanence > SynapseThreshold;
 END; 
+$$ LANGUAGE plpgsql;
+
+/**
+ * Auto-update htm.synapse.input field (from fresh htm.input row).
+ *  Connected Synapses linked to new On Input bits are set synapse.input = true.
+ *  All other synapses will be syanpse.input = false.
+ */
+CREATE FUNCTION htm.synapse_input_update()
+RETURNS TRIGGER
+AS $$
+BEGIN
+  WITH synapse_next IN (
+    SELECT
+      synapse.id AS synapse_id,
+      (
+        (synapse.state = 'connected') AND
+        (link_input_synapse.input_index IN (SELECT unnest(NEW.indexes)))
+      ) AS new_input
+    FROM htm.synapse
+    JOIN htm.link_input_synapse
+      ON link_input_synapse.synapse_id = synapse.id;
+  )
+  UPDATE htm.synapse
+    SET input = synapse_next.new_input
+    FROM synapse_next
+    WHERE synapse.id = synapse_next.synapse_id; 
+
+  RETURN NULL;
+END;
 $$ LANGUAGE plpgsql;
 
 /**
@@ -41,7 +70,7 @@ $$ LANGUAGE plpgsql;
 
 /**
  * Check if a synapse is considered at least potential (maybe connected) 
- *  (above permanence minimum) or disconnected.
+ *  (above permanence minimum) or unconnected.
  */
 CREATE FUNCTION htm.synapse_potential(permanence NUMERIC)
 RETURNS BOOL
@@ -66,7 +95,7 @@ BEGIN
     WHEN htm.synapse_potential(permanence) 
       THEN RETURN 'potential';
     ELSE 
-      RETURN 'disconnected';
+      RETURN 'unconnected';
   END CASE;
 END;
 $$ LANGUAGE plpgsql;

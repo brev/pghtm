@@ -22,7 +22,7 @@ BEGIN
       FOR localSynapseId IN 1..SynapseCount LOOP
         synapseId := htm.count_unloop(dendriteId, localSynapseId, SynapseCount);
         INSERT 
-          INTO htm.synapse (id, dendrite_id, permanence, state) 
+          INTO htm.synapse (id, dendrite_id, permanence, state, input) 
           VALUES (
             synapseId, 
             dendriteId, 
@@ -33,7 +33,8 @@ BEGIN
               htm.config('SynapseThreshold')::NUMERIC + 
               htm.config('SynapseIncrement')::NUMERIC
             )),
-            'disconnected'
+            'unconnected',
+            'false'
           );
       END LOOP;
     END LOOP;
@@ -48,7 +49,7 @@ BEGIN
         SynapseCount
       );
       INSERT 
-        INTO htm.synapse (id, dendrite_id, permanence, state) 
+        INTO htm.synapse (id, dendrite_id, permanence, state, input) 
         VALUES (
           synapseId, 
           dendriteId + columnId, 
@@ -59,7 +60,8 @@ BEGIN
             htm.config('SynapseThreshold')::NUMERIC + 
             htm.config('SynapseIncrement')::NUMERIC
           )),
-          'disconnected'
+          'unconnected',
+          'false'
         );
     END LOOP;
   END LOOP;
@@ -68,7 +70,7 @@ BEGIN
   ALTER TABLE htm.synapse ENABLE TRIGGER USER;
 
   -- cause recently missed triggers to re-fire on entire new dataset at once
-  UPDATE htm.synapse SET permanence = permanence;
+  UPDATE htm.synapse;
 END
 $$;
 
