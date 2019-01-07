@@ -13,8 +13,8 @@ BEGIN
     FOR yCount IN 1..RowCount LOOP
       neuronId := htm.count_unloop(columnId, yCount, RowCount);
       INSERT 
-        INTO htm.neuron (id, column_id, y_coord, state) 
-        VALUES (neuronId, columnId, yCount, 'inactive');
+        INTO htm.neuron (id, column_id, y_coord) 
+        VALUES (neuronId, columnId, yCount);
     END LOOP;
   END LOOP;
 END

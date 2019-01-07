@@ -15,21 +15,18 @@ AS $$
 DECLARE
   height CONSTANT INT := 1;           -- Region/Column/Input height # rows
   pctColWin CONSTANT NUMERIC := 0.04; -- % SP winner columns not inhibited
-  pctDndWin CONSTANT NUMERIC := 0.25; -- % connect synapses for connect dendrite
   spread CONSTANT NUMERIC := 0.5;     -- SP col can connect to this % of input
   width CONSTANT INT := 100;          -- Region/Input width # cols
 
   cells CONSTANT INT := height * width;         -- Total count of neurons
   colWin CONSTANT INT := width * pctColWin;     -- # SP win cols not inhibited
   synapses CONSTANT INT := width * spread;      -- Synapses per Dendrite
-  dndWin CONSTANT INT := synapses * pctDndWin;  -- # connected synapses for 
-                                                  -- connected dendrite 
+  
   result CONSTANT NUMERIC := (SELECT value FROM 
     (VALUES 
       -- HTM
       ('ColumnCount',       width),     -- # of columms per region
       ('DendriteCount',     4),         -- # of dendrites per neuron
-      ('DendriteThreshold', dndWin),    -- # connect synapse for dendrite connect
       ('InputWidth',        width),     -- Input SDR Bit Width 
       ('NeuronCount',       cells),     -- # of neurons per region (rows x cols)
       ('RowCount',          height),    -- # of rows per region
@@ -47,14 +44,15 @@ DECLARE
                                           -- nupic sp:synPermConnected=0.1 
                                           -- nupic tp:connectedPerm=0.5
       -- Spatial Pooler
+      ('ColumnThreshold',   colWin),  -- Number of top active columns to win 
+                                        -- during Inhibition - IDEAL 2%
+                                        -- nupic sp:numActiveColumnsPerInhArea
       ('dutyCyclePeriod',   1000),    -- Duty cycle period
       ('globalInhibition',  1),       -- Global inhibition boolean toggle
                                         -- TODO topology not coded yet
       ('potentialPct',      spread),  -- % input bits each column may connect
       ('spLearn',           1),       -- SP learning on?
-      ('ThresholdColumn',   colWin),  -- Number of top active columns to win 
-                                        -- during Inhibition - IDEAL 2%
-                                        -- nupic sp:numActiveColumnsPerInhArea
+      
       -- Other
       ('UnitTestData', 777)   -- Unit testing example data
     ) AS config_tmp (key, value)
@@ -119,15 +117,19 @@ $$ LANGUAGE plpgsql;
 CREATE FUNCTION htm.wrap_array_index(target INT, max INT) 
 RETURNS INT 
 AS $$
+DECLARE
+  result INT;
 BEGIN
   CASE
     WHEN target < 0
-      THEN RETURN max + target;
+      THEN result := max + target;
     WHEN target >= max
-      THEN RETURN target - max;
+      THEN result := target - max;
     ELSE
-      RETURN target;
+      result := target;
   END CASE;
+
+  RETURN result;
 END;
 $$ LANGUAGE plpgsql;
 

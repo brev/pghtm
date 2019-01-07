@@ -37,13 +37,50 @@ $$ LANGUAGE plpgsql;
  * Spatial Pooler - Figure active columns. 
  *  Calculate overlap scores for each column: get count of connected Synapses 
  *    that are attached to active Input bits.
- *  Apply global inhibition to sparsify result. TODO:config('globalInhibit')
+ */
+CREATE FUNCTION htm.sp_column_overlap(input_indexes INT[])
+RETURNS BOOLEAN
+AS $$ 
+BEGIN
+  WITH column_next AS (
+    SELECT 
+      htm.column.id AS column_id,
+      SUM((
+        link_input_synapse.input_index IN (
+          SELECT unnest(input_indexes)
+        ))::INTEGER
+      ) AS new_overlap
+    FROM htm.column
+    JOIN htm.link_dendrite_column
+      ON link_dendrite_column.column_id = htm.column.id
+    JOIN htm.dendrite
+      ON dendrite.id = link_dendrite_column.dendrite_id
+      AND dendrite.class = 'proximal'
+    JOIN htm.synapse
+      ON synapse.dendrite_id = dendrite.id
+      AND synapse.state = 'connected'
+    JOIN htm.link_input_synapse
+      ON link_input_synapse.synapse_id = synapse.id
+    GROUP BY htm.column.id
+  )
+  UPDATE htm.column
+    SET overlap = column_next.new_overlap
+    FROM column_next
+    WHERE htm.column.id = column_next.column_id;
+
+  RETURN FOUND;
+END; 
+$$ LANGUAGE plpgsql;
+
+/**
+ * Spatial Pooler - Figure active columns. 
+ *  Apply global inhibition to sparsify actives. TODO:config('globalInhibit')
  */
 CREATE FUNCTION htm.sp_column_active(input_indexes INT[])
 RETURNS INT[]
 AS $$ 
 DECLARE
-  colsave CONSTANT BIGINT := htm.config('ThresholdColumn');
+  colsave CONSTANT BIGINT := htm.config('ColumnThreshold');
   column_indexes INT[];
 BEGIN
   column_indexes := (
@@ -75,7 +112,7 @@ $$ LANGUAGE plpgsql;
 /**
  * Spatial Pooler - Perform hebbian-style learning.
  */
-CREATE FUNCTION htm.sp_learn(column_indexes INT[])
+CREATE FUNCTION htm.sp_synapse_learn(column_indexes INT[])
 RETURNS BOOLEAN
 AS $$ 
 BEGIN
@@ -96,7 +133,7 @@ BEGIN
   UPDATE htm.synapse
     SET permanence = synapse_next.new_permanence
     FROM synapse_next
-    WHERE synapse.id = synapse_next.synapse_id;
+    WHERE synapse_next.synapse_id = synapse.id;
 
   RETURN FOUND;
 END; 
@@ -118,7 +155,7 @@ BEGIN
 
   -- Learning
   IF learning THEN 
-    PERFORM htm.sp_learn(active_columns);
+    PERFORM htm.sp_synapse_learn(active_columns);
   END IF;
 
   -- Update compute iteration count

@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(15);  -- Test count
+SELECT plan(18);  -- Test count
 
 
 SELECT has_function('sp_get', ARRAY['character varying']);
@@ -21,9 +21,13 @@ SELECT has_function('sp_column_active', ARRAY['integer[]']);
 SELECT function_lang_is('sp_column_active', 'plpgsql');
 SELECT function_returns('sp_column_active', 'integer[]');
 
-SELECT has_function('sp_learn', ARRAY['integer[]']);
-SELECT function_lang_is('sp_learn', 'plpgsql');
-SELECT function_returns('sp_learn', 'boolean');
+SELECT has_function('sp_column_overlap', ARRAY['integer[]']);
+SELECT function_lang_is('sp_column_overlap', 'plpgsql');
+SELECT function_returns('sp_column_overlap', 'boolean');
+
+SELECT has_function('sp_synapse_learn', ARRAY['integer[]']);
+SELECT function_lang_is('sp_synapse_learn', 'plpgsql');
+SELECT function_returns('sp_synapse_learn', 'boolean');
 
 SELECT has_function('sp_compute', ARRAY['integer[]']);
 SELECT function_lang_is('sp_compute', 'plpgsql');

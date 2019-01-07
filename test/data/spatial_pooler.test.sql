@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(10);  -- Test count
+SELECT plan(11);  -- Test count
 
 
 SELECT is(
@@ -25,8 +25,14 @@ SELECT is(
 
 SELECT is(
   array_length(sp_column_active(ARRAY[0,1,2]), 1),
-  config('ThresholdColumn')::INTEGER,
+  config('ColumnThreshold')::INTEGER,
   'sp_column_active() seems to be working'
+);
+
+SELECT is(
+  sp_column_overlap(ARRAY[0,1,2]),
+  TRUE,
+  'sp_column_overlap() seems to be working'
 );
 
 SELECT row_eq($$
@@ -43,9 +49,9 @@ SELECT row_eq($$
   'Synapse permanences are pristine (in small random range around threshold)'
 );
 SELECT is(
-  pg_typeof(sp_learn(ARRAY[0,1,2])),
+  pg_typeof(sp_synapse_learn(ARRAY[0,1,2])),
   'boolean',
-  'sp_learn() seems to work during learning test'
+  'sp_synapse_learn() seems to work during learning test'
 );
 SELECT row_eq($$
   SELECT COUNT(id) > 0
@@ -68,7 +74,7 @@ SELECT is(
 );
 SELECT is(
   array_length(sp_compute(ARRAY[0,1,2]), 1),
-  config('ThresholdColumn')::INTEGER,
+  config('ColumnThreshold')::INTEGER,
   'sp_compute() works during compute_iterations increment test'
 );
 SELECT is(

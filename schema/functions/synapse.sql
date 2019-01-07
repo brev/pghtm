@@ -60,13 +60,14 @@ CREATE FUNCTION htm.synapse_state_collapse(permanence NUMERIC)
 RETURNS htm.SYNAPSE_STATE
 AS $$
 BEGIN
-  IF htm.synapse_connected(permanence) THEN
-    RETURN 'connected';
-  ELSIF htm.synapse_potential(permanence) THEN
-    RETURN 'potential';
-  ELSE
-    RETURN 'disconnected';
-  END IF;
+  CASE
+    WHEN htm.synapse_connected(permanence) 
+      THEN RETURN 'connected';
+    WHEN htm.synapse_potential(permanence) 
+      THEN RETURN 'potential';
+    ELSE 
+      RETURN 'disconnected';
+  END CASE;
 END;
 $$ LANGUAGE plpgsql;
 

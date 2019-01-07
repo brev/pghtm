@@ -4,7 +4,6 @@ SCHEMA="$SQL/schema"
 
 psql -f $SCHEMA/htm.sql
 
-psql -f $SCHEMA/types/neuron.sql
 psql -f $SCHEMA/types/dendrite.sql
 psql -f $SCHEMA/types/synapse.sql
 
@@ -21,7 +20,6 @@ psql -f $SCHEMA/tables/link_neuron_synapse.sql
 psql -f $SCHEMA/tables/spatial_pooler.sql
 
 psql -f $SCHEMA/functions/htm.sql
-psql -f $SCHEMA/functions/dendrite.sql
 psql -f $SCHEMA/functions/synapse.sql
 psql -f $SCHEMA/functions/spatial_pooler.sql
 
