@@ -14,6 +14,7 @@
   * Boosting.
   * Visualizations
 * Move config to tables so webui can access/see/change settings?
+  * "id INT PRIMARY KEY NOT NULL DEFAULT(1) CHECK (id = 1)"
 * Can test triggers from data side!  check for self-inflicted values on CRUD.
   * input.modified
   * input.sp_compute_iteration
@@ -30,7 +31,6 @@
 * Perf: set synapse.connected in insert query, or let self auto via trigger?
 * see docs: "CREATE TRIGGER UPDATE OF column"
   * also: more IMMUTABLE? SELECT FOR UPDATE? etc. improve and optimize.
-* "IN (SELECT unnest(input_indexes))": can check array for key instead?
 * ANALYZE EXPLAIN all queries, look for speedups
 * pg int's not unsigned.  
   * for input indexes[], you've now got a trinary if u want!

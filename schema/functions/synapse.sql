@@ -30,7 +30,7 @@ BEGIN
     SELECT
       synapse.id AS synapse_id,
       (
-        link_input_synapse.input_index IN (SELECT unnest(NEW.indexes)) 
+        ARRAY[link_input_synapse.input_index] <@ NEW.indexes
         AND synapse.connected
       ) AS new_active
     FROM htm.synapse

@@ -62,10 +62,8 @@ BEGIN
   WITH column_next AS (
     SELECT 
       htm.column.id AS column_id,
-      SUM((
-        link_input_synapse.input_index IN (
-          SELECT unnest(input_indexes)
-        ))::INTEGER
+      SUM(
+        (ARRAY[link_input_synapse.input_index] <@ input_indexes)::INTEGER
       ) AS new_overlap
     FROM htm.column
     JOIN htm.link_dendrite_column
@@ -114,8 +112,7 @@ BEGIN
         AND synapse.connected
       JOIN htm.link_input_synapse
         ON link_input_synapse.synapse_id = synapse.id
-        AND link_input_synapse.input_index 
-          IN (SELECT unnest(input_indexes))
+        AND ARRAY[link_input_synapse.input_index] <@ input_indexes
       GROUP BY col.id
       ORDER BY COUNT(synapse.id) DESC   -- overlap
       LIMIT colsave                     -- global inhibit
@@ -146,9 +143,7 @@ BEGIN
       AND dendrite.class = 'proximal'
     JOIN htm.link_dendrite_column
       ON link_dendrite_column.dendrite_id = dendrite.id
-      AND link_dendrite_column.column_id IN (
-        SELECT unnest(column_indexes)
-      )
+      AND ARRAY[link_dendrite_column.column_id] <@ column_indexes
   )
   UPDATE htm.synapse
     SET permanence = (
