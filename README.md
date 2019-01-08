@@ -103,8 +103,8 @@ popd
 ## Open web UI layer in Browser: http://localhost:3000/spatialpooler/
 
 # Usage: pgHTM
-## Run 1 test compute cycle of Spatial Pooler on example row in `input` table.
+## Run 1 test compute cycle (Spatial Pooler) on row put in `input` table.
 ##  FYI: After this, the initial data tests (above) will no longer pass.
-psql -c "WITH input AS (SELECT indexes FROM htm.input LIMIT 1) SELECT htm.sp_compute(indexes) FROM input;"
+psql -c "INSERT INTO htm.input (indexes) VALUES (ARRAY[0,1,2,3])"
 ```
 

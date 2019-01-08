@@ -5,7 +5,7 @@
 /**
  * Synapse State Type
  */
-CREATE TYPE htm.SYNAPSE_STATE AS ENUM (
+CREATE TYPE htm.SYNAPSE_CONNECTION AS ENUM (
   'connected',
   'potential',
   'unconnected'

@@ -21,12 +21,14 @@ DECLARE
   cells CONSTANT INT := height * width;         -- Total count of neurons
   colWin CONSTANT INT := width * pctColWin;     -- # SP win cols not inhibited
   synapses CONSTANT INT := width * spread;      -- Synapses per Dendrite
-  
+ 
   result CONSTANT NUMERIC := (SELECT value FROM 
     (VALUES 
       -- HTM
       ('ColumnCount',       width),     -- # of columms per region
       ('DendriteCount',     4),         -- # of dendrites per neuron
+      ('DendriteThreshold', 1),         -- # active synapses for active dendrite
+                                          -- nupic sp:stimulusThreshold (0)
       ('InputWidth',        width),     -- Input SDR Bit Width 
       ('NeuronCount',       cells),     -- # of neurons per region (rows x cols)
       ('RowCount',          height),    -- # of rows per region

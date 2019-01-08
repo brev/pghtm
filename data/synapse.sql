@@ -22,7 +22,7 @@ BEGIN
       FOR localSynapseId IN 1..SynapseCount LOOP
         synapseId := htm.count_unloop(dendriteId, localSynapseId, SynapseCount);
         INSERT 
-          INTO htm.synapse (id, dendrite_id, permanence, state, input) 
+          INTO htm.synapse (id, dendrite_id, permanence, connection, active) 
           VALUES (
             synapseId, 
             dendriteId, 
@@ -49,7 +49,7 @@ BEGIN
         SynapseCount
       );
       INSERT 
-        INTO htm.synapse (id, dendrite_id, permanence, state, input) 
+        INTO htm.synapse (id, dendrite_id, permanence, connection, active) 
         VALUES (
           synapseId, 
           dendriteId + columnId, 

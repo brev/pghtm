@@ -35,10 +35,10 @@ SELECT is(
 );
 SELECT is(synapse_connected(1.00), true, 'synapse_connected() works max');
 
--- test synapse_input_update()
-SELECT has_function('synapse_input_update');
-SELECT function_lang_is('synapse_input_update', 'plpgsql');
-SELECT function_returns('synapse_input_update', 'trigger');
+-- test synapse_active_update()
+SELECT has_function('synapse_active_update');
+SELECT function_lang_is('synapse_active_update', 'plpgsql');
+SELECT function_returns('synapse_active_update', 'trigger');
 
 -- test synapse_permanence_learn()
 SELECT has_function('synapse_permanence_learn', ARRAY['numeric']);
@@ -79,51 +79,51 @@ SELECT is(
 );
 SELECT is(synapse_potential(1.00), true, 'synapse_potential() works max');
 
--- test synapse_state_collapse()
-SELECT has_function('synapse_state_collapse', ARRAY['numeric']);
-SELECT function_lang_is('synapse_state_collapse', 'plpgsql');
-SELECT function_returns('synapse_state_collapse', 'synapse_state');
+-- test synapse_connection_collapse()
+SELECT has_function('synapse_connection_collapse', ARRAY['numeric']);
+SELECT function_lang_is('synapse_connection_collapse', 'plpgsql');
+SELECT function_returns('synapse_connection_collapse', 'synapse_connection');
 SELECT is(
-  synapse_state_collapse(0.00), 
+  synapse_connection_collapse(0.00), 
   'unconnected', 
-  'synapse_state_collapse() works zero'
+  'synapse_connection_collapse() works zero'
 );
 SELECT is(
-  synapse_state_collapse(config('SynapseMinimum')::NUMERIC), 
+  synapse_connection_collapse(config('SynapseMinimum')::NUMERIC), 
   'unconnected', 
-  'synapse_state_collapse() works min'
+  'synapse_connection_collapse() works min'
 );
 SELECT is(
-  synapse_state_collapse(
+  synapse_connection_collapse(
     config('SynapseMinimum')::NUMERIC + 
     config('SynapseIncrement')::NUMERIC
   ), 
   'potential',
-  'synapse_state_collapse() works above min'
+  'synapse_connection_collapse() works above min'
 );
 SELECT is(
-  synapse_state_collapse(config('SynapseThreshold')::NUMERIC), 
+  synapse_connection_collapse(config('SynapseThreshold')::NUMERIC), 
   'potential',
-  'synapse_state_collapse() works on threshold'
+  'synapse_connection_collapse() works on threshold'
 );
 SELECT is(
-  synapse_state_collapse(
+  synapse_connection_collapse(
     config('SynapseThreshold')::NUMERIC + 
     config('SynapseIncrement')::NUMERIC
   ), 
   'connected',
-  'synapse_state_collapse() works beyond threshold'
+  'synapse_connection_collapse() works beyond threshold'
 );
 SELECT is(
-  synapse_state_collapse(1.00), 
+  synapse_connection_collapse(1.00), 
   'connected', 
-  'synapse_state_collapse() works max'
+  'synapse_connection_collapse() works max'
 );
 
--- test synapse_state_update()
-SELECT has_function('synapse_state_update');
-SELECT function_lang_is('synapse_state_update', 'plpgsql');
-SELECT function_returns('synapse_state_update', 'trigger');
+-- test synapse_connection_update()
+SELECT has_function('synapse_connection_update');
+SELECT function_lang_is('synapse_connection_update', 'plpgsql');
+SELECT function_returns('synapse_connection_update', 'trigger');
 
 
 SELECT * FROM finish();

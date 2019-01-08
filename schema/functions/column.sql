@@ -4,7 +4,7 @@
 
 
 /**
- * Auto-update htm.column.overlap field (via synapse.input, via input.indexes).
+ * Auto-update htm.column.overlap field (via synapse.active, via input.indexes).
  *  Connected Columns linked to new On Input bits are counted per Column
     as Overlap score. 
  */
@@ -17,10 +17,10 @@ BEGIN
   WITH column_next AS (
     SELECT
       htm.column.id AS column_id,
-      SUM(synapse.input::INTEGER) AS new_overlap,
+      SUM(synapse.active::INTEGER) AS new_overlap,
       htm.running_moving_average(
         htm.column.overlapDutyCycle, 
-        (SUM(synapse.input::INTEGER) > 0)::INTEGER,
+        htm.dendrite_active(SUM(synapse.active::INTEGER)::INTEGER)::INTEGER,
         period
       ) AS new_dutycycle
     FROM htm.column

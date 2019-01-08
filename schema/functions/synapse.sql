@@ -18,11 +18,11 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
- * Auto-update htm.synapse.input field (from fresh htm.input row).
- *  Connected Synapses linked to new On Input bits are set synapse.input = true.
- *  All other synapses will be syanpse.input = false.
+ * Auto-update htm.synapse.active field (from fresh htm.input row).
+ *  Connected Synapses with new On Input bits are set synapse.active = TRUE.
+ *  All other synapses will be synapse.active = false.
  */
-CREATE FUNCTION htm.synapse_input_update()
+CREATE FUNCTION htm.synapse_active_update()
 RETURNS TRIGGER
 AS $$
 BEGIN
@@ -30,7 +30,7 @@ BEGIN
     SELECT
       synapse.id AS synapse_id,
       (
-        (synapse.state = 'connected') AND
+        (synapse.connection = 'connected') AND
         (link_input_synapse.input_index IN (SELECT unnest(NEW.indexes)))
       ) AS new_input
     FROM htm.synapse
@@ -38,7 +38,7 @@ BEGIN
       ON link_input_synapse.synapse_id = synapse.id
   )
   UPDATE htm.synapse
-    SET input = synapse_next.new_input
+    SET active = synapse_next.new_input
     FROM synapse_next
     WHERE synapse.id = synapse_next.synapse_id; 
 
@@ -83,10 +83,10 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
- * Detect htm.synapse.state type to use, based on permanance threshold calcs.
+ * Detect htm.synapse.connection type to use, based on perm threshold calcs.
  */
-CREATE FUNCTION htm.synapse_state_collapse(permanence NUMERIC)
-RETURNS htm.SYNAPSE_STATE
+CREATE FUNCTION htm.synapse_connection_collapse(permanence NUMERIC)
+RETURNS htm.SYNAPSE_CONNECTION
 AS $$
 BEGIN
   CASE
@@ -101,13 +101,13 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
- * Auto-update htm.synapse "state" column/field (from threshold calcs).
+ * Auto-update htm.synapse.connection column/field (from threshold calcs).
  */
-CREATE FUNCTION htm.synapse_state_update()
+CREATE FUNCTION htm.synapse_connection_update()
 RETURNS TRIGGER
 AS $$
 BEGIN
-  NEW.state = htm.synapse_state_collapse(NEW.permanence);
+  NEW.connection = htm.synapse_connection_collapse(NEW.permanence);
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

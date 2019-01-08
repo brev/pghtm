@@ -69,7 +69,7 @@ SELECT row_eq($$
 
 SELECT is(
   sp_get('compute_iteration'), 
-  1::VARCHAR, 
+  0::VARCHAR, 
   'Spatial Pooler starts with valid compute_iteration data'
 );
 SELECT is(
@@ -79,7 +79,7 @@ SELECT is(
 );
 SELECT is(
   sp_get('compute_iteration'), 
-  2::VARCHAR, 
+  1::VARCHAR, 
   'Spatial Pooler ends with valid compute_iteration data'
 );
 

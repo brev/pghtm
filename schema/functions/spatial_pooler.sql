@@ -4,6 +4,23 @@
 
 
 /**
+ * After inserting new input, update SP compute_iteration cycle counter.
+ */
+CREATE FUNCTION htm.sp_compute_iteration_update()
+RETURNS TRIGGER
+AS $$
+DECLARE
+  iteration INT := htm.sp_get('compute_iteration'); 
+BEGIN
+  PERFORM htm.sp_set(
+    'compute_iteration', 
+    (iteration + 1)::VARCHAR
+  ); 
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+/**
  * Spatial Pooler - Get stat.
  */
 CREATE FUNCTION htm.sp_get(keyOut VARCHAR)
@@ -58,7 +75,7 @@ BEGIN
       AND dendrite.class = 'proximal'
     JOIN htm.synapse
       ON synapse.dendrite_id = dendrite.id
-      AND synapse.state = 'connected'
+      AND synapse.connection = 'connected'
     JOIN htm.link_input_synapse
       ON link_input_synapse.synapse_id = synapse.id
     GROUP BY htm.column.id
@@ -94,7 +111,7 @@ BEGIN
         AND dendrite.class = 'proximal'
       JOIN htm.synapse
         ON synapse.dendrite_id = dendrite.id
-        AND synapse.state = 'connected'
+        AND synapse.connection = 'connected'
       JOIN htm.link_input_synapse
         ON link_input_synapse.synapse_id = synapse.id
         AND link_input_synapse.input_index 
