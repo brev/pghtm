@@ -22,7 +22,7 @@ BEGIN
       FOR localSynapseId IN 1..SynapseCount LOOP
         synapseId := htm.count_unloop(dendriteId, localSynapseId, SynapseCount);
         INSERT 
-          INTO htm.synapse (id, dendrite_id, permanence, connection, active) 
+          INTO htm.synapse (id, dendrite_id, permanence, connected, active) 
           VALUES (
             synapseId, 
             dendriteId, 
@@ -33,7 +33,7 @@ BEGIN
               htm.config('SynapseThreshold')::NUMERIC + 
               htm.config('SynapseIncrement')::NUMERIC
             )),
-            'unconnected',
+            FALSE,
             FALSE
           );
       END LOOP;
@@ -49,7 +49,7 @@ BEGIN
         SynapseCount
       );
       INSERT 
-        INTO htm.synapse (id, dendrite_id, permanence, connection, active) 
+        INTO htm.synapse (id, dendrite_id, permanence, connected, active) 
         VALUES (
           synapseId, 
           dendriteId + columnId, 
@@ -60,7 +60,7 @@ BEGIN
             htm.config('SynapseThreshold')::NUMERIC + 
             htm.config('SynapseIncrement')::NUMERIC
           )),
-          'unconnected',
+          FALSE,
           FALSE
         );
     END LOOP;

@@ -4,13 +4,13 @@
 
 
 /**
- * Auto-update htm.synapse.connection based on next-step threshold calculations.
+ * Auto-update htm.synapse.connected based on next-step threshold calculations.
  */
-CREATE TRIGGER trigger_synapse_connection_change
+CREATE TRIGGER trigger_synapse_connected_change
   BEFORE INSERT OR UPDATE
   ON htm.synapse
   FOR EACH ROW 
-    EXECUTE FUNCTION htm.synapse_connection_update();
+    EXECUTE FUNCTION htm.synapse_connected_update();
 
 /**
  * Auto-update htm.column.overlap based on synapse.active changes 

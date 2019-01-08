@@ -75,7 +75,7 @@ BEGIN
       AND dendrite.class = 'proximal'
     JOIN htm.synapse
       ON synapse.dendrite_id = dendrite.id
-      AND synapse.connection = 'connected'
+      AND synapse.connected
     JOIN htm.link_input_synapse
       ON link_input_synapse.synapse_id = synapse.id
     GROUP BY htm.column.id
@@ -111,7 +111,7 @@ BEGIN
         AND dendrite.class = 'proximal'
       JOIN htm.synapse
         ON synapse.dendrite_id = dendrite.id
-        AND synapse.connection = 'connected'
+        AND synapse.connected
       JOIN htm.link_input_synapse
         ON link_input_synapse.synapse_id = synapse.id
         AND link_input_synapse.input_index 
@@ -136,7 +136,10 @@ BEGIN
   WITH synapse_next AS (
     SELECT
       synapse.id AS synapse_id,
-      htm.synapse_permanence_learn(synapse.permanence) AS new_permanence
+      htm.synapse_permanence_increment(synapse.permanence) 
+        AS new_permanence_increment,
+      htm.synapse_permanence_decrement(synapse.permanence) 
+        AS new_permanence_decrement
     FROM htm.synapse
     JOIN htm.dendrite
       ON dendrite.id = synapse.dendrite_id
@@ -148,7 +151,14 @@ BEGIN
       )
   )
   UPDATE htm.synapse
-    SET permanence = synapse_next.new_permanence
+    SET permanence = (
+      CASE
+        WHEN synapse.connected
+          THEN synapse_next.new_permanence_increment
+        ELSE
+          synapse_next.new_permanence_decrement
+      END
+    )
     FROM synapse_next
     WHERE synapse_next.synapse_id = synapse.id;
 

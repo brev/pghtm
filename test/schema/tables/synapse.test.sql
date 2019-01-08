@@ -10,7 +10,7 @@ SELECT plan(17);  -- Test count
 SELECT has_table('synapse');
 SELECT columns_are(
   'synapse', 
-  ARRAY['id', 'dendrite_id', 'permanence', 'connection', 'active']
+  ARRAY['id', 'dendrite_id', 'permanence', 'connected', 'active']
 );
 SELECT has_pk('synapse');
 SELECT has_fk('synapse');
@@ -27,8 +27,8 @@ SELECT col_type_is('synapse', 'permanence', 'numeric');
 SELECT col_not_null('synapse', 'permanence');
 SELECT col_has_check('synapse', 'permanence');
 
-SELECT col_type_is('synapse', 'connection', 'synapse_connection');
-SELECT col_not_null('synapse', 'connection');
+SELECT col_type_is('synapse', 'connected', 'boolean');
+SELECT col_not_null('synapse', 'connected');
 
 SELECT col_type_is('synapse', 'active', 'boolean');
 SELECT col_not_null('synapse', 'active');

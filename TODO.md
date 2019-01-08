@@ -1,13 +1,15 @@
 # Current
 
 * SP Phase 1
-  * htm.synapse refcheck on connection+active
+  * SWITCH TO VIEWS
+  * htm.synapse refcheck on connected+active
   * trigger path
     * FROM: input > synapse > column
     * TO: input > synapse > +DENDRITE+ > column  (just added dendrite_active())
       * auto-update dendrite.active
       * use that flag in overlapDutyCycle instead of calc
   * trigger_column_active, active duty
+  * trigger learning function somewheres
   * Archive older SP-specific code.
   * Boosting.
   * Visualizations
@@ -15,7 +17,7 @@
 * Can test triggers from data side!  check for self-inflicted values on CRUD.
   * input.modified
   * input.sp_compute_iteration
-  * synapse.connection
+  * synapse.connected
   * synapse.active
   * column.overlap
 
@@ -25,7 +27,7 @@
 * Sane DEFAULTS 
 * Add some output notes to data fill scripts, schema, etc.
 * Add some debug and timing output+options to important functions.
-* Perf: set synapse.connection in insert query, or let self auto via trigger?
+* Perf: set synapse.connected in insert query, or let self auto via trigger?
 * see docs: "CREATE TRIGGER UPDATE OF column"
   * also: more IMMUTABLE? SELECT FOR UPDATE? etc. improve and optimize.
 * "IN (SELECT unnest(input_indexes))": can check array for key instead?

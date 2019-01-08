@@ -22,7 +22,7 @@ BEGIN
         htm.column.overlapDutyCycle, 
         htm.dendrite_active(SUM(synapse.active::INTEGER)::INTEGER)::INTEGER,
         period
-      ) AS new_dutycycle
+      ) AS new_overlapDutyCycle
     FROM htm.column
     JOIN htm.link_dendrite_column
       ON link_dendrite_column.column_id = htm.column.id
@@ -36,7 +36,7 @@ BEGIN
   UPDATE htm.column
     SET 
       overlap = column_next.new_overlap,
-      overlapDutyCycle = column_next.new_dutycycle
+      overlapDutyCycle = column_next.new_overlapDutyCycle
     FROM column_next
     WHERE htm.column.id = column_next.column_id; 
 
