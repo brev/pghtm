@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(48);  -- Test count
+SELECT plan(46);  -- Test count
 
 
 -- test config()
@@ -39,6 +39,7 @@ SELECT is(count_unloop(2, 3, 3), 6, 'count_unloop() works 6');
 SELECT has_function('duty_cycle_period');
 SELECT function_lang_is('duty_cycle_period', 'plpgsql');
 SELECT function_returns('duty_cycle_period', 'integer');
+/*
 SELECT sp_set('compute_iteration', 10::VARCHAR);
 SELECT is(
   duty_cycle_period(),
@@ -51,6 +52,7 @@ SELECT is(
   1000, 
   'duty_cycle_period() works warm'
 );
+*/
 
 -- test random_range_int()
 SELECT has_function('random_range_int', ARRAY['integer', 'integer']);

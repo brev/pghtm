@@ -4,16 +4,16 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(6);  -- Test count
+SELECT plan(4);  -- Test count
 
 
-SELECT has_view('synapse_active');
-SELECT has_column('synapse_active', 'id');
-SELECT has_column('synapse_active', 'active');
-
+-- test synapse_connected
 SELECT has_view('synapse_connected');
 SELECT has_column('synapse_connected', 'id');
-SELECT has_column('synapse_connected', 'connected');
+
+-- test synapse_proximal_active
+SELECT has_view('synapse_proximal_active');
+SELECT has_column('synapse_proximal_active', 'id');
 
 
 SELECT * FROM finish();

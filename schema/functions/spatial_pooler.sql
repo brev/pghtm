@@ -4,53 +4,6 @@
 
 
 /**
- * After inserting new input, update SP compute_iteration cycle counter.
- */
-CREATE FUNCTION htm.sp_compute_iteration_update()
-RETURNS TRIGGER
-AS $$
-DECLARE
-  iteration INT := htm.sp_get('compute_iteration'); 
-BEGIN
-  PERFORM htm.sp_set(
-    'compute_iteration', 
-    (iteration + 1)::VARCHAR
-  ); 
-  RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
-
-/**
- * Spatial Pooler - Get stat.
- */
-CREATE FUNCTION htm.sp_get(keyOut VARCHAR)
-RETURNS VARCHAR
-AS $$ 
-BEGIN
-  RETURN (
-    SELECT value
-    FROM htm.spatial_pooler 
-    WHERE key = keyOut
-  );
-END; 
-$$ LANGUAGE plpgsql;
-
-/**
- * Spatial Pooler - Set stat.
- */
-CREATE FUNCTION htm.sp_set(keyIn VARCHAR, valueIn VARCHAR)
-RETURNS BOOLEAN
-AS $$ 
-BEGIN
-  UPDATE htm.spatial_pooler 
-    SET value = valueIn
-    WHERE key = keyIn;
-
-  RETURN FOUND;
-END; 
-$$ LANGUAGE plpgsql;
-
-/**
  * Spatial Pooler - Figure active columns. 
  *  Calculate overlap scores for each column: get count of connected Synapses 
  *    that are attached to active Input bits.
@@ -169,7 +122,6 @@ RETURNS INT[]
 AS $$ 
 DECLARE
   learning CONSTANT BOOL := htm.config('spLearn');
-  iteration INT := htm.sp_get('compute_iteration');
   active_columns INT[];
 BEGIN
   -- Get winning columns (Overlap and Inhibition)
@@ -179,9 +131,6 @@ BEGIN
   IF learning THEN 
     PERFORM htm.sp_synapse_learn(active_columns);
   END IF;
-
-  -- Update compute iteration count
-  PERFORM htm.sp_set('compute_iteration', (iteration + 1)::VARCHAR);
 
   -- Return indexes of active columns
   RETURN active_columns;

@@ -8,7 +8,10 @@ SELECT plan(13);  -- Test count
 
 
 SELECT has_table('link_neuron_synapse');
-SELECT columns_are('link_neuron_synapse', ARRAY['id', 'neuron_id', 'synapse_id']);
+SELECT columns_are(
+  'link_neuron_synapse', 
+  ARRAY['id', 'neuron_id', 'synapse_id']
+);
 SELECT has_pk('link_neuron_synapse');
 SELECT has_fk('link_neuron_synapse');
 

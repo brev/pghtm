@@ -4,24 +4,11 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(11);  -- Test count
+SELECT plan(0);  -- Test count
 
 
-SELECT is(
-  sp_get('unit_test_data'), 
-  555::VARCHAR, 
-  'sp_get() seems to work'
-);
-SELECT is(
-  sp_set('unit_test_data', 444::VARCHAR), 
-  TRUE, 
-  'sp_set() seemed to work'
-);
-SELECT is(
-  sp_get('unit_test_data'), 
-  444::VARCHAR, 
-  'sp_set() confirmed to be working'
-);
+/**
+ * NO SP TESTS FOR NOW, BEING MIGRATED
 
 SELECT is(
   array_length(sp_column_active(ARRAY[0,1,2]), 1),
@@ -82,6 +69,8 @@ SELECT is(
   1::VARCHAR, 
   'Spatial Pooler ends with valid compute_iteration data'
 );
+
+*/
 
 
 SELECT * FROM finish();

@@ -83,7 +83,7 @@ CREATE FUNCTION htm.duty_cycle_period()
 RETURNS INTEGER
 AS $$
 DECLARE
-  cool CONSTANT INTEGER := htm.sp_get('compute_iteration');
+  cool CONSTANT INTEGER := htm.input_rows_count();
   warm CONSTANT INTEGER := htm.config('dutyCyclePeriod');
 BEGIN
   RETURN LEAST (cool, warm);

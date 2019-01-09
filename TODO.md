@@ -2,19 +2,41 @@
 
 * SP Phase 1
   * SWITCH TO VIEWS
-    * data tests:
-      * synapse_active
-      * synapse_connected
-      * dendrite_active
-      * column_overlap
+    * fix duty_cycle_period() functions test w/input row count
+    * data tests for views.
+    * overlap INTEGER NOT NULL,
+    * overlapDutyCycle  NUMERIC NOT NULL,
+    * CHECK ((overlapDutyCycle >= 0.0) AND (overlapDutyCycle <= 1.0))
+    * trigger_column_active, active duty
+    * WITH column_next AS (
+        SELECT
+          htm.column.id AS column_id,
+          SUM(synapse.active::INTEGER) AS new_overlap,
+          htm.running_moving_average(
+            htm.column.overlapDutyCycle,
+            htm.dendrite_is_active(
+              SUM(synapse.active::INTEGER)::INTEGER
+            )::INTEGER,
+            period
+          ) AS new_overlapDutyCycle
+        FROM htm.column
+        JOIN htm.link_dendrite_column
+          ON link_dendrite_column.column_id = htm.column.id
+        JOIN htm.dendrite
+          ON dendrite.id = link_dendrite_column.dendrite_id
+          AND dendrite.class = 'proximal'
+        JOIN htm.synapse
+          ON synapse.dendrite_id = dendrite.id
+        GROUP BY htm.column.id
+      )
+      UPDATE htm.column
+        SET
+          overlap = column_next.new_overlap,
+          overlapDutyCycle = column_next.new_overlapDutyCycle
+        FROM column_next
+        WHERE htm.column.id = column_next.column_id;
   * htm.synapse refcheck on connected+active
-  * trigger path
-    * FROM: input > synapse > column
-    * TO: input > synapse > +DENDRITE+ > col (just added dendrite_is_active())
-      * use that flag in overlapDutyCycle instead of calc
-  * trigger_column_active, active duty
   * trigger learning function somewheres
-  * Archive older SP-specific code.
   * Boosting.
   * Visualizations
 * Move config to tables so webui can access/see/change settings?
@@ -29,13 +51,11 @@
 * Sane DEFAULTS 
 * Add some output notes to data fill scripts, schema, etc.
 * Add some debug and timing output+options to important functions.
-* Perf: set synapse.connected in insert query, or let self auto via trigger?
 * see docs: "CREATE TRIGGER UPDATE OF column"
   * also: more IMMUTABLE? SELECT FOR UPDATE? etc. improve and optimize.
 * ANALYZE EXPLAIN all queries, look for speedups
-* pg int's not unsigned.  
-  * for input indexes[], you've now got a trinary if u want!
-* 3 state not as enum/type, but as true/false/null ?
+* Views -> Materialize and cache
+* pg int's not unsigned - for input indexes[], got a trinary if wanted
 * SP Phase 2
   * Add topology AKA local column inhibition 
     * radius (aka? input spread. calc with.), etc.
@@ -43,14 +63,7 @@
       than inputs further away from column center.
 * Externalize and speed up plpgsql stuff as C Extensions.
   * Continue on to full NuPIC Integration???
-
-# Balances of Building an HTM
-
-* Data-structure centric vs. Learning-algorithm centric
-  * Naming conventions
-* Easy to understand vs. Performant
-  * Easy to understand vs. Easy to use ?
-    * i.e. 1 query for speed, but 2 queries for ease of understanding and
-      simple visualization.
-* Blazing vs Just-Enough vs. Non Performance
+    * ditch views
+      * more server-side, less nice data to client.
+        client reproduce threshold calcs and stuff. unless js/v8?..but slow!?
 
