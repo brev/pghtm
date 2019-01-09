@@ -1,46 +1,14 @@
 # Current
 
-* SP Phase 1
-  * SWITCH TO VIEWS
-    * fix duty_cycle_period() functions test w/input row count
-    * data tests for views.
-    * overlap INTEGER NOT NULL,
-    * overlapDutyCycle  NUMERIC NOT NULL,
-    * CHECK ((overlapDutyCycle >= 0.0) AND (overlapDutyCycle <= 1.0))
-    * trigger_column_active, active duty
-    * WITH column_next AS (
-        SELECT
-          htm.column.id AS column_id,
-          SUM(synapse.active::INTEGER) AS new_overlap,
-          htm.running_moving_average(
-            htm.column.overlapDutyCycle,
-            htm.dendrite_is_active(
-              SUM(synapse.active::INTEGER)::INTEGER
-            )::INTEGER,
-            period
-          ) AS new_overlapDutyCycle
-        FROM htm.column
-        JOIN htm.link_dendrite_column
-          ON link_dendrite_column.column_id = htm.column.id
-        JOIN htm.dendrite
-          ON dendrite.id = link_dendrite_column.dendrite_id
-          AND dendrite.class = 'proximal'
-        JOIN htm.synapse
-          ON synapse.dendrite_id = dendrite.id
-        GROUP BY htm.column.id
-      )
-      UPDATE htm.column
-        SET
-          overlap = column_next.new_overlap,
-          overlapDutyCycle = column_next.new_overlapDutyCycle
-        FROM column_next
-        WHERE htm.column.id = column_next.column_id;
-  * htm.synapse refcheck on connected+active
-  * trigger learning function somewheres
-  * Boosting.
-  * Visualizations
+* column_active, column.active_duty_cycle
+* data tests for views.
+  * fix duty_cycle_period() functions test w/input row count
+* htm.synapse refcheck on connected+active
+* trigger learning function somewheres
 * Move config to tables so webui can access/see/change settings?
   * "id INT PRIMARY KEY NOT NULL DEFAULT(1) CHECK (id = 1)"
+* WebUI
+* Boosting.
 * Can test triggers from data side? check for self-inflicted values on CRUD.
   * input.modified
   * input.sp_compute_iteration
