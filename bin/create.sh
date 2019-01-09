@@ -1,13 +1,12 @@
 #!/bin/sh
 
+SQL=".."
+SCHEMA="$SQL/schema"
+
 ##
 # Create pgHTM DB Schema.
 #   Order matters below.
 ##
-
-SQL=".."
-SCHEMA="$SQL/schema"
-
 
 # schema
 psql -f $SCHEMA/htm.sql
@@ -32,12 +31,12 @@ psql -f $SCHEMA/functions/htm.sql
 psql -f $SCHEMA/functions/dendrite.sql
 psql -f $SCHEMA/functions/input.sql
 psql -f $SCHEMA/functions/synapse.sql
-#psql -f $SCHEMA/functions/spatial_pooler.sql
 
 # triggers
 psql -f $SCHEMA/triggers/input.sql
 
 # views
 psql -f $SCHEMA/views/synapse.sql
-psql -f $SCHEMA/views/dendrite.sql  # must follow views/synapse
+psql -f $SCHEMA/views/dendrite.sql  # must follow: views/synapse
+psql -f $SCHEMA/views/column.sql  # must follow: views/dendrite
 

@@ -7,16 +7,16 @@
  * Synapse (Connected) View
  */
 CREATE VIEW htm.synapse_connected AS (
-  SELECT synapse.id AS id
+  SELECT synapse.id
   FROM htm.synapse
   WHERE htm.synapse_is_connected(synapse.permanence)
 );
 
 /**
- * Synapse (Proximal Active) Views
+ * Synapse (Proximal: Active) Views
  */
 CREATE VIEW htm.synapse_proximal_active AS (
-  SELECT synapse.id AS id
+  SELECT synapse.id
   FROM htm.synapse
   JOIN htm.synapse_connected
     ON synapse_connected.id = synapse.id

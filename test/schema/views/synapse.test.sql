@@ -1,5 +1,5 @@
 /**
- * Synapse (Active) View Test
+ * Synapse View Tests
  */
 
 BEGIN;

@@ -8,7 +8,7 @@
  */
 CREATE VIEW htm.dendrite_proximal_active_overlap AS (
   SELECT
-    dendrite.id AS id,
+    dendrite.id,
     COUNT(synapse_proximal_active.id) AS overlap
   FROM htm.dendrite
   JOIN htm.synapse
