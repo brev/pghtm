@@ -4,9 +4,9 @@
 
 
 /**
- * Column (Proximal: Overlap) View
+ * Column (Overlap) View
  */
-CREATE VIEW htm.column_proximal_overlap AS (
+CREATE VIEW htm.column_overlap AS (
   SELECT
     htm.column.id,
     dendrite_proximal_active_overlap.overlap

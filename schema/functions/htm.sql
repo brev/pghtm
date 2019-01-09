@@ -1,5 +1,5 @@
 /**
- * HTM Global Schema Functions.
+ * HTM Global Schema Functions
  */
 
 
