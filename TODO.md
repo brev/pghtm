@@ -2,11 +2,15 @@
 
 * SP Phase 1
   * SWITCH TO VIEWS
+    * data tests:
+      * synapse_active
+      * synapse_connected
+      * dendrite_active
+      * column_overlap
   * htm.synapse refcheck on connected+active
   * trigger path
     * FROM: input > synapse > column
-    * TO: input > synapse > +DENDRITE+ > column  (just added dendrite_active())
-      * auto-update dendrite.active
+    * TO: input > synapse > +DENDRITE+ > col (just added dendrite_is_active())
       * use that flag in overlapDutyCycle instead of calc
   * trigger_column_active, active duty
   * trigger learning function somewheres
@@ -15,12 +19,9 @@
   * Visualizations
 * Move config to tables so webui can access/see/change settings?
   * "id INT PRIMARY KEY NOT NULL DEFAULT(1) CHECK (id = 1)"
-* Can test triggers from data side!  check for self-inflicted values on CRUD.
+* Can test triggers from data side? check for self-inflicted values on CRUD.
   * input.modified
   * input.sp_compute_iteration
-  * synapse.connected
-  * synapse.active
-  * column.overlap
 
 # Future
 

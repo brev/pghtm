@@ -1,5 +1,5 @@
 #!/bin/sh
-SQL=".."
+SQL="."
 
 psql -f $SQL/clean/destroy.sql
 

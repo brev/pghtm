@@ -7,7 +7,7 @@
  * Check if a synapse is considered connected (above permanence threshold) 
  *  or not (potential).
  */
-CREATE FUNCTION htm.synapse_connected(permanence NUMERIC)
+CREATE FUNCTION htm.synapse_is_connected(permanence NUMERIC)
 RETURNS BOOL
 AS $$ 
 DECLARE
@@ -79,7 +79,7 @@ CREATE FUNCTION htm.synapse_connected_update()
 RETURNS TRIGGER
 AS $$
 BEGIN
-  NEW.connected = htm.synapse_connected(NEW.permanence);
+  NEW.connected = htm.synapse_is_connected(NEW.permanence);
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

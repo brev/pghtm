@@ -20,7 +20,7 @@ BEGIN
       SUM(synapse.active::INTEGER) AS new_overlap,
       htm.running_moving_average(
         htm.column.overlapDutyCycle, 
-        htm.dendrite_active(SUM(synapse.active::INTEGER)::INTEGER)::INTEGER,
+        htm.dendrite_is_active(SUM(synapse.active::INTEGER)::INTEGER)::INTEGER,
         period
       ) AS new_overlapDutyCycle
     FROM htm.column

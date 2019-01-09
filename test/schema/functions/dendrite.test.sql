@@ -7,25 +7,25 @@ SET search_path TO htm, public;
 SELECT plan(7);  -- Test count
 
 
--- test dendrite_active()
-SELECT has_function('dendrite_active', ARRAY['integer']);
-SELECT function_lang_is('dendrite_active', 'plpgsql');
-SELECT function_returns('dendrite_active', 'boolean');
-SELECT is(dendrite_active(0), FALSE, 'dendrite_active() works min');
+-- test dendrite_is_active()
+SELECT has_function('dendrite_is_active', ARRAY['integer']);
+SELECT function_lang_is('dendrite_is_active', 'plpgsql');
+SELECT function_returns('dendrite_is_active', 'boolean');
+SELECT is(dendrite_is_active(0), FALSE, 'dendrite_is_active() works min');
 SELECT is(
-  dendrite_active(config('DendriteThreshold')::INTEGER), 
+  dendrite_is_active(config('DendriteThreshold')::INTEGER), 
   FALSE,
-  'dendrite_active() false on threshold'
+  'dendrite_is_active() false on threshold'
 );
 SELECT is(
-  dendrite_active(config('DendriteThreshold')::INTEGER + 1), 
+  dendrite_is_active(config('DendriteThreshold')::INTEGER + 1), 
   TRUE,
-  'dendrite_active() true beyond threshold'
+  'dendrite_is_active() true beyond threshold'
 );
 SELECT is(
-  dendrite_active(config('SynapseCount')::INTEGER), 
+  dendrite_is_active(config('SynapseCount')::INTEGER), 
   TRUE,
-  'dendrite_active() true at max'
+  'dendrite_is_active() true at max'
 );
 
 
