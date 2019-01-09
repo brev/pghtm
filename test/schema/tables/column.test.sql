@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(12);  -- Test count
+SELECT plan(14);  -- Test count
 
 
 SELECT has_table('column');
@@ -13,7 +13,8 @@ SELECT columns_are(
   ARRAY[
     'id', 
     'region_id', 
-    'x_coord'
+    'x_coord',
+    'overlap_duty_cycle'
   ]
 );
 SELECT has_pk('column');
@@ -29,6 +30,9 @@ SELECT col_is_fk('column', 'region_id');
 
 SELECT col_type_is('column', 'x_coord', 'integer');
 SELECT col_not_null('column', 'x_coord');
+
+SELECT col_type_is('column', 'overlap_duty_cycle', 'numeric');
+SELECT col_not_null('column', 'overlap_duty_cycle');
 
 
 SELECT * FROM finish();
