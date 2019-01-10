@@ -1,6 +1,6 @@
 # Current
 
-* column_active, column.active_duty_cycle
+* column.active_duty_cycle
 * data tests for views.
   * fix duty_cycle_period() functions test w/input row count
 * htm.synapse refcheck on connected+active

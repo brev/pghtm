@@ -20,3 +20,13 @@ CREATE VIEW htm.column_overlap AS (
     ON dendrite_proximal_active_overlap.id = dendrite.id
 );
 
+/**
+ * Column (Active) View
+ */
+CREATE VIEW htm.column_active AS (
+  SELECT column_overlap.id
+  FROM htm.column_overlap
+  ORDER BY column_overlap.overlap DESC
+  LIMIT htm.config('ColumnThreshold')::BIGINT
+);
+
