@@ -46,8 +46,6 @@ DECLARE
                                         -- during Inhibition - IDEAL 2%
                                         -- nupic sp:numActiveColumnsPerInhArea
       ('dutyCyclePeriod',   1000),    -- Duty cycle period
-      ('globalInhibition',  1),       -- Global inhibition boolean toggle
-                                        -- TODO topology not coded yet
       ('potentialPct',      spread),  -- % input bits each column may connect
       ('spLearn',           1),       -- SP learning on?
       

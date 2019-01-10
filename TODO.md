@@ -1,10 +1,9 @@
 # Current
 
-* column.active_duty_cycle
 * data tests for views.
   * fix duty_cycle_period() functions test w/input row count
 * htm.synapse refcheck on connected+active
-* trigger learning function somewheres
+* trigger learning function - after duty cycles are update?
 * Move config to tables so webui can access/see/change settings?
   * "id INT PRIMARY KEY NOT NULL DEFAULT(1) CHECK (id = 1)"
 * WebUI

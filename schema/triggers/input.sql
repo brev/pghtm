@@ -4,13 +4,13 @@
 
 
 /**
- * Auto-update htm.column.overlap_duty_cycle, after overlap scores are updated,
- *  after new input.
+ * Auto-update htm.column.duty_cycle_(active/overlap), after activity and 
+ *  overlap scores are updated (after new input).
  */
-CREATE TRIGGER trigger_input_column_overlap_duty_cycle_change
+CREATE TRIGGER trigger_input_column_duty_cycles_change
   AFTER INSERT
   ON htm.input
-  EXECUTE FUNCTION htm.column_overlap_duty_cycle_update();
+  EXECUTE FUNCTION htm.column_duty_cycles_update();
 
 /**
  * Auto-update htm.input.modified column/field to NOW() on row update.
