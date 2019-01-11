@@ -6,7 +6,7 @@
 /**
  * Dendrite (Proximal: Active, Overlap) View
  */
-CREATE VIEW htm.dendrite_proximal_active_overlap AS (
+CREATE VIEW htm.dendrite_proximal_overlap_active AS (
   SELECT
     dendrite.id,
     COUNT(synapse_proximal_active.id) AS overlap

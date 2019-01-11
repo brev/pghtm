@@ -24,6 +24,14 @@ SELECT throws_ok(
   'Errors on bad key'
 );
 
+-- test boost_factor_compute()
+SELECT has_function('boost_factor_compute');
+SELECT function_lang_is('boost_factor_compute', 'plpgsql');
+SELECT function_returns('boost_factor_compute', 'numeric');
+/*
+  TODO calcs
+*/
+
 -- test count_unloop()
 SELECT has_function('count_unloop', ARRAY['integer', 'integer', 'integer']);
 SELECT function_lang_is('count_unloop', 'plpgsql');

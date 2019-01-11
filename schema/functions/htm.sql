@@ -42,6 +42,7 @@ DECLARE
                                           -- nupic sp:synPermConnected=0.1 
                                           -- nupic tp:connectedPerm=0.5
       -- Spatial Pooler
+      ('boostStrength',     1.5),     -- SP Boosting strength
       ('ColumnThreshold',   colWin),  -- Number of top active columns to win 
                                         -- during Inhibition - IDEAL 2%
                                         -- nupic sp:numActiveColumnsPerInhArea
@@ -61,6 +62,22 @@ BEGIN
   RETURN result;
 END; 
 $$ LANGUAGE plpgsql IMMUTABLE;
+
+/**
+ * HTM - Calculate new boosting factor (per Column).
+ */
+CREATE FUNCTION htm.boost_factor_compute(
+  duty_cycle NUMERIC, 
+  target_density NUMERIC
+)
+RETURNS NUMERIC
+AS $$ 
+DECLARE
+  strength CONSTANT NUMERIC := htm.config('boostStrength');
+BEGIN
+  RETURN EXP((0 - boostStrength) * (duty_cycle - target_density));
+END; 
+$$ LANGUAGE plpgsql;
 
 /**
  * HTM - Unroll index counts from inside nested loops to a single index count.

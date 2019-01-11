@@ -2,8 +2,10 @@
 
 * Boosting.
   * Auto-update: 
-    * column.boost_factor
     * region.boost_factor_min/max
+    * Note that once learning is turned off, boost(c) is frozen.
+    * htm.boost_factor_compute() test cacls not just existence
+    * column.boost_factor - mean(*) or mean(distinct *) ???
   * new/change column view: overlap_boosted
     * numeric (27.34) - note overlaps have only been INT so far.
 * trigger learning function - after duty cycles are update?
