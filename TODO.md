@@ -2,7 +2,6 @@
 
 * Boosting.
   * Auto-update: 
-    * region.duty_cycle_active_min/max
     * column.boost_factor
     * region.boost_factor_min/max
   * new/change column view: overlap_boosted
