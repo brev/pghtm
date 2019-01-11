@@ -5,8 +5,6 @@
 INSERT 
   INTO htm.region (
     id, 
-    boost_factor_max, 
-    boost_factor_min, 
     duty_cycle_active_max,
     duty_cycle_active_mean,
     duty_cycle_active_min
@@ -15,8 +13,6 @@ INSERT
     1,
     0.0,
     0.0,
-    1.0,
-    0.5,
     0.0
   );
 

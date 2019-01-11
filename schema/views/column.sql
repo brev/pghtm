@@ -6,10 +6,14 @@
 /**
  * Column (Overlap) View
  */
-CREATE VIEW htm.column_overlap AS (
+CREATE VIEW htm.column_overlap_boost AS (
   SELECT
     htm.column.id,
-    dendrite_proximal_overlap_active.overlap
+    dendrite_proximal_overlap_active.overlap,
+    (
+      dendrite_proximal_overlap_active.overlap *
+      htm.column.boost_factor
+    ) AS overlap_boosted
   FROM htm.column
   JOIN htm.link_dendrite_column
     ON link_dendrite_column.column_id = htm.column.id
@@ -24,9 +28,9 @@ CREATE VIEW htm.column_overlap AS (
  * Column (Active) View
  */
 CREATE VIEW htm.column_active AS (
-  SELECT column_overlap.id
-  FROM htm.column_overlap
-  ORDER BY column_overlap.overlap DESC
+  SELECT column_overlap_boost.id
+  FROM htm.column_overlap_boost
+  ORDER BY column_overlap_boost.overlap_boosted DESC
   LIMIT htm.config('ColumnThreshold')::BIGINT
 );
 

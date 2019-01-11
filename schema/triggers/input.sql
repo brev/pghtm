@@ -10,7 +10,7 @@
 CREATE TRIGGER trigger_input_column_duty_cycles_change
   AFTER INSERT
   ON htm.input
-  EXECUTE FUNCTION htm.column_duty_cycles_update();
+  EXECUTE FUNCTION htm.column_boost_duty_update();
 
 /**
  * Auto-update htm.input.modified column/field to NOW() on row update.

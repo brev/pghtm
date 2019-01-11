@@ -1,13 +1,22 @@
 # Current
 
 * Boosting.
-  * Auto-update: 
-    * region.boost_factor_min/max
-    * Note that once learning is turned off, boost(c) is frozen.
-    * htm.boost_factor_compute() test cacls not just existence
-    * column.boost_factor - mean(*) or mean(distinct *) ???
-  * new/change column view: overlap_boosted
-    * numeric (27.34) - note overlaps have only been INT so far.
+  * "If a column's connected synapses do not overlap well with any inputs 
+    often enough (as measured by overlapDutyCycle), its permanence values 
+    are boosted."
+    * "Before inhibition, if a column’s overlap duty cycle is below its 
+      minimum acceptable value calculated dynamically as a function of 
+      minPctOverlapDutyCycle and the overlap duty cycle of neighboring 
+      columns), then all its permanence values are boosted by the 
+      increment amount."
+     * ```
+        if overlapDutyCycle(c) < minDutyCycle(c) then
+          increasePermanences(c, 0.1*connectedPerm)
+       ```
+  * htm.boost_factor_compute() test cacls not just existence
+  * column.boost_factor - mean(*) or mean(distinct *) ???
+* flags: boosting, learning, inhibition, etc.
+  * Note that once learning is turned off, boost(c) is frozen.
 * trigger learning function - after duty cycles are update?
 * WebUI
 * data tests for views.
@@ -17,7 +26,6 @@
   * "id INT PRIMARY KEY NOT NULL DEFAULT(1) CHECK (id = 1)"
 * Can test triggers from data side? check for self-inflicted values on CRUD.
   * input.modified
-  * input.sp_compute_iteration
 
 # Future
 

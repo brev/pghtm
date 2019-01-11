@@ -75,7 +75,7 @@ AS $$
 DECLARE
   strength CONSTANT NUMERIC := htm.config('boostStrength');
 BEGIN
-  RETURN EXP((0 - boostStrength) * (duty_cycle - target_density));
+  RETURN EXP((0 - strength) * (duty_cycle - target_density));
 END; 
 $$ LANGUAGE plpgsql;
 

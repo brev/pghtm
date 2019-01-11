@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(46);  -- Test count
+SELECT plan(49);  -- Test count
 
 
 -- test config()
