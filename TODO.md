@@ -1,13 +1,19 @@
 # Current
 
+* Boosting.
+  * Auto-update: 
+    * region.duty_cycle_active_min/max
+    * column.boost_factor
+    * region.boost_factor_min/max
+  * new/change column view: overlap_boosted
+    * numeric (27.34) - note overlaps have only been INT so far.
+* trigger learning function - after duty cycles are update?
+* WebUI
 * data tests for views.
   * fix duty_cycle_period() functions test w/input row count
 * htm.synapse refcheck on connected+active
-* trigger learning function - after duty cycles are update?
 * Move config to tables so webui can access/see/change settings?
   * "id INT PRIMARY KEY NOT NULL DEFAULT(1) CHECK (id = 1)"
-* WebUI
-* Boosting.
 * Can test triggers from data side? check for self-inflicted values on CRUD.
   * input.modified
   * input.sp_compute_iteration
