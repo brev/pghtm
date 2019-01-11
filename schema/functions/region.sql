@@ -13,18 +13,20 @@ AS $$
 BEGIN
   WITH region_next AS (
     SELECT 
-      htm.column.region_id,
-      MAX(htm.column.duty_cycle_active) AS new_duty_cycle_active_max,
-      MIN(htm.column.duty_cycle_active) AS new_duty_cycle_active_min
+      htm.column.region_id AS id,
+      MAX(htm.column.duty_cycle_active) AS duty_cycle_active_max,
+      AVG(htm.column.duty_cycle_active) AS duty_cycle_active_mean,
+      MIN(htm.column.duty_cycle_active) AS duty_cycle_active_min
     FROM htm.column
     GROUP BY htm.column.region_id
   )
   UPDATE htm.region
     SET 
-      duty_cycle_active_max = region_next.new_duty_cycle_active_max,
-      duty_cycle_active_min = region_next.new_duty_cycle_active_min
+      duty_cycle_active_max = region_next.duty_cycle_active_max,
+      duty_cycle_active_mean = region_next.duty_cycle_active_mean,
+      duty_cycle_active_min = region_next.duty_cycle_active_min
     FROM region_next
-    WHERE region.id = region_next.region_id;
+    WHERE region_next.id = region.id;
   
   RETURN NULL;
 END;

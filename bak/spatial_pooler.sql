@@ -14,10 +14,10 @@ AS $$
 BEGIN
   WITH column_next AS (
     SELECT 
-      htm.column.id AS column_id,
+      htm.column.id,
       SUM(
         (ARRAY[link_input_synapse.input_index] <@ input_indexes)::INTEGER
-      ) AS new_overlap
+      ) AS overlap
     FROM htm.column
     JOIN htm.link_dendrite_column
       ON link_dendrite_column.column_id = htm.column.id
@@ -32,9 +32,9 @@ BEGIN
     GROUP BY htm.column.id
   )
   UPDATE htm.column
-    SET overlap = column_next.new_overlap
+    SET overlap = column_next.overlap
     FROM column_next
-    WHERE htm.column.id = column_next.column_id;
+    WHERE column_next.id = htm.column.id;
 
   RETURN FOUND;
 END; 
@@ -85,11 +85,11 @@ AS $$
 BEGIN
   WITH synapse_next AS (
     SELECT
-      synapse.id AS synapse_id,
+      synapse.id,
       htm.synapse_permanence_increment(synapse.permanence) 
-        AS new_permanence_increment,
+        AS permanence_increment,
       htm.synapse_permanence_decrement(synapse.permanence) 
-        AS new_permanence_decrement
+        AS permanence_decrement
     FROM htm.synapse
     JOIN htm.dendrite
       ON dendrite.id = synapse.dendrite_id
@@ -102,13 +102,13 @@ BEGIN
     SET permanence = (
       CASE
         WHEN synapse.connected
-          THEN synapse_next.new_permanence_increment
+          THEN synapse_next.permanence_increment
         ELSE
-          synapse_next.new_permanence_decrement
+          synapse_next.permanence_decrement
       END
     )
     FROM synapse_next
-    WHERE synapse_next.synapse_id = synapse.id;
+    WHERE synapse_next.id = synapse.id;
 
   RETURN FOUND;
 END; 
