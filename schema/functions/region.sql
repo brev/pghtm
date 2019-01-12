@@ -6,6 +6,7 @@
 /**
  * Update region.duty_cycle_active/overlap_mean based on changes to
  *  column.duty_cycle_* previously (cascading down from new input).
+ *  TODO maybe try "AVG ( DISTINCT htm.column.duty_cycle_ )" sometime instead.
  */
 CREATE FUNCTION htm.region_duty_cycles_update() 
 RETURNS TRIGGER

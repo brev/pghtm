@@ -1,17 +1,6 @@
 # Current
 
-* "If a column's connected synapses do not overlap well with any inputs 
-  often enough (as measured by overlapDutyCycle), its permanence values 
-  are boosted."
-  * "Before inhibition, if a column’s overlap duty cycle is below its 
-    minimum acceptable value calculated dynamically as a function of 
-    minPctOverlapDutyCycle and the overlap duty cycle of neighboring 
-    columns), then all its permanence values are boosted by the 
-    increment amount."
-   * ```
-      if overlapDutyCycle(c) < minDutyCycle(c) then
-        increasePermanences(c, 0.1*connectedPerm)
-     ```
+* column_active winners should make it back to original input row!
 * Move config to tables so webui can access/see/change settings?
   * "id INT PRIMARY KEY NOT NULL DEFAULT(1) CHECK (id = 1)"
 * test calcs not just existence
@@ -23,7 +12,6 @@
   * input.modified
 * htm.synapse refcheck on connected+active
 * WebUI
-* column.boost_factor - mean(*) or mean(distinct *) ???
 
 # Future
 
