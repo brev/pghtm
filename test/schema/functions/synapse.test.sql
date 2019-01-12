@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(18);  -- Test count
+SELECT plan(21);  -- Test count
 
 
 -- test synapse_is_connected()
@@ -51,6 +51,7 @@ SELECT cmp_ok(
   'synapse_permanence_decrement() unlearns down below threshold'
 );
 
+-- test synapse_permanence_increment()
 SELECT has_function('synapse_permanence_increment', ARRAY['numeric']);
 SELECT function_lang_is('synapse_permanence_increment', 'plpgsql');
 SELECT function_returns('synapse_permanence_increment', 'numeric');
@@ -65,6 +66,11 @@ SELECT is(
   1.0, 
   'synapse_permanence_increment() learns up to max 1.0'
 );
+
+-- test synapse_permanence_learn_update()
+SELECT has_function('synapse_permanence_learn_update');
+SELECT function_lang_is('synapse_permanence_learn_update', 'plpgsql');
+SELECT function_returns('synapse_permanence_learn_update', 'trigger');
 
 
 SELECT * FROM finish();

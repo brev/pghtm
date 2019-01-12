@@ -6,6 +6,9 @@ $$
 DECLARE
   ColumnCount INT := htm.config('ColumnCount');
 BEGIN
+  -- disable triggers on table for initial data fill
+  ALTER TABLE htm.column DISABLE TRIGGER USER;
+  
   FOR columnId IN 1..ColumnCount LOOP
     INSERT INTO htm.column (
       id, 
@@ -24,6 +27,9 @@ BEGIN
       columnId
     );
   END LOOP;
+  
+  -- re-enable triggers on table for normal functioning
+  ALTER TABLE htm.column ENABLE TRIGGER USER;
 END
 $$;
 

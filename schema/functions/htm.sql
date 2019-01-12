@@ -47,6 +47,10 @@ DECLARE
                                         -- during Inhibition - IDEAL 2%
                                         -- nupic sp:numActiveColumnsPerInhArea
       ('dutyCyclePeriod',   1000),    -- Duty cycle period
+      ('inhibition',        1),       -- SP inhibition: 
+                                        -- 0=off
+                                        -- 1=global
+                                        -- 2=local (TODO not built yet)
       ('potentialPct',      spread),  -- % input bits each column may connect
       ('spLearn',           1),       -- SP learning on?
       
@@ -73,9 +77,14 @@ CREATE FUNCTION htm.boost_factor_compute(
 RETURNS NUMERIC
 AS $$ 
 DECLARE
+  learning CONSTANT BOOL := htm.config('spLearn');
   strength CONSTANT NUMERIC := htm.config('boostStrength');
 BEGIN
-  RETURN EXP((0 - strength) * (duty_cycle - target_density));
+  IF learning THEN
+    RETURN EXP((0 - strength) * (duty_cycle - target_density));
+  ELSE
+    RETURN 1;  -- learning off
+  END IF;
 END; 
 $$ LANGUAGE plpgsql;
 

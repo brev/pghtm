@@ -7,7 +7,7 @@ SET search_path TO htm, public;
 SELECT plan(2);  -- Test count
 
 
-SELECT has_trigger('input', 'trigger_input_column_duty_cycles_change');
+SELECT has_trigger('input', 'trigger_input_column_boost_duty_change');
 SELECT has_trigger('input', 'trigger_input_modified_change');
 
 

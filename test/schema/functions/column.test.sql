@@ -4,8 +4,16 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(3);  -- Test count
+SELECT plan(6);  -- Test count
 
+
+-- test htm.column_active_get_threshold()
+SELECT has_function('column_active_get_threshold');
+SELECT function_lang_is('column_active_get_threshold', 'plpgsql');
+SELECT function_returns('column_active_get_threshold', 'bigint');
+/*
+ TODO test functionality here
+*/
 
 -- test column_boost_duty_update()
 SELECT has_function('column_boost_duty_update');

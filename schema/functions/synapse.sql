@@ -43,3 +43,42 @@ BEGIN
 END; 
 $$ LANGUAGE plpgsql;
 
+/**
+ * Perform Hebbian-style learning on synapse permanences. This is based on
+ *  recently-actived winners in column_active. This was triggered from an 
+ *  update on the column table.
+ */
+CREATE FUNCTION htm.synapse_permanence_learn_update()
+RETURNS TRIGGER
+AS $$ 
+DECLARE
+BEGIN
+  WITH synapse_next AS (
+    SELECT
+      synapse.id,
+      (CASE
+        WHEN synapse_proximal_active.id IS NOT NULL
+          THEN htm.synapse_permanence_increment(synapse.permanence)
+        ELSE
+          htm.synapse_permanence_decrement(synapse.permanence)
+      END) AS permanence
+    FROM htm.synapse
+    LEFT JOIN htm.synapse_proximal_active
+      ON htm.synapse_proximal_active.id = synapse.id
+    JOIN htm.dendrite
+      ON dendrite.id = synapse.dendrite_id
+      AND dendrite.class = 'proximal'
+    JOIN htm.link_dendrite_column
+      ON link_dendrite_column.dendrite_id = dendrite.id
+    JOIN htm.column_active
+      ON column_active.id = link_dendrite_column.column_id
+  )
+  UPDATE htm.synapse
+    SET permanence = synapse_next.permanence
+    FROM synapse_next
+    WHERE synapse_next.id = synapse.id;
+
+  RETURN NULL;
+END; 
+$$ LANGUAGE plpgsql;
+

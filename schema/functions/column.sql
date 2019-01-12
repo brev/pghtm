@@ -4,6 +4,31 @@
 
 
 /**
+ * Get inhibition global limit if turned on, otherwise off.
+ *  Used to select winning active columns.
+ */
+CREATE FUNCTION htm.column_active_get_threshold()
+RETURNS BIGINT 
+AS $$
+DECLARE
+  threshold CONSTANT BIGINT := htm.config('ColumnThreshold');
+  inhibit CONSTANT INTEGER := htm.config('inhibition');
+BEGIN
+  CASE
+    WHEN inhibit = 0
+      -- inhibition off
+      THEN RETURN NULL;
+    WHEN inhibit = 1
+      -- global inhibition on
+      THEN RETURN threshold;
+    WHEN inhibit = 2
+      -- local inhibition on (TODO not built yet)
+      THEN RETURN NULL;
+  END CASE;
+END;
+$$ LANGUAGE plpgsql;
+
+/**
  * Update column.duty_cycle_(active/overlap) based on changes to
  *  previous views (after new input).
  */

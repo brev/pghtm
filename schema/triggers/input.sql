@@ -4,10 +4,10 @@
 
 
 /**
- * Auto-update htm.column.duty_cycle_(active/overlap), after activity and 
- *  overlap scores are updated (after new input).
+ * Auto-update column.boost and column.duty_cycle_(active/overlap), after 
+ *  activity and overlap scores are updated (after new input).
  */
-CREATE TRIGGER trigger_input_column_duty_cycles_change
+CREATE TRIGGER trigger_input_column_boost_duty_change
   AFTER INSERT
   ON htm.input
   EXECUTE FUNCTION htm.column_boost_duty_update();

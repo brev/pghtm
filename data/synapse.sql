@@ -11,10 +11,7 @@ DECLARE
   SynapseCount INT := htm.config('SynapseCount');
   dendriteId INT;
   synapseId INT;
-BEGIN
-  -- disable triggers on table for speedy initial data fill
-  ALTER TABLE htm.synapse DISABLE TRIGGER USER;
-  
+BEGIN  
   -- fill distal synapses data
   FOR neuronId IN 1..NeuronCount LOOP
     FOR localDendriteId IN 1..DendriteCount LOOP
@@ -61,12 +58,6 @@ BEGIN
         );
     END LOOP;
   END LOOP;
-  
-  -- re-enable triggers on table for normal functioning
-  ALTER TABLE htm.synapse ENABLE TRIGGER USER;
-
-  -- cause recently missed triggers to re-fire on entire new dataset at once
-  UPDATE htm.synapse SET permanence = permanence;
 END
 $$;
 
