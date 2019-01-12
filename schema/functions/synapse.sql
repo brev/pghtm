@@ -44,6 +44,41 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
+ * Perform the overlapDutyCycle/synaptic-related parts of boosting.
+ *  Promote underwhelmed columns via synaptic permanence increase to
+ *  stoke future wins.
+ */
+CREATE FUNCTION htm.synapse_permanence_boost_update()
+RETURNS TRIGGER
+AS $$ 
+DECLARE
+BEGIN
+  WITH synapse_next AS (
+    SELECT
+      synapse.id,
+      htm.synapse_permanence_increment(synapse.permanence) AS permanence
+    FROM htm.synapse
+    JOIN htm.dendrite
+      ON dendrite.id = synapse.dendrite_id
+      AND dendrite.class = 'proximal'
+    JOIN htm.link_dendrite_column
+      ON link_dendrite_column.dendrite_id = dendrite.id
+    JOIN htm.column
+      ON htm.column.id = link_dendrite_column.column_id
+    JOIN htm.region
+      ON region.id = htm.column.region_id
+      AND region.duty_cycle_overlap_mean > htm.column.duty_cycle_overlap
+  )
+  UPDATE htm.synapse
+    SET permanence = synapse_next.permanence
+    FROM synapse_next
+    WHERE synapse_next.id = synapse.id;
+
+  RETURN NULL;
+END; 
+$$ LANGUAGE plpgsql;
+
+/**
  * Perform Hebbian-style learning on synapse permanences. This is based on
  *  recently-actived winners in column_active. This was triggered from an 
  *  update on the column table.
