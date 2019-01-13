@@ -16,7 +16,7 @@ BEGIN
     SELECT 
       input.id,
       (SELECT ARRAY(
-        SELECT id from htm.column_active
+        SELECT id from htm.column_active ORDER BY id
       )) AS columns_active
     FROM htm.input
     WHERE input.columns_active IS NULL
