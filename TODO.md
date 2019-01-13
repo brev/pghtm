@@ -1,16 +1,7 @@
 # Current
 
-* column_active winners should make it back to original input row!
 * Move config to tables so webui can access/see/change settings?
   * "id INT PRIMARY KEY NOT NULL DEFAULT(1) CHECK (id = 1)"
-* test calcs not just existence
-  * htm.boost_factor_compute() 
-  * htm.column_active_get_threshold()
-* data tests for views.
-  * fix duty_cycle_period() functions test w/input row count
-* Can test triggers from data side? check for self-inflicted values on CRUD.
-  * input.modified
-* htm.synapse refcheck on connected+active
 * WebUI
 
 # Future

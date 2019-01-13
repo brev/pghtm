@@ -1,9 +1,4 @@
 /**
- * Dendrite Views
- */
-
-
-/**
  * Dendrite (Proximal: Active, Overlap) View
  */
 CREATE VIEW htm.dendrite_proximal_overlap_active AS (

@@ -1,5 +1,5 @@
 /**
- * Dendrite View Tests
+ * Dendrite (Proximal: Overlap/Active) View Tests
  */
 
 BEGIN;

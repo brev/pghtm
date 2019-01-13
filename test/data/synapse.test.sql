@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(2);  -- Test count
+SELECT plan(3);  -- Test count
 
 
 SELECT row_eq(
@@ -22,18 +22,34 @@ SELECT row_eq(
   'Synapse has valid count total'
 );
 
-SELECT row_eq($$ 
-  SELECT COUNT(id) 
+SELECT row_eq(
+  $$ 
+    SELECT (COUNT(id) > 0)
     FROM synapse 
     WHERE permanence < (
       config('SynapseThreshold')::NUMERIC - config('SynapseDecrement')::NUMERIC
     )
     OR permanence > (
       config('SynapseThreshold')::NUMERIC + config('SynapseIncrement')::NUMERIC
-    ); 
+    )
   $$,
-  ROW(0::BIGINT),
+  ROW(FALSE),
   'Synapse permanences are initialized in small range around threshold'
+);
+INSERT INTO input (indexes) VALUES (ARRAY[0,1,2,3,4]);
+SELECT row_eq(
+  $$ 
+    SELECT (COUNT(id) > 0)
+    FROM synapse 
+    WHERE permanence < (
+      config('SynapseThreshold')::NUMERIC - config('SynapseDecrement')::NUMERIC
+    )
+    OR permanence > (
+      config('SynapseThreshold')::NUMERIC + config('SynapseIncrement')::NUMERIC
+    )
+  $$,
+  ROW(TRUE),
+  'Synapse permanences grow away from threshold range from learning'
 );
 
 

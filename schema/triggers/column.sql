@@ -4,6 +4,15 @@
 
 
 /**
+ * Put winning active columns back into result field of input row.
+ *  SP Compute cycle is complete.
+ */
+CREATE TRIGGER trigger_column_input_columns_active_change
+  AFTER INSERT OR UPDATE
+  ON htm.column
+  EXECUTE FUNCTION htm.input_columns_active_update();
+
+/**
  * After column.duty_cycle_active is updated, we'll store the min/max in
  *  the parent region (for boosting).
  */

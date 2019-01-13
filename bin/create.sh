@@ -3,10 +3,9 @@
 SQL=".."
 SCHEMA="$SQL/schema"
 
-##
-# Create pgHTM DB Schema.
-#   Order matters below.
-##
+####
+## Create pgHTM DB Schema.
+####
 
 # schema
 psql -f $SCHEMA/htm.sql
@@ -34,10 +33,12 @@ psql -f $SCHEMA/functions/dendrite.sql
 psql -f $SCHEMA/functions/input.sql
 psql -f $SCHEMA/functions/synapse.sql
 
-# views
-psql -f $SCHEMA/views/synapse.sql   # first view
-psql -f $SCHEMA/views/dendrite.sql  # follows: view/synapse
-psql -f $SCHEMA/views/column.sql    # follows: view/dendrite
+# views - ORDER MATTERS HERE
+psql -f $SCHEMA/views/synapse_connected.sql
+psql -f $SCHEMA/views/synapse_proximal_active.sql
+psql -f $SCHEMA/views/dendrite_proximal_overlap_active.sql
+psql -f $SCHEMA/views/column_overlap_boost.sql
+psql -f $SCHEMA/views/column_active.sql
 
 # triggers
 psql -f $SCHEMA/triggers/input.sql

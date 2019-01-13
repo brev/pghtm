@@ -4,8 +4,13 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(4);  -- Test count
+SELECT plan(7);  -- Test count
 
+
+-- test input_columns_active_update()
+SELECT has_function('input_columns_active_update');
+SELECT function_lang_is('input_columns_active_update', 'plpgsql');
+SELECT function_returns('input_columns_active_update', 'trigger');
 
 -- test input_rows_count()
 SELECT has_function('input_rows_count');

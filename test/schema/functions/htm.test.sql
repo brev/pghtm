@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(49);  -- Test count
+SELECT plan(54);  -- Test count
 
 
 -- test config()
@@ -28,9 +28,33 @@ SELECT throws_ok(
 SELECT has_function('boost_factor_compute');
 SELECT function_lang_is('boost_factor_compute', 'plpgsql');
 SELECT function_returns('boost_factor_compute', 'numeric');
-/*
-  TODO calcs
-*/
+SELECT is(
+  boost_factor_compute(0.5, 0.5),
+  (CASE 
+    WHEN htm.config('spLearn')::BOOLEAN
+      THEN EXP((0 - htm.config('boostStrength')::NUMERIC) * (0.5 - 0.5))
+    ELSE 1
+  END),
+  'boost_factor_compute() works on equivalents'
+);
+SELECT is(
+  boost_factor_compute(0.5, 1.0),
+  (CASE 
+    WHEN htm.config('spLearn')::BOOLEAN
+      THEN EXP((0 - htm.config('boostStrength')::NUMERIC) * (0.5 - 1.0))
+    ELSE 1
+  END),
+  'boost_factor_compute() works on low/high'
+);
+SELECT is(
+  boost_factor_compute(1.0, 0.5),
+  (CASE 
+    WHEN htm.config('spLearn')::BOOLEAN
+      THEN EXP((0 - htm.config('boostStrength')::NUMERIC) * (1.0 - 0.5))
+    ELSE 1
+  END),
+  'boost_factor_compute() works on high/low'
+);
 
 -- test count_unloop()
 SELECT has_function('count_unloop', ARRAY['integer', 'integer', 'integer']);
@@ -47,20 +71,18 @@ SELECT is(count_unloop(2, 3, 3), 6, 'count_unloop() works 6');
 SELECT has_function('duty_cycle_period');
 SELECT function_lang_is('duty_cycle_period', 'plpgsql');
 SELECT function_returns('duty_cycle_period', 'integer');
-/*
-SELECT sp_set('compute_iteration', 10::VARCHAR);
 SELECT is(
   duty_cycle_period(),
-  10, 
-  'duty_cycle_period() works cool'
+  0, 
+  'duty_cycle_period() works before input data rows'
 );
-SELECT sp_set('compute_iteration', 2000::VARCHAR);
+INSERT INTO input (indexes) VALUES (ARRAY[0,1,2]);
 SELECT is(
   duty_cycle_period(),
-  1000, 
-  'duty_cycle_period() works warm'
+  1, 
+  'duty_cycle_period() works after input data rows'
 );
-*/
+DELETE FROM input;
 
 -- test random_range_int()
 SELECT has_function('random_range_int', ARRAY['integer', 'integer']);
