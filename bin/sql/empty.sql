@@ -1,5 +1,4 @@
--- Empty HTM.
-
+-- Empty HTM Tables.
 DELETE FROM htm.link_neuron_synapse;
 DELETE FROM htm.link_input_synapse;
 DELETE FROM htm.link_dendrite_neuron;

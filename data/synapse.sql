@@ -5,10 +5,10 @@
 DO
 $$
 DECLARE
-  ColumnCount INT := htm.config('ColumnCount');
-  DendriteCount INT := htm.config('DendriteCount');
-  NeuronCount INT := htm.config('NeuronCount');
-  SynapseCount INT := htm.config('SynapseCount');
+  ColumnCount INT := htm.const('ColumnCount');
+  DendriteCount INT := htm.const('DendriteCount');
+  NeuronCount INT := htm.const('NeuronCount');
+  SynapseCount INT := htm.const('SynapseCount');
   dendriteId INT;
   synapseId INT;
 BEGIN  
@@ -24,11 +24,11 @@ BEGIN
             synapseId, 
             dendriteId, 
             htm.random_range_numeric((
-              htm.config('SynapseThreshold')::NUMERIC - 
-              htm.config('SynapseDecrement')::NUMERIC
+              htm.var('SynapseThreshold')::NUMERIC - 
+              htm.var('SynapseDecrement')::NUMERIC
             ), (
-              htm.config('SynapseThreshold')::NUMERIC + 
-              htm.config('SynapseIncrement')::NUMERIC
+              htm.var('SynapseThreshold')::NUMERIC + 
+              htm.var('SynapseIncrement')::NUMERIC
             ))
           );
       END LOOP;
@@ -49,11 +49,11 @@ BEGIN
           synapseId, 
           dendriteId + columnId, 
           htm.random_range_numeric((
-            htm.config('SynapseThreshold')::NUMERIC - 
-            htm.config('SynapseDecrement')::NUMERIC
+            htm.var('SynapseThreshold')::NUMERIC - 
+            htm.var('SynapseDecrement')::NUMERIC
           ), (
-            htm.config('SynapseThreshold')::NUMERIC + 
-            htm.config('SynapseIncrement')::NUMERIC
+            htm.var('SynapseThreshold')::NUMERIC + 
+            htm.var('SynapseIncrement')::NUMERIC
           ))
         );
     END LOOP;

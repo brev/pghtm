@@ -14,21 +14,21 @@ SELECT function_returns('synapse_is_connected', 'boolean');
 SELECT is(synapse_is_connected(0.00), false, 'synapse_is_connected() works min');
 SELECT is(
   synapse_is_connected(
-    config('SynapseThreshold')::NUMERIC - 
-    config('SynapseDecrement')::NUMERIC
+    var('SynapseThreshold')::NUMERIC - 
+    var('SynapseDecrement')::NUMERIC
   ), 
   false,
   'synapse_is_connected() false under threshold'
 );
 SELECT is(
-  synapse_is_connected(config('SynapseThreshold')::NUMERIC), 
+  synapse_is_connected(var('SynapseThreshold')::NUMERIC), 
   false,
   'synapse_is_connected() false on threshold'
 );
 SELECT is(
   synapse_is_connected(
-    config('SynapseThreshold')::NUMERIC + 
-    config('SynapseIncrement')::NUMERIC
+    var('SynapseThreshold')::NUMERIC + 
+    var('SynapseIncrement')::NUMERIC
   ), 
   true,
   'synapse_is_connected() true beyond threshold'

@@ -42,13 +42,13 @@ $$ LANGUAGE plpgsql;
 
 /**
  * Spatial Pooler - Figure active columns. 
- *  Apply global inhibition to sparsify actives. TODO:config('globalInhibit')
+ *  Apply global inhibition to sparsify actives. TODO:const('globalInhibit')
  */
 CREATE FUNCTION htm.sp_column_active(input_indexes INT[])
 RETURNS INT[]
 AS $$ 
 DECLARE
-  colsave CONSTANT BIGINT := htm.config('ColumnThreshold');
+  colsave CONSTANT BIGINT := htm.const('ColumnThreshold');
   column_indexes INT[];
 BEGIN
   column_indexes := (
@@ -121,7 +121,7 @@ CREATE FUNCTION htm.sp_compute(input_indexes INT[])
 RETURNS INT[]
 AS $$ 
 DECLARE
-  learning CONSTANT BOOL := htm.config('spLearn');
+  learning CONSTANT BOOL := htm.var('spLearn');
   active_columns INT[];
 BEGIN
   -- Get winning columns (Overlap and Inhibition)

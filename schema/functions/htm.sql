@@ -4,71 +4,7 @@
 
 
 /**
- * HTM - Get config value.
- * @returns VARCHAR, so cast on usage, like: 
- *  SQL:      SELECT htm.config('key')::INT;
- *  plpgsql:  val INT := htm.config('key');
- */
-CREATE FUNCTION htm.config(keyIn VARCHAR)
-RETURNS VARCHAR 
-AS $$ 
-DECLARE
-  height CONSTANT INT := 1;           -- Region/Column/Input height # rows
-  pctColWin CONSTANT NUMERIC := 0.04; -- % SP winner columns not inhibited
-  spread CONSTANT NUMERIC := 0.5;     -- SP col can connect to this % of input
-  width CONSTANT INT := 100;          -- Region/Input width # cols
-
-  cells CONSTANT INT := height * width;         -- Total count of neurons
-  colWin CONSTANT INT := width * pctColWin;     -- # SP win cols not inhibited
-  synapses CONSTANT INT := width * spread;      -- Synapses per Dendrite
- 
-  result CONSTANT NUMERIC := (SELECT value FROM 
-    (VALUES 
-      -- HTM
-      ('ColumnCount',       width),     -- # of columms per region
-      ('DendriteCount',     4),         -- # of dendrites per neuron
-      ('DendriteThreshold', 1),         -- # active synapses for active dendrite
-                                          -- nupic sp:stimulusThreshold (0)
-      ('InputWidth',        width),     -- Input SDR Bit Width 
-      ('NeuronCount',       cells),     -- # of neurons per region (rows x cols)
-      ('RowCount',          height),    -- # of rows per region
-      ('SynapseCount',      synapses),  -- # of synapses per dendrite 
-      ('SynapseDecrement',  0.01),      -- Synapse learning permanence decrement
-                                          -- nupic sp:synPermActiveDec
-      ('SynapseIncrement',  0.01),      -- Synapse learning permanence increment
-                                          -- nupic sp:synPermActiveInc
-      ('SynapseThreshold',  0.3),       -- Synapse connect permanence threshold
-                                          -- > is connected, <= is potential
-                                          -- nupic sp:synPermConnected=0.1 
-                                          -- nupic tp:connectedPerm=0.5
-      -- Spatial Pooler
-      ('boostStrength',     1.5),     -- SP Boosting strength
-      ('ColumnThreshold',   colWin),  -- Number of top active columns to win 
-                                        -- during Inhibition - IDEAL 2%
-                                        -- nupic sp:numActiveColumnsPerInhArea
-      ('dutyCyclePeriod',   1000),    -- Duty cycle period
-      ('inhibition',        1),       -- SP inhibition: 
-                                        -- 0=off
-                                        -- 1=global
-                                        -- 2=local (TODO not built yet)
-      ('potentialPct',      spread),  -- % input bits each column may connect
-      ('spLearn',           1),       -- SP learning on?
-      
-      -- Other
-      ('UnitTestData', 777)   -- Unit testing example data
-    ) AS config_tmp (key, value)
-    WHERE key = keyIn
-  );
-BEGIN
-  IF result IS NULL THEN
-    RAISE EXCEPTION 'No value for key %', keyIn;
-  END IF;
-  RETURN result;
-END; 
-$$ LANGUAGE plpgsql IMMUTABLE;
-
-/**
- * HTM - Calculate new boosting factor (per Column).
+ * HTM - SP Calculate new boosting factor (per Column).
  */
 CREATE FUNCTION htm.boost_factor_compute(
   duty_cycle NUMERIC, 
@@ -77,14 +13,32 @@ CREATE FUNCTION htm.boost_factor_compute(
 RETURNS NUMERIC
 AS $$ 
 DECLARE
-  learning CONSTANT BOOL := htm.config('spLearn');
-  strength CONSTANT NUMERIC := htm.config('boostStrength');
+  learning CONSTANT BOOL := htm.var('spLearn');
+  strength CONSTANT NUMERIC := htm.var('boostStrength');
 BEGIN
   IF learning THEN
     RETURN EXP((0 - strength) * (duty_cycle - target_density));
   ELSE
     RETURN 1;  -- learning off
   END IF;
+END; 
+$$ LANGUAGE plpgsql;
+
+/**
+ * HTM - Get constant.
+ *  You'll have to ::CAST on the other side.
+ */
+CREATE FUNCTION htm.const(key VARCHAR)
+RETURNS VARCHAR
+AS $$ 
+DECLARE
+  result VARCHAR;
+BEGIN
+  EXECUTE 
+    FORMAT('SELECT %I FROM htm.constant LIMIT 1', LOWER(key))
+    INTO result;
+
+  RETURN result;
 END; 
 $$ LANGUAGE plpgsql;
 
@@ -108,7 +62,7 @@ RETURNS INTEGER
 AS $$
 DECLARE
   cool CONSTANT INTEGER := htm.input_rows_count();
-  warm CONSTANT INTEGER := htm.config('dutyCyclePeriod');
+  warm CONSTANT INTEGER := htm.var('dutyCyclePeriod');
 BEGIN
   RETURN LEAST (cool, warm);
 END;
@@ -164,6 +118,24 @@ BEGIN
   NEW.modified = NOW();
   RETURN NEW;
 END;
+$$ LANGUAGE plpgsql;
+
+/**
+ * HTM - Get variable.
+ *  You'll have to ::CAST on the other side.
+ */
+CREATE FUNCTION htm.var(key VARCHAR)
+RETURNS VARCHAR
+AS $$ 
+DECLARE
+  result VARCHAR;
+BEGIN
+  EXECUTE 
+    FORMAT('SELECT %I FROM htm.variable LIMIT 1', LOWER(key))
+    INTO result;
+
+  RETURN result;
+END; 
 $$ LANGUAGE plpgsql;
 
 /**

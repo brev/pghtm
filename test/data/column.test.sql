@@ -9,7 +9,7 @@ SELECT plan(3);  -- Test count
 
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM htm.column; $$, 
-  ROW(config('ColumnCount')::BIGINT), 
+  ROW(const('ColumnCount')::BIGINT), 
   'Column has valid data'
 );
 

@@ -14,7 +14,7 @@ SELECT row_eq(
       (SELECT COUNT(id)::NUMERIC FROM synapse)
     ), 1);
   $$, 
-  ROW(config('potentialPct')::NUMERIC), 
+  ROW(const('potentialPct')::NUMERIC), 
   'Synapse Connected view has valid count total'
 );
 

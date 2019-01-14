@@ -1,17 +1,31 @@
 #!/bin/sh
 
 SQL=".."
+DATA="$SQL/data"
 SCHEMA="$SQL/schema"
 
 ####
 ## Create pgHTM DB Schema.
+##  Sort order matters below.
 ####
 
 # schema
 psql -f $SCHEMA/htm.sql
+psql -f $SCHEMA/tables/constant.sql
+psql -f $SCHEMA/tables/variable.sql
+psql -f $DATA/constant.sql
+psql -f $DATA/variable.sql
 
 # types
 psql -f $SCHEMA/types/dendrite.sql
+
+# functions
+psql -f $SCHEMA/functions/htm.sql
+psql -f $SCHEMA/functions/region.sql
+psql -f $SCHEMA/functions/column.sql
+psql -f $SCHEMA/functions/dendrite.sql
+psql -f $SCHEMA/functions/input.sql
+psql -f $SCHEMA/functions/synapse.sql
 
 # tables
 psql -f $SCHEMA/tables/region.sql
@@ -25,15 +39,7 @@ psql -f $SCHEMA/tables/link_dendrite_neuron.sql
 psql -f $SCHEMA/tables/link_input_synapse.sql
 psql -f $SCHEMA/tables/link_neuron_synapse.sql
 
-# functions
-psql -f $SCHEMA/functions/htm.sql
-psql -f $SCHEMA/functions/region.sql
-psql -f $SCHEMA/functions/column.sql
-psql -f $SCHEMA/functions/dendrite.sql
-psql -f $SCHEMA/functions/input.sql
-psql -f $SCHEMA/functions/synapse.sql
-
-# views - ORDER MATTERS HERE
+# views
 psql -f $SCHEMA/views/synapse_connected.sql
 psql -f $SCHEMA/views/synapse_proximal_active.sql
 psql -f $SCHEMA/views/dendrite_proximal_overlap_active.sql

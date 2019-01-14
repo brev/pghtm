@@ -5,8 +5,8 @@
 DO
 $$
 DECLARE
-  DendriteCount INT := htm.config('DendriteCount');
-  NeuronCount INT := htm.config('NeuronCount');
+  DendriteCount INT := htm.const('DendriteCount');
+  NeuronCount INT := htm.const('NeuronCount');
   linkId INT;
 BEGIN
   FOR neuronId IN 1..NeuronCount LOOP

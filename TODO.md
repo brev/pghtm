@@ -1,17 +1,24 @@
 # Current
 
-* Move config to tables so webui can access/see/change settings?
-  * "id INT PRIMARY KEY NOT NULL DEFAULT(1) CHECK (id = 1)"
+* problems:
+  * input.columns_active is not matching columns_active view now
+    * synapse updates change views out from under me?
+      * might be showing half-future next step state already?
+      * >>> Logging output + flag option
+  * Way slower with table-based configs/queries - need immutable or something
+  * Make table htm.constant read-only
 * WebUI
+* Temporal Memory
+* Encoders
 
 # Future
 
+* see docs: "CREATE TRIGGER UPDATE OF column"
+  * also: more IMMUTABLE? SELECT FOR UPDATE? etc. improve and optimize.
 * Tag dox w/@SpatialPooler, etc.
 * Sane DEFAULTS 
 * Add some output notes to data fill scripts, schema, etc.
-* Add some debug and timing output+options to important functions.
-* see docs: "CREATE TRIGGER UPDATE OF column"
-  * also: more IMMUTABLE? SELECT FOR UPDATE? etc. improve and optimize.
+* Timing/Performance log output + flag option?
 * ANALYZE EXPLAIN all queries, look for speedups
 * Views -> Materialize and cache
 * pg int's not unsigned - for input indexes[], got a trinary if wanted

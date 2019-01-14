@@ -1,5 +1,5 @@
 /**
- * Neuron Data Test
+ * Variables Data Test
  */
 
 BEGIN;
@@ -8,9 +8,9 @@ SELECT plan(1);  -- Test count
 
 
 SELECT row_eq(
-  $$ SELECT COUNT(id) FROM neuron; $$, 
-  ROW(const('NeuronCount')::BIGINT), 
-  'Neuron has valid data'
+  $$ SELECT COUNT(id) FROM variable $$, 
+  ROW(1::BIGINT), 
+  'Variables table has valid data'
 );
 
 

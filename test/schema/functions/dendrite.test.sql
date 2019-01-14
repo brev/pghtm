@@ -13,17 +13,17 @@ SELECT function_lang_is('dendrite_is_active', 'plpgsql');
 SELECT function_returns('dendrite_is_active', 'boolean');
 SELECT is(dendrite_is_active(0), FALSE, 'dendrite_is_active() works min');
 SELECT is(
-  dendrite_is_active(config('DendriteThreshold')::INTEGER), 
+  dendrite_is_active(var('DendriteThreshold')::INTEGER), 
   FALSE,
   'dendrite_is_active() false on threshold'
 );
 SELECT is(
-  dendrite_is_active(config('DendriteThreshold')::INTEGER + 1), 
+  dendrite_is_active(var('DendriteThreshold')::INTEGER + 1), 
   TRUE,
   'dendrite_is_active() true beyond threshold'
 );
 SELECT is(
-  dendrite_is_active(config('SynapseCount')::INTEGER), 
+  dendrite_is_active(const('SynapseCount')::INTEGER), 
   TRUE,
   'dendrite_is_active() true at max'
 );

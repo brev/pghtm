@@ -5,8 +5,8 @@
 DO 
 $$
 DECLARE
-  ColumnCount INT := htm.config('ColumnCount');
-  RowCount INT := htm.config('RowCount');
+  ColumnCount INT := htm.const('ColumnCount');
+  RowCount INT := htm.const('RowCount');
   neuronId INT;
 BEGIN 
   FOR columnId IN 1..ColumnCount LOOP

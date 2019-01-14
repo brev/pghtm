@@ -5,9 +5,9 @@
 DO
 $$
 DECLARE
-  DendriteCount INT := htm.config('DendriteCount');
-  NeuronCount INT := htm.config('NeuronCount');
-  SynapseCount INT := htm.config('SynapseCount');
+  DendriteCount INT := htm.const('DendriteCount');
+  NeuronCount INT := htm.const('NeuronCount');
+  SynapseCount INT := htm.const('SynapseCount');
   TotalSynapse INT := DendriteCount * NeuronCount * SynapseCount;
   neuronId INT;
 BEGIN

@@ -5,9 +5,9 @@
 DO
 $$
 DECLARE
-  ColumnCount INT := htm.config('ColumnCount');
-  DendriteCount INT := htm.config('DendriteCount');
-  NeuronCount INT := htm.config('NeuronCount');
+  ColumnCount INT := htm.const('ColumnCount');
+  DendriteCount INT := htm.const('DendriteCount');
+  NeuronCount INT := htm.const('NeuronCount');
   lastDendriteId INT := NeuronCount * DendriteCount;
 BEGIN
   FOR columnId IN 1..ColumnCount LOOP

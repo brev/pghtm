@@ -10,7 +10,7 @@ CREATE FUNCTION htm.dendrite_is_active(active_synapses INTEGER)
 RETURNS BOOL
 AS $$ 
 DECLARE
-  DendriteThreshold CONSTANT NUMERIC := htm.config('DendriteThreshold');
+  DendriteThreshold CONSTANT NUMERIC := htm.var('DendriteThreshold');
 BEGIN
   RETURN active_synapses > DendriteThreshold;
 END; 
