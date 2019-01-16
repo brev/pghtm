@@ -8,6 +8,7 @@ CREATE TABLE htm.variable (
   dendritethreshold INTEGER NOT NULL,
   dutycycleperiod   INTEGER NOT NULL,
   inhibition        INTEGER NOT NULL,
+  logging           BOOLEAN NOT NULL,
   splearn           INTEGER NOT NULL,
   synapsedecrement  NUMERIC NOT NULL,
   synapseincrement  NUMERIC NOT NULL,

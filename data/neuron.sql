@@ -9,6 +9,8 @@ DECLARE
   RowCount INT := htm.const('RowCount');
   neuronId INT;
 BEGIN 
+  RAISE NOTICE 'Inserting % Neurons...', (ColumnCount * RowCount);
+
   FOR columnId IN 1..ColumnCount LOOP
     FOR yCount IN 1..RowCount LOOP
       neuronId := htm.count_unloop(columnId, yCount, RowCount);

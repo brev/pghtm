@@ -69,6 +69,22 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
+ * Raise a notice message (log output)
+ */
+CREATE FUNCTION htm.log(text) 
+RETURNS BOOLEAN
+AS $$
+DECLARE
+  logging CONSTANT BOOLEAN := htm.var('logging');
+BEGIN
+  IF logging THEN 
+    RAISE NOTICE '%', $1;
+  END IF;
+  RETURN logging;
+END;
+$$ LANGUAGE plpgsql;
+
+/**
  * HTM - Generate a random integer between low and high constraints.
  */
 CREATE FUNCTION htm.random_range_int(low INT, high INT) 

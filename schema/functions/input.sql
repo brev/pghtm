@@ -12,6 +12,7 @@ CREATE FUNCTION htm.input_columns_active_update()
 RETURNS TRIGGER
 AS $$
 BEGIN
+  PERFORM htm.log('have winner columns, storing in input table'); 
   WITH input_next AS (
     SELECT 
       input.id,

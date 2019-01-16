@@ -10,6 +10,8 @@ DECLARE
   NeuronCount INT := htm.const('NeuronCount');
   lastDendriteId INT := NeuronCount * DendriteCount;
 BEGIN
+  RAISE NOTICE 'Inserting % Links (Dendrite => Column)...', ColumnCount;
+  
   FOR columnId IN 1..ColumnCount LOOP
     INSERT
       INTO htm.link_dendrite_column (id, dendrite_id, column_id)

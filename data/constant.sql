@@ -28,6 +28,8 @@ DECLARE
   -- Synapses per Dendrite
   synapses CONSTANT INTEGER := width * spread; 
 BEGIN
+  RAISE NOTICE 'Inserting Constants...';
+  
   INSERT INTO htm.constant (
     ColumnCount,
     ColumnThreshold,

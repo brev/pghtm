@@ -1,23 +1,17 @@
 # Current
 
-* problems:
-  * input.columns_active is not matching columns_active view now
-    * synapse updates change views out from under me?
-      * might be showing half-future next step state already?
-      * >>> Logging output + flag option
-  * Way slower with table-based configs/queries - need immutable or something
-  * Make table htm.constant read-only
+* config rename LikeThis => likethis => like_this (pg style)
 * WebUI
 * Temporal Memory
 * Encoders
 
 # Future
 
-* see docs: "CREATE TRIGGER UPDATE OF column"
+* Way slower with table-based configs/queries - need immutable or something
   * also: more IMMUTABLE? SELECT FOR UPDATE? etc. improve and optimize.
+* see docs: "CREATE TRIGGER UPDATE OF column"
 * Tag dox w/@SpatialPooler, etc.
 * Sane DEFAULTS 
-* Add some output notes to data fill scripts, schema, etc.
 * Timing/Performance log output + flag option?
 * ANALYZE EXPLAIN all queries, look for speedups
 * Views -> Materialize and cache
@@ -27,6 +21,8 @@
     * radius (aka? input spread. calc with.), etc.
     * Inputs directly below column should be weighted slightly higher on init
       than inputs further away from column center.
+* pg users, roles, access controls, grants, revokes, etc.
+  * Make table htm.constant read-only
 * Externalize and speed up plpgsql stuff as C Extensions.
   * Continue on to full NuPIC Integration???
     * ditch views

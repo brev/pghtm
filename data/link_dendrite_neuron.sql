@@ -9,6 +9,9 @@ DECLARE
   NeuronCount INT := htm.const('NeuronCount');
   linkId INT;
 BEGIN
+  RAISE NOTICE 'Inserting % Links (Dendrite => Neuron)...', 
+    (NeuronCount * DendriteCount);
+  
   FOR neuronId IN 1..NeuronCount LOOP
     FOR dendriteId IN 1..DendriteCount LOOP
       linkId := htm.count_unloop(neuronId, dendriteId, DendriteCount);

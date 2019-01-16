@@ -53,6 +53,7 @@ RETURNS TRIGGER
 AS $$ 
 DECLARE
 BEGIN
+  PERFORM htm.log('synapse boosting'); 
   WITH synapse_next AS (
     SELECT
       synapse.id,
@@ -88,6 +89,7 @@ RETURNS TRIGGER
 AS $$ 
 DECLARE
 BEGIN
+  PERFORM htm.log('synapse learning'); 
   WITH synapse_next AS (
     SELECT
       synapse.id,

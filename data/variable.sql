@@ -1,12 +1,17 @@
 /**
  * Variable Data
  */
+DO
+$$
+BEGIN
+  RAISE NOTICE 'Inserting Variables...';
 
-INSERT INTO htm.variable (
+  INSERT INTO htm.variable (
     boostStrength,
     DendriteThreshold,
     dutyCyclePeriod,
     inhibition,
+    logging,
     spLearn,
     SynapseDecrement,
     SynapseIncrement,
@@ -29,7 +34,10 @@ INSERT INTO htm.variable (
     --  1=global
     --  2=local (TODO not built yet) 
     1,
-  
+ 
+    -- logging: output warn notices for debug logging?
+    FALSE,
+ 
     -- spLearn: SP learning on? 1=true, 0=false
     1,
 
@@ -47,4 +55,6 @@ INSERT INTO htm.variable (
     --  nupic tp:connectedPerm=0.5
     0.3
   );
+END
+$$;
 

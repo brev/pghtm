@@ -11,6 +11,8 @@ DECLARE
   TotalSynapse INT := DendriteCount * NeuronCount * SynapseCount;
   neuronId INT;
 BEGIN
+  RAISE NOTICE 'Inserting % Links (Neuron => Synapse)...', TotalSynapse;
+
   FOR synapseId IN 1..TotalSynapse LOOP
     neuronId := htm.random_range_int(1, NeuronCount); 
     INSERT

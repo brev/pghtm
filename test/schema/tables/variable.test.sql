@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(25);  -- Test count
+SELECT plan(27);  -- Test count
 
 
 SELECT has_table('variable');
@@ -14,6 +14,7 @@ SELECT columns_are('variable', ARRAY[
   'dendritethreshold',
   'dutycycleperiod',
   'inhibition',
+  'logging',
   'splearn',
   'synapsedecrement',
   'synapseincrement',
@@ -39,6 +40,9 @@ SELECT col_not_null('variable', 'dutycycleperiod');
 
 SELECT col_type_is('variable', 'inhibition', 'integer');
 SELECT col_not_null('variable', 'inhibition');
+
+SELECT col_type_is('variable', 'logging', 'boolean');
+SELECT col_not_null('variable', 'logging');
 
 SELECT col_type_is('variable', 'splearn', 'integer');
 SELECT col_not_null('variable', 'splearn');

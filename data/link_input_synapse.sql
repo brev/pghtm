@@ -13,6 +13,9 @@ DECLARE
   SynapseStart INT := DendriteCount * NeuronCount * SynapseCount;
   linkId INT;
 BEGIN
+  RAISE NOTICE 'Inserting % Links (Input => Synapse)...', 
+    (ColumnCount * SynapseCount);
+
   FOR localColumnId IN 1..ColumnCount LOOP
     FOR localSynapseId IN 1..SynapseCount LOOP
       linkId := htm.count_unloop(localColumnId, localSynapseId, SynapseCount);

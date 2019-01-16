@@ -38,6 +38,7 @@ AS $$
 DECLARE
   period CONSTANT INTEGER := htm.duty_cycle_period();
 BEGIN
+  PERFORM htm.log('new input, updating column duty cycles, etc.');
   WITH column_next AS (
     SELECT 
       htm.column.id,

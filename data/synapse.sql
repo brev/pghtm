@@ -13,6 +13,9 @@ DECLARE
   synapseId INT;
 BEGIN  
   -- fill distal synapses data
+  RAISE NOTICE 'Inserting % Synapses (Distal)...', 
+    (NeuronCount * DendriteCount * SynapseCount);
+
   FOR neuronId IN 1..NeuronCount LOOP
     FOR localDendriteId IN 1..DendriteCount LOOP
       dendriteId := htm.count_unloop(neuronId, localDendriteId, DendriteCount);
@@ -36,6 +39,9 @@ BEGIN
   END LOOP;
   
   -- fill proximal synapses data
+  RAISE NOTICE 'Inserting % Synapses (Proximal)...', 
+    (ColumnCount * SynapseCount);
+
   FOR columnId IN 1..ColumnCount LOOP
     FOR localSynapseId IN 1..SynapseCount LOOP
       synapseId := htm.count_unloop(

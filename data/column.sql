@@ -8,6 +8,8 @@ DECLARE
 BEGIN
   -- disable triggers on table for initial data fill
   ALTER TABLE htm.column DISABLE TRIGGER USER;
+
+  RAISE NOTICE 'Inserting % Columns...', ColumnCount;
   
   FOR columnId IN 1..ColumnCount LOOP
     INSERT INTO htm.column (

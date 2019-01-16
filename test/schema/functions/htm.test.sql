@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(55);  -- Test count
+SELECT plan(58);  -- Test count
 
 
 -- test boost_factor_compute()
@@ -76,6 +76,11 @@ SELECT is(
   'duty_cycle_period() works after input data rows'
 );
 DELETE FROM input;
+
+-- test log()
+SELECT has_function('log', ARRAY['text']);
+SELECT function_lang_is('log', 'plpgsql');
+SELECT function_returns('log', 'boolean');
 
 -- test random_range_int()
 SELECT has_function('random_range_int', ARRAY['integer', 'integer']);
