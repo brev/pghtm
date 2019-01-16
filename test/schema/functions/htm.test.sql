@@ -14,8 +14,8 @@ SELECT function_returns('boost_factor_compute', 'numeric');
 SELECT is(
   boost_factor_compute(0.5, 0.5),
   (CASE 
-    WHEN htm.var('spLearn')::BOOLEAN
-      THEN EXP((0 - htm.var('boostStrength')::NUMERIC) * (0.5 - 0.5))
+    WHEN htm.var('sp_learn')::BOOLEAN
+      THEN EXP((0 - htm.var('boost_strength')::NUMERIC) * (0.5 - 0.5))
     ELSE 1
   END),
   'boost_factor_compute() works on equivalents'
@@ -23,8 +23,8 @@ SELECT is(
 SELECT is(
   boost_factor_compute(0.5, 1.0),
   (CASE 
-    WHEN htm.var('spLearn')::BOOLEAN
-      THEN EXP((0 - htm.var('boostStrength')::NUMERIC) * (0.5 - 1.0))
+    WHEN htm.var('sp_learn')::BOOLEAN
+      THEN EXP((0 - htm.var('boost_strength')::NUMERIC) * (0.5 - 1.0))
     ELSE 1
   END),
   'boost_factor_compute() works on low/high'
@@ -32,8 +32,8 @@ SELECT is(
 SELECT is(
   boost_factor_compute(1.0, 0.5),
   (CASE 
-    WHEN htm.var('spLearn')::BOOLEAN
-      THEN EXP((0 - htm.var('boostStrength')::NUMERIC) * (1.0 - 0.5))
+    WHEN htm.var('sp_learn')::BOOLEAN
+      THEN EXP((0 - htm.var('boost_strength')::NUMERIC) * (1.0 - 0.5))
     ELSE 1
   END),
   'boost_factor_compute() works on high/low'
@@ -44,8 +44,8 @@ SELECT has_function('const', ARRAY['character varying']);
 SELECT function_lang_is('const', 'plpgsql');
 SELECT function_returns('const', 'character varying');
 SELECT is(
-  const('NeuronCount')::INTEGER,
-  const('ColumnCount')::INTEGER * const('RowCount')::INTEGER,
+  const('neuron_count')::INTEGER,
+  const('column_count')::INTEGER * const('row_count')::INTEGER,
   'const() rows * columns = neurons'
 );
 
@@ -133,7 +133,7 @@ SELECT function_returns('schema_modified_update', 'trigger');
 SELECT has_function('var', ARRAY['character varying']);
 SELECT function_lang_is('var', 'plpgsql');
 SELECT function_returns('var', 'character varying');
-SELECT is(var('dutyCyclePeriod')::INTEGER, 1000, 'var() works');
+SELECT is(var('duty_cycle_period')::INTEGER, 1000, 'var() works');
 
 -- test wrap_array_index()
 SELECT has_function('wrap_array_index', ARRAY['integer', 'integer']);

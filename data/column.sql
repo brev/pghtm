@@ -4,14 +4,14 @@
 DO
 $$
 DECLARE
-  ColumnCount INT := htm.const('ColumnCount');
+  column_count INT := htm.const('column_count');
 BEGIN
   -- disable triggers on table for initial data fill
   ALTER TABLE htm.column DISABLE TRIGGER USER;
 
-  RAISE NOTICE 'Inserting % Columns...', ColumnCount;
+  RAISE NOTICE 'Inserting % Columns...', column_count;
   
-  FOR columnId IN 1..ColumnCount LOOP
+  FOR columnId IN 1..column_count LOOP
     INSERT INTO htm.column (
       id, 
       boost_factor,

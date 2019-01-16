@@ -11,10 +11,10 @@ SELECT row_eq(
   $$ SELECT COUNT(id) FROM dendrite; $$, 
   ROW((
     (
-      const('NeuronCount')::INT *
-      const('DendriteCount')::INT
+      const('neuron_count')::INT *
+      const('dendrite_count')::INT
     ) + 
-    const('ColumnCount')::INT
+    const('column_count')::INT
   )::BIGINT), 
   'Dendrite has valid data'
 );

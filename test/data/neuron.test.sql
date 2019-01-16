@@ -9,7 +9,7 @@ SELECT plan(1);  -- Test count
 
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM neuron; $$, 
-  ROW(const('NeuronCount')::BIGINT), 
+  ROW(const('neuron_count')::BIGINT), 
   'Neuron has valid data'
 );
 

@@ -10,8 +10,8 @@ SELECT plan(2);  -- Test count
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM link_input_synapse; $$, 
   ROW((
-    const('ColumnCount')::INT *
-    const('SynapseCount')::INT
+    const('column_count')::INT *
+    const('synapse_count')::INT
   )::BIGINT), 
   'Link_Input_Synapse has valid data'
 );

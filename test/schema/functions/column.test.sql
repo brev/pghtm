@@ -17,7 +17,7 @@ SELECT is(
     WHEN htm.var('inhibition')::INTEGER = 0
       THEN NULL
     WHEN htm.var('inhibition')::INTEGER = 1
-      THEN htm.const('ColumnThreshold')::BIGINT
+      THEN htm.const('column_threshold')::BIGINT
     WHEN htm.var('inhibition')::INTEGER = 2
       THEN NULL
   END),

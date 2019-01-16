@@ -13,8 +13,8 @@ CREATE FUNCTION htm.boost_factor_compute(
 RETURNS NUMERIC
 AS $$ 
 DECLARE
-  learning CONSTANT BOOL := htm.var('spLearn');
-  strength CONSTANT NUMERIC := htm.var('boostStrength');
+  learning CONSTANT BOOL := htm.var('sp_learn');
+  strength CONSTANT NUMERIC := htm.var('boost_strength');
 BEGIN
   IF learning THEN
     RETURN EXP((0 - strength) * (duty_cycle - target_density));
@@ -62,7 +62,7 @@ RETURNS INTEGER
 AS $$
 DECLARE
   cool CONSTANT INTEGER := htm.input_rows_count();
-  warm CONSTANT INTEGER := htm.var('dutyCyclePeriod');
+  warm CONSTANT INTEGER := htm.var('duty_cycle_period');
 BEGIN
   RETURN LEAST (cool, warm);
 END;
@@ -131,6 +131,7 @@ CREATE FUNCTION htm.schema_modified_update()
 RETURNS TRIGGER
 AS $$
 BEGIN
+  PERFORM htm.log('updating input.modified timestamp');
   NEW.modified = NOW();
   RETURN NEW;
 END;

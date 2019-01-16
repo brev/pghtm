@@ -31,40 +31,40 @@ BEGIN
   RAISE NOTICE 'Inserting Constants...';
   
   INSERT INTO htm.constant (
-    ColumnCount,
-    ColumnThreshold,
-    DendriteCount,
-    InputWidth,
-    NeuronCount,
-    potentialPct,
-    RowCount,
-    SynapseCount
+    column_count,
+    column_threshold,
+    dendrite_count,
+    input_width,
+    neuron_count,
+    potential_pct,
+    row_count,
+    synapse_count
   )
   VALUES (
-    -- ColumnCount: # of columms per region
+    -- column_count: # of columms per region
     width, 
   
-    -- ColumnThreshold: Number of top active columns to win 
+    -- column_threshold: Number of top active columns to win 
     --  during Inhibition - IDEAL 2%
     --  nupic sp:numActiveColumnsPerInhArea
     colWin,
   
-    -- DendriteCount: # of dendrites per neuron
+    -- dendrite_count: # of dendrites per neuron
     4, 
   
-    -- InputWidth: Input SDR Bit Width 
+    -- input_width: Input SDR Bit Width 
     width,
       
-    -- NeuronCount: # of neurons per region (rows x cols)
+    -- neuron_count: # of neurons per region (rows x cols)
     cells,
       
-    -- potentialPct: % input bits each column may connect
+    -- potential_pct: % input bits each column may connect
     spread,
       
-    -- RowCount: # of rows per region
+    -- row_count: # of rows per region
     height,
       
-    -- SynapseCount: # of synapses per dendrite 
+    -- synapse_count: # of synapses per dendrite 
     synapses
   );
 END

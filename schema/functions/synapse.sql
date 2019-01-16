@@ -11,9 +11,9 @@ CREATE FUNCTION htm.synapse_is_connected(permanence NUMERIC)
 RETURNS BOOL
 AS $$ 
 DECLARE
-  SynapseThreshold CONSTANT NUMERIC := htm.var('SynapseThreshold');
+  synapse_threshold CONSTANT NUMERIC := htm.var('synapse_threshold');
 BEGIN
-  RETURN permanence > SynapseThreshold;
+  RETURN permanence > synapse_threshold;
 END; 
 $$ LANGUAGE plpgsql;
 
@@ -24,7 +24,7 @@ CREATE FUNCTION htm.synapse_permanence_decrement(permanence NUMERIC)
 RETURNS NUMERIC
 AS $$ 
 DECLARE
-  decrement CONSTANT NUMERIC := htm.var('SynapseDecrement');
+  decrement CONSTANT NUMERIC := htm.var('synapse_decrement');
 BEGIN
   RETURN GREATEST(permanence - decrement, 0.0);
 END; 
@@ -37,7 +37,7 @@ CREATE FUNCTION htm.synapse_permanence_increment(permanence NUMERIC)
 RETURNS NUMERIC
 AS $$ 
 DECLARE
-  increment CONSTANT NUMERIC := htm.var('SynapseIncrement');
+  increment CONSTANT NUMERIC := htm.var('synapse_increment');
 BEGIN
   RETURN LEAST(permanence + increment, 1.0);
 END; 

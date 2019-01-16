@@ -48,7 +48,7 @@ CREATE FUNCTION htm.sp_column_active(input_indexes INT[])
 RETURNS INT[]
 AS $$ 
 DECLARE
-  colsave CONSTANT BIGINT := htm.const('ColumnThreshold');
+  colsave CONSTANT BIGINT := htm.const('column_threshold');
   column_indexes INT[];
 BEGIN
   column_indexes := (
@@ -121,7 +121,7 @@ CREATE FUNCTION htm.sp_compute(input_indexes INT[])
 RETURNS INT[]
 AS $$ 
 DECLARE
-  learning CONSTANT BOOL := htm.var('spLearn');
+  learning CONSTANT BOOL := htm.var('sp_learn');
   active_columns INT[];
 BEGIN
   -- Get winning columns (Overlap and Inhibition)

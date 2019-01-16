@@ -5,16 +5,16 @@
 DO
 $$
 DECLARE
-  DendriteCount INT := htm.const('DendriteCount');
-  NeuronCount INT := htm.const('NeuronCount');
+  dendrite_count INT := htm.const('dendrite_count');
+  neuron_count INT := htm.const('neuron_count');
   linkId INT;
 BEGIN
   RAISE NOTICE 'Inserting % Links (Dendrite => Neuron)...', 
-    (NeuronCount * DendriteCount);
+    (neuron_count * dendrite_count);
   
-  FOR neuronId IN 1..NeuronCount LOOP
-    FOR dendriteId IN 1..DendriteCount LOOP
-      linkId := htm.count_unloop(neuronId, dendriteId, DendriteCount);
+  FOR neuronId IN 1..neuron_count LOOP
+    FOR dendriteId IN 1..dendrite_count LOOP
+      linkId := htm.count_unloop(neuronId, dendriteId, dendrite_count);
       INSERT
         INTO htm.link_dendrite_neuron (id, dendrite_id, neuron_id) 
         VALUES (linkId, linkId, neuronId);

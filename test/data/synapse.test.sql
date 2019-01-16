@@ -11,12 +11,12 @@ SELECT row_eq(
   $$ SELECT COUNT(id) FROM synapse; $$, 
   ROW((
     (
-      const('NeuronCount')::INT * 
-      const('DendriteCount')::INT *
-      const('SynapseCount')::INT
+      const('neuron_count')::INT * 
+      const('dendrite_count')::INT *
+      const('synapse_count')::INT
     ) + (
-      const('ColumnCount')::INT *
-      const('SynapseCount')::INT
+      const('column_count')::INT *
+      const('synapse_count')::INT
     )
   )::BIGINT), 
   'Synapse has valid count total'
@@ -27,10 +27,10 @@ SELECT row_eq(
     SELECT (COUNT(id) > 0)
     FROM synapse 
     WHERE permanence < (
-      var('SynapseThreshold')::NUMERIC - var('SynapseDecrement')::NUMERIC
+      var('synapse_threshold')::NUMERIC - var('synapse_decrement')::NUMERIC
     )
     OR permanence > (
-      var('SynapseThreshold')::NUMERIC + var('SynapseIncrement')::NUMERIC
+      var('synapse_threshold')::NUMERIC + var('synapse_increment')::NUMERIC
     )
   $$,
   ROW(FALSE),
@@ -42,10 +42,10 @@ SELECT row_eq(
     SELECT (COUNT(id) > 0)
     FROM synapse 
     WHERE permanence < (
-      var('SynapseThreshold')::NUMERIC - var('SynapseDecrement')::NUMERIC
+      var('synapse_threshold')::NUMERIC - var('synapse_decrement')::NUMERIC
     )
     OR permanence > (
-      var('SynapseThreshold')::NUMERIC + var('SynapseIncrement')::NUMERIC
+      var('synapse_threshold')::NUMERIC + var('synapse_increment')::NUMERIC
     )
   $$,
   ROW(TRUE),

@@ -1,6 +1,16 @@
 # Current
 
-* config rename LikeThis => likethis => like_this (pg style)
+* add pgcli to readme, also how to use ./bin, some basic pg examples, etc.
+  * \timing on
+  * explain analyze verbose
+  * LOAD 'auto_explain';
+    * SET auto_explain.log_nested_statements = ON;
+    * SET auto_explain.log_min_duration = 0;
+    * SET auto_explain.log_analyze  = true;  ## very slow and wordy
+* code flow chart
+* set correct datatypes on const/var
+* move any const to var possible
+* check queries, make sure not missing sort orders (assumed default, was not.)
 * WebUI
 * Temporal Memory
 * Encoders

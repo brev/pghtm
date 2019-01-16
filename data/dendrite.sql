@@ -5,26 +5,26 @@
 DO
 $$
 DECLARE
-  ColumnCount INT := htm.const('ColumnCount');
-  DendriteCount INT := htm.const('DendriteCount');
-  NeuronCount INT := htm.const('NeuronCount');
+  column_count INT := htm.const('column_count');
+  dendrite_count INT := htm.const('dendrite_count');
+  neuron_count INT := htm.const('neuron_count');
   dendriteId INT;
 BEGIN
   RAISE NOTICE 'Inserting % Dendrites (Distal)...', 
-    (NeuronCount * DendriteCount);
+    (neuron_count * dendrite_count);
 
-  FOR neuronId IN 1..NeuronCount LOOP
-    FOR localId IN 1..DendriteCount LOOP
-      dendriteId := htm.count_unloop(neuronId, localId, DendriteCount);
+  FOR neuronId IN 1..neuron_count LOOP
+    FOR localId IN 1..dendrite_count LOOP
+      dendriteId := htm.count_unloop(neuronId, localId, dendrite_count);
       INSERT
         INTO htm.dendrite (id, class)
         VALUES (dendriteId, 'distal');
     END LOOP;
   END LOOP;
 
-  RAISE NOTICE 'Inserting % Dendrites (Proximal)...', ColumnCount;
+  RAISE NOTICE 'Inserting % Dendrites (Proximal)...', column_count;
   
-  FOR columnId IN 1..ColumnCount LOOP
+  FOR columnId IN 1..column_count LOOP
     INSERT
       INTO htm.dendrite (id, class)
       VALUES (dendriteId + columnId, 'proximal');

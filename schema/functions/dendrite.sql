@@ -10,9 +10,9 @@ CREATE FUNCTION htm.dendrite_is_active(active_synapses INTEGER)
 RETURNS BOOL
 AS $$ 
 DECLARE
-  DendriteThreshold CONSTANT NUMERIC := htm.var('DendriteThreshold');
+  dendrite_threshold CONSTANT NUMERIC := htm.var('dendrite_threshold');
 BEGIN
-  RETURN active_synapses > DendriteThreshold;
+  RETURN active_synapses > dendrite_threshold;
 END; 
 $$ LANGUAGE plpgsql;
 

@@ -12,7 +12,7 @@ SELECT plan(0);  -- Test count
 
 SELECT is(
   array_length(sp_column_active(ARRAY[0,1,2]), 1),
-  const('ColumnThreshold')::INTEGER,
+  const('column_threshold')::INTEGER,
   'sp_column_active() seems to be working'
 );
 
@@ -26,10 +26,10 @@ SELECT row_eq($$
   SELECT COUNT(id) > 0
     FROM synapse
     WHERE permanence < (
-      var('SynapseThreshold')::NUMERIC - var('SynapseDecrement')::NUMERIC
+      var('synapse_threshold')::NUMERIC - var('synapse_decrement')::NUMERIC
     )
     OR permanence > (
-      var('SynapseThreshold')::NUMERIC + var('SynapseIncrement')::NUMERIC
+      var('synapse_threshold')::NUMERIC + var('synapse_increment')::NUMERIC
     );
   $$,
   ROW(FALSE::BOOLEAN),
@@ -44,10 +44,10 @@ SELECT row_eq($$
   SELECT COUNT(id) > 0
     FROM synapse
     WHERE permanence < (
-      var('SynapseThreshold')::NUMERIC - var('SynapseDecrement')::NUMERIC
+      var('synapse_threshold')::NUMERIC - var('synapse_decrement')::NUMERIC
     )
     OR permanence > (
-      var('SynapseThreshold')::NUMERIC + var('SynapseIncrement')::NUMERIC
+      var('synapse_threshold')::NUMERIC + var('synapse_increment')::NUMERIC
     );
   $$,
   ROW(TRUE::BOOLEAN),
@@ -61,7 +61,7 @@ SELECT is(
 );
 SELECT is(
   array_length(sp_compute(ARRAY[0,1,2]), 1),
-  const('ColumnThreshold')::INTEGER,
+  const('column_threshold')::INTEGER,
   'sp_compute() works during compute_iteration increment test'
 );
 SELECT is(
