@@ -63,10 +63,9 @@ cd ../..
 
 #### Test
 
-Expecting:
-* OS/X default system Perl
+* Expecting: Perl (OS/X system default)
 
-Unit Testing:
+**Unit Testing:**
 
 ```bash
 git clone https://github.com/theory/pgtap.git
@@ -86,7 +85,7 @@ cd pghtm/bin
 cd ../..
 ```
 
-Code Coverage:
+**Code Coverage:**
 
 ```bash
 brew install ruby 
@@ -171,4 +170,11 @@ SET auto_explain.log_min_duration = 0;
 SET auto_explain.log_analyze  = TRUE;
 # Run a query, Ludicrous amounts of Info
 ```
+
+
+## License
+
+Private/Unreleased License TODO
+
+Copyright (C) 2019 - Brev Patterson, Lux Rota LLC
 
