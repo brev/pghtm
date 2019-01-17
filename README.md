@@ -15,11 +15,11 @@ detection.
 
 ## Requirements
 
-Main
+**Main**
 
 * [PostgreSQL](https://www.postgresql.org/) Backend
 
-Test
+**Test**
 
 * Unit Testing:
   * [Perl](https://www.perl.org/)
@@ -28,7 +28,7 @@ Test
   * [Ruby](https://www.ruby-lang.org/)
   * [piggly](http://kputnam.github.io/piggly/) + activerecord
 
-Web UI
+**Web UI**
 
 * [GraphQL](https://graphql.org/) Midddleware
   * [Docker](https://www.docker.com/)
@@ -38,9 +38,10 @@ Web UI
   * [React](https://reactjs.org/) 
       ([create-react-app](https://facebook.github.io/create-react-app/))
 
+
 ## Setup
 
-### Development: Mac OS/X
+### Development @ Mac OS/X
 
 * Expecting: [Homebrew](https://brew.sh/)
 
