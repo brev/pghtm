@@ -3,44 +3,41 @@
 > **PRIVATE! Not yet for public consumption.**
 
 [Hierarchical Temporal Memory](https://www.numenta.com/machine-intelligence-technology/) 
-(HTM) in PostgreSQL.  Machine Intelligence Neurotechnology for streaming 
-prediction and anomaly detection.
+(HTM) in PostgreSQL.  
+
+Machine Intelligence Neurotechnology for streaming prediction and anomaly 
+detection.
 
 * [ ] Encoders
 * [x] Spatial Pooler
 * [ ] Temporal Memory
 
 
-# Install
-
 ## Requirements
 
-### Main
+* Main
+  * [PostgreSQL](https://www.postgresql.org/) Backend
 
-* [PostgreSQL](https://www.postgresql.org/) Backend
+* Test
+  * Unit Testing:
+    * [Perl](https://www.perl.org/)
+    * [pgTAP](https://pgtap.org/) + pg_prove
+  * Code Coverage ([plpgsql](https://en.wikipedia.org/wiki/PL/pgSQL)):
+    * [Ruby](https://www.ruby-lang.org/)
+    * [piggly](http://kputnam.github.io/piggly/) + activerecord
 
-### Test
+* Web UI
+  * [GraphQL](https://graphql.org/) Midddleware
+    * [Docker](https://www.docker.com/)
+    * [Hasura](https://hasura.io/)
+  * Web Frontend
+    * [Node.js](https://nodejs.org/)
+    * [React](https://reactjs.org/) 
+        ([create-react-app](https://facebook.github.io/create-react-app/))
 
-* Unit Testing:
-  * [Perl](https://www.perl.org/)
-  * [pgTAP](https://pgtap.org/) + pg_prove
-* Code Coverage ([plpgsql](https://en.wikipedia.org/wiki/PL/pgSQL)):
-  * [Ruby](https://www.ruby-lang.org/)
-  * [piggly](http://kputnam.github.io/piggly/) + activerecord
+## Setup
 
-### Web UI
-
-* [GraphQL](https://graphql.org/) Midddleware
-  * [Docker](https://www.docker.com/)
-  * [Hasura](https://hasura.io/)
-* Web Frontend
-  * [Node.js](https://nodejs.org/)
-  * [React](https://reactjs.org/) 
-      ([create-react-app](https://facebook.github.io/create-react-app/))
-
-## Development
- 
-### Mac OS/X Darwin
+### Development: Mac OS/X
 
 * Expecting: [Homebrew](https://brew.sh/)
 
@@ -126,7 +123,7 @@ npm start
 ```
 
 
-# Usage
+## Usage
 
 * After first use, the initial data tests (above) will no longer pass.
 * Try the more modern `pgcli` client instead of stock `psql`.
@@ -147,7 +144,7 @@ SELECT indexes, columns_active FROM htm.input;
 ```
 
 
-# Debug
+## Debug
 
 ```bash
 psql
