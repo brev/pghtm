@@ -9,11 +9,11 @@ SELECT plan(21);  -- Test count
 
 SELECT has_table('input');
 SELECT columns_are('input', ARRAY[
-  'id', 
-  'created', 
+  'id',
+  'created',
   'modified',
   'ts',
-  'indexes', 
+  'indexes',
   'columns_active'
 ]);
 SELECT has_pk('input');

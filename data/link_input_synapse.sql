@@ -13,7 +13,7 @@ DECLARE
   SynapseStart INT := dendrite_count * neuron_count * synapse_count;
   linkId INT;
 BEGIN
-  RAISE NOTICE 'Inserting % Links (Input => Synapse)...', 
+  RAISE NOTICE 'Inserting % Links (Input => Synapse)...',
     (column_count * synapse_count);
 
   FOR localColumnId IN 1..column_count LOOP
@@ -22,8 +22,8 @@ BEGIN
       INSERT
         INTO htm.link_input_synapse(id, input_index, synapse_id)
         VALUES (
-          linkId, 
-          htm.random_range_int(1, input_width), 
+          linkId,
+          htm.random_range_int(1, input_width),
           SynapseStart + linkId
         );
     END LOOP;

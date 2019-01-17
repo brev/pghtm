@@ -1,4 +1,4 @@
-/** 
+/**
  * Link: Axon from Neuron to Synapse Data
  */
 
@@ -14,7 +14,7 @@ BEGIN
   RAISE NOTICE 'Inserting % Links (Neuron => Synapse)...', TotalSynapse;
 
   FOR synapseId IN 1..TotalSynapse LOOP
-    neuronId := htm.random_range_int(1, neuron_count); 
+    neuronId := htm.random_range_int(1, neuron_count);
     INSERT
       INTO htm.link_neuron_synapse(id, neuron_id, synapse_id)
       VALUES (synapseId, neuronId, synapseId);

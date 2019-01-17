@@ -1,7 +1,6 @@
 # Current
 
 * code flow chart
-* ditch empty space chars
 * Make config read-only fields work
 * WebUI
 * Temporal Memory

@@ -13,7 +13,7 @@ SELECT function_lang_is('boost_factor_compute', 'plpgsql');
 SELECT function_returns('boost_factor_compute', 'numeric');
 SELECT is(
   boost_factor_compute(0.5, 0.5),
-  (CASE 
+  (CASE
     WHEN htm.config('sp_learn')::BOOLEAN
       THEN EXP((0 - htm.config('boost_strength')::NUMERIC) * (0.5 - 0.5))
     ELSE 1
@@ -22,7 +22,7 @@ SELECT is(
 );
 SELECT is(
   boost_factor_compute(0.5, 1.0),
-  (CASE 
+  (CASE
     WHEN htm.config('sp_learn')::BOOLEAN
       THEN EXP((0 - htm.config('boost_strength')::NUMERIC) * (0.5 - 1.0))
     ELSE 1
@@ -31,7 +31,7 @@ SELECT is(
 );
 SELECT is(
   boost_factor_compute(1.0, 0.5),
-  (CASE 
+  (CASE
     WHEN htm.config('sp_learn')::BOOLEAN
       THEN EXP((0 - htm.config('boost_strength')::NUMERIC) * (1.0 - 0.5))
     ELSE 1
@@ -66,13 +66,13 @@ SELECT function_lang_is('duty_cycle_period', 'plpgsql');
 SELECT function_returns('duty_cycle_period', 'integer');
 SELECT is(
   duty_cycle_period(),
-  0, 
+  0,
   'duty_cycle_period() works before input data rows'
 );
 INSERT INTO input (indexes) VALUES (ARRAY[0,1,2]);
 SELECT is(
   duty_cycle_period(),
-  1, 
+  1,
   'duty_cycle_period() works after input data rows'
 );
 DELETE FROM input;
@@ -94,33 +94,33 @@ SELECT has_function('random_range_numeric', ARRAY['numeric', 'numeric']);
 SELECT function_lang_is('random_range_numeric', 'plpgsql');
 SELECT function_returns('random_range_numeric', 'numeric');
 SELECT cmp_ok(
-  random_range_numeric(7.0, 9.0), 
-  '>=', 
-  7.0, 
+  random_range_numeric(7.0, 9.0),
+  '>=',
+  7.0,
   'random_range_numeric() works lo'
 );
 SELECT cmp_ok(
-  random_range_numeric(7.0, 9.0), 
-  '<=', 
-  9.0, 
+  random_range_numeric(7.0, 9.0),
+  '<=',
+  9.0,
   'random_range_numeric() works hi'
 );
 
 -- test running_moving_average()
 SELECT has_function(
-  'running_moving_average', 
+  'running_moving_average',
   ARRAY['numeric', 'numeric', 'integer']
 );
 SELECT function_lang_is('running_moving_average', 'plpgsql');
 SELECT function_returns('running_moving_average', 'numeric');
 SELECT is(
-  running_moving_average(0.5, 0, 1000), 
-  0.4995, 
+  running_moving_average(0.5, 0, 1000),
+  0.4995,
   'running_moving_average() works lo'
 );
 SELECT is(
-  running_moving_average(0.5, 1, 1000), 
-  0.5005, 
+  running_moving_average(0.5, 1, 1000),
+  0.5005,
   'running_moving_average() works hi'
 );
 

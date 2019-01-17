@@ -14,22 +14,22 @@ SELECT function_returns('synapse_is_connected', 'boolean');
 SELECT is(synapse_is_connected(0.00), false, 'synapse_is_connected() works min');
 SELECT is(
   synapse_is_connected(
-    config('synapse_threshold')::NUMERIC - 
+    config('synapse_threshold')::NUMERIC -
     config('synapse_decrement')::NUMERIC
-  ), 
+  ),
   false,
   'synapse_is_connected() false under threshold'
 );
 SELECT is(
-  synapse_is_connected(config('synapse_threshold')::NUMERIC), 
+  synapse_is_connected(config('synapse_threshold')::NUMERIC),
   false,
   'synapse_is_connected() false on threshold'
 );
 SELECT is(
   synapse_is_connected(
-    config('synapse_threshold')::NUMERIC + 
+    config('synapse_threshold')::NUMERIC +
     config('synapse_increment')::NUMERIC
-  ), 
+  ),
   true,
   'synapse_is_connected() true beyond threshold'
 );
@@ -40,14 +40,14 @@ SELECT has_function('synapse_permanence_decrement', ARRAY['numeric']);
 SELECT function_lang_is('synapse_permanence_decrement', 'plpgsql');
 SELECT function_returns('synapse_permanence_decrement', 'numeric');
 SELECT is(
-  synapse_permanence_decrement(0.00001), 
-  0.0, 
+  synapse_permanence_decrement(0.00001),
+  0.0,
   'synapse_permanence_decrement() unlearns down to min 0.0'
 );
 SELECT cmp_ok(
-  synapse_permanence_decrement(0.11), 
-  '<', 
-  0.11, 
+  synapse_permanence_decrement(0.11),
+  '<',
+  0.11,
   'synapse_permanence_decrement() unlearns down below threshold'
 );
 
@@ -56,14 +56,14 @@ SELECT has_function('synapse_permanence_increment', ARRAY['numeric']);
 SELECT function_lang_is('synapse_permanence_increment', 'plpgsql');
 SELECT function_returns('synapse_permanence_increment', 'numeric');
 SELECT cmp_ok(
-  synapse_permanence_increment(0.88), 
-  '>', 
-  0.88, 
+  synapse_permanence_increment(0.88),
+  '>',
+  0.88,
   'synapse_permanence_increment() learns up above threshold'
 );
 SELECT is(
-  synapse_permanence_increment(0.99999), 
-  1.0, 
+  synapse_permanence_increment(0.99999),
+  1.0,
   'synapse_permanence_increment() learns up to max 1.0'
 );
 

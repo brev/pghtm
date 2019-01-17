@@ -8,8 +8,8 @@ SELECT plan(1);  -- Test count
 
 
 SELECT row_eq(
-  $$ SELECT COUNT(id) FROM config $$, 
-  ROW(1::BIGINT), 
+  $$ SELECT COUNT(id) FROM config $$,
+  ROW(1::BIGINT),
   'Variables table has valid data'
 );
 

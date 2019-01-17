@@ -1,7 +1,7 @@
 /**
  * Input/SDR Data
  */
-  
+
 -- disable triggers on table for initial data fill
 -- ALTER TABLE htm.input DISABLE TRIGGER USER;
 

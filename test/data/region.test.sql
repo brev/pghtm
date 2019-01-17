@@ -8,8 +8,8 @@ SELECT plan(3);  -- Test count
 
 
 SELECT row_eq(
-  $$ SELECT COUNT(id) FROM region $$, 
-  ROW(1::BIGINT), 
+  $$ SELECT COUNT(id) FROM region $$,
+  ROW(1::BIGINT),
   'Region has valid data'
 );
 

@@ -12,9 +12,9 @@ CREATE FUNCTION htm.input_columns_active_update()
 RETURNS TRIGGER
 AS $$
 BEGIN
-  PERFORM htm.log('have winner columns, storing in input table'); 
+  PERFORM htm.log('have winner columns, storing in input table');
   WITH input_next AS (
-    SELECT 
+    SELECT
       input.id,
       (SELECT ARRAY(
         SELECT id from htm.column_active ORDER BY id
@@ -22,13 +22,13 @@ BEGIN
     FROM htm.input
     WHERE input.columns_active IS NULL
     ORDER BY input.id DESC
-    LIMIT 1 
+    LIMIT 1
   )
   UPDATE htm.input
     SET columns_active = input_next.columns_active
     FROM input_next
     WHERE input_next.id = input.id;
-  
+
   RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
@@ -37,7 +37,7 @@ $$ LANGUAGE plpgsql;
  * Get current system compute iteration count. # of Rows from htm.input.
  */
 CREATE FUNCTION htm.input_rows_count()
-RETURNS BIGINT 
+RETURNS BIGINT
 AS $$
 DECLARE
   iteration CONSTANT BIGINT := (SELECT COUNT(input.id) FROM htm.input);

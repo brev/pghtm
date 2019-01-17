@@ -4,17 +4,17 @@
 
 
 /**
- * Check if a synapse is considered connected (above permanence threshold) 
+ * Check if a synapse is considered connected (above permanence threshold)
  *  or not (potential).
  */
 CREATE FUNCTION htm.synapse_is_connected(permanence NUMERIC)
 RETURNS BOOL
-AS $$ 
+AS $$
 DECLARE
   synapse_threshold CONSTANT NUMERIC := htm.config('synapse_threshold');
 BEGIN
   RETURN permanence > synapse_threshold;
-END; 
+END;
 $$ LANGUAGE plpgsql;
 
 /**
@@ -22,12 +22,12 @@ $$ LANGUAGE plpgsql;
  */
 CREATE FUNCTION htm.synapse_permanence_decrement(permanence NUMERIC)
 RETURNS NUMERIC
-AS $$ 
+AS $$
 DECLARE
   decrement CONSTANT NUMERIC := htm.config('synapse_decrement');
 BEGIN
   RETURN GREATEST(permanence - decrement, 0.0);
-END; 
+END;
 $$ LANGUAGE plpgsql;
 
 /**
@@ -35,12 +35,12 @@ $$ LANGUAGE plpgsql;
  */
 CREATE FUNCTION htm.synapse_permanence_increment(permanence NUMERIC)
 RETURNS NUMERIC
-AS $$ 
+AS $$
 DECLARE
   increment CONSTANT NUMERIC := htm.config('synapse_increment');
 BEGIN
   RETURN LEAST(permanence + increment, 1.0);
-END; 
+END;
 $$ LANGUAGE plpgsql;
 
 /**
@@ -50,10 +50,10 @@ $$ LANGUAGE plpgsql;
  */
 CREATE FUNCTION htm.synapse_permanence_boost_update()
 RETURNS TRIGGER
-AS $$ 
+AS $$
 DECLARE
 BEGIN
-  PERFORM htm.log('synapse boosting'); 
+  PERFORM htm.log('synapse boosting');
   WITH synapse_next AS (
     SELECT
       synapse.id,
@@ -76,20 +76,20 @@ BEGIN
     WHERE synapse_next.id = synapse.id;
 
   RETURN NULL;
-END; 
+END;
 $$ LANGUAGE plpgsql;
 
 /**
  * Perform Hebbian-style learning on synapse permanences. This is based on
- *  recently-actived winners in column_active. This was triggered from an 
+ *  recently-actived winners in column_active. This was triggered from an
  *  update on the column table.
  */
 CREATE FUNCTION htm.synapse_permanence_learn_update()
 RETURNS TRIGGER
-AS $$ 
+AS $$
 DECLARE
 BEGIN
-  PERFORM htm.log('synapse learning'); 
+  PERFORM htm.log('synapse learning');
   WITH synapse_next AS (
     SELECT
       synapse.id,
@@ -116,6 +116,6 @@ BEGIN
     WHERE synapse_next.id = synapse.id;
 
   RETURN NULL;
-END; 
+END;
 $$ LANGUAGE plpgsql;
 

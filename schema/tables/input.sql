@@ -5,8 +5,8 @@ CREATE TABLE htm.input (
   id        SERIAL PRIMARY KEY,
   created   TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
   modified  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
- 
-  -- input data 
+
+  -- input data
   ts        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
   indexes   INTEGER[] NOT NULL,
 

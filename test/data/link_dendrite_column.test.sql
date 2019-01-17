@@ -8,8 +8,8 @@ SELECT plan(1);  -- Test count
 
 
 SELECT row_eq(
-  $$ SELECT COUNT(id) FROM link_dendrite_column; $$, 
-  ROW(config('column_count')::BIGINT), 
+  $$ SELECT COUNT(id) FROM link_dendrite_column; $$,
+  ROW(config('column_count')::BIGINT),
   'Link_Dendrite_Column has valid data'
 );
 

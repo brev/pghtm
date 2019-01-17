@@ -9,7 +9,7 @@ SELECT plan(14);  -- Test count
 
 SELECT has_table('link_input_synapse');
 SELECT columns_are(
-  'link_input_synapse', 
+  'link_input_synapse',
   ARRAY['id', 'input_index', 'synapse_id']
 );
 SELECT has_pk('link_input_synapse');

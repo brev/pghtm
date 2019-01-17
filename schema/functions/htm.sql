@@ -7,11 +7,11 @@
  * HTM - SP Calculate new boosting factor (per Column).
  */
 CREATE FUNCTION htm.boost_factor_compute(
-  duty_cycle NUMERIC, 
+  duty_cycle NUMERIC,
   target_density NUMERIC
 )
 RETURNS NUMERIC
-AS $$ 
+AS $$
 DECLARE
   learning CONSTANT BOOL := htm.config('sp_learn');
   strength CONSTANT NUMERIC := htm.config('boost_strength');
@@ -21,7 +21,7 @@ BEGIN
   ELSE
     RETURN 1;  -- learning off
   END IF;
-END; 
+END;
 $$ LANGUAGE plpgsql;
 
 /**
@@ -30,16 +30,16 @@ $$ LANGUAGE plpgsql;
  */
 CREATE FUNCTION htm.config(key VARCHAR)
 RETURNS VARCHAR
-AS $$ 
+AS $$
 DECLARE
   result VARCHAR;
 BEGIN
-  EXECUTE 
+  EXECUTE
     FORMAT('SELECT %I FROM htm.config LIMIT 1', key)
     INTO result;
 
   RETURN result;
-END; 
+END;
 $$ LANGUAGE plpgsql;
 
 /**
@@ -47,17 +47,17 @@ $$ LANGUAGE plpgsql;
  */
 CREATE FUNCTION htm.count_unloop(outerCount INT, innerCount INT, innerMax INT)
 RETURNS INT
-AS $$ 
+AS $$
 BEGIN
   RETURN ((outerCount - 1) * innerMax) + innerCount;
-END; 
+END;
 $$ LANGUAGE plpgsql;
 
 /**
  * HTM - Get ideal duty cycle period value from several options.
  * @SpatialPooler
  */
-CREATE FUNCTION htm.duty_cycle_period() 
+CREATE FUNCTION htm.duty_cycle_period()
 RETURNS INTEGER
 AS $$
 DECLARE
@@ -71,13 +71,13 @@ $$ LANGUAGE plpgsql;
 /**
  * Raise a notice message (log output)
  */
-CREATE FUNCTION htm.log(text) 
+CREATE FUNCTION htm.log(text)
 RETURNS BOOLEAN
 AS $$
 DECLARE
   logging CONSTANT BOOLEAN := htm.config('logging');
 BEGIN
-  IF logging THEN 
+  IF logging THEN
     RAISE NOTICE '%', $1;
   END IF;
   RETURN logging;
@@ -87,8 +87,8 @@ $$ LANGUAGE plpgsql;
 /**
  * HTM - Generate a random integer between low and high constraints.
  */
-CREATE FUNCTION htm.random_range_int(low INT, high INT) 
-RETURNS INT 
+CREATE FUNCTION htm.random_range_int(low INT, high INT)
+RETURNS INT
 AS $$
 BEGIN
    RETURN FLOOR((RANDOM() * (high - low + 1)) + low);
@@ -98,7 +98,7 @@ $$ LANGUAGE plpgsql;
 /**
  * HTM - Generate a random float between low and high constraints.
  */
-CREATE FUNCTION htm.random_range_numeric(low NUMERIC, high NUMERIC) 
+CREATE FUNCTION htm.random_range_numeric(low NUMERIC, high NUMERIC)
 RETURNS NUMERIC
 AS $$
 BEGIN
@@ -111,10 +111,10 @@ $$ LANGUAGE plpgsql;
  * @SpatialPooler
  */
 CREATE FUNCTION htm.running_moving_average(
-  previous NUMERIC, 
-  next NUMERIC, 
+  previous NUMERIC,
+  next NUMERIC,
   period INTEGER
-) 
+)
 RETURNS NUMERIC
 AS $$
 DECLARE
@@ -127,7 +127,7 @@ $$ LANGUAGE plpgsql;
 /**
  * HTM - Auto-update a "modified" column/field (like htm.input table) to now().
  */
-CREATE FUNCTION htm.schema_modified_update() 
+CREATE FUNCTION htm.schema_modified_update()
 RETURNS TRIGGER
 AS $$
 BEGIN
@@ -140,8 +140,8 @@ $$ LANGUAGE plpgsql;
 /**
  * HTM - Wrap array index around the array, either direction.
  */
-CREATE FUNCTION htm.wrap_array_index(target INT, max INT) 
-RETURNS INT 
+CREATE FUNCTION htm.wrap_array_index(target INT, max INT)
+RETURNS INT
 AS $$
 DECLARE
   result INT;

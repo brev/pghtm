@@ -8,7 +8,7 @@
  *  Used to select winning active columns.
  */
 CREATE FUNCTION htm.column_active_get_threshold()
-RETURNS BIGINT 
+RETURNS BIGINT
 AS $$
 DECLARE
   threshold CONSTANT BIGINT := htm.config('column_threshold');
@@ -32,7 +32,7 @@ $$ LANGUAGE plpgsql;
  * Update column.duty_cycle_(active/overlap) based on changes to
  *  previous views (after new input).
  */
-CREATE FUNCTION htm.column_boost_duty_update() 
+CREATE FUNCTION htm.column_boost_duty_update()
 RETURNS TRIGGER
 AS $$
 DECLARE
@@ -40,7 +40,7 @@ DECLARE
 BEGIN
   PERFORM htm.log('new input, updating column duty cycles, etc.');
   WITH column_next AS (
-    SELECT 
+    SELECT
       htm.column.id,
       htm.boost_factor_compute(
         htm.running_moving_average(
@@ -77,13 +77,13 @@ BEGIN
       column_overlap_boost.overlap
   )
   UPDATE htm.column
-    SET 
+    SET
       boost_factor = column_next.boost_factor,
       duty_cycle_active = column_next.duty_cycle_active,
       duty_cycle_overlap = column_next.duty_cycle_overlap
     FROM column_next
     WHERE column_next.id = htm.column.id;
-  
+
   RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;

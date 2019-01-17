@@ -21,7 +21,7 @@ CREATE TABLE htm.config (
   synapse_decrement   NUMERIC NOT NULL,
   synapse_increment   NUMERIC NOT NULL,
   synapse_threshold   NUMERIC NOT NULL,
-  
+
   CHECK (id = 1)
 );
 

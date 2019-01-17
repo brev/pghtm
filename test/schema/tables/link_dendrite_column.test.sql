@@ -9,7 +9,7 @@ SELECT plan(13);  -- Test count
 
 SELECT has_table('link_dendrite_column');
 SELECT columns_are(
-  'link_dendrite_column', 
+  'link_dendrite_column',
   ARRAY['id', 'dendrite_id', 'column_id']
 );
 SELECT has_pk('link_dendrite_column');

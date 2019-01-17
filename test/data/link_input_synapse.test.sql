@@ -8,17 +8,17 @@ SELECT plan(2);  -- Test count
 
 
 SELECT row_eq(
-  $$ SELECT COUNT(id) FROM link_input_synapse; $$, 
+  $$ SELECT COUNT(id) FROM link_input_synapse; $$,
   ROW((
     config('column_count')::INT *
     config('synapse_count')::INT
-  )::BIGINT), 
+  )::BIGINT),
   'Link_Input_Synapse has valid data'
 );
 
 SELECT throws_ok('
-    INSERT INTO link_input_synapse VALUES 
-      (12345, 10, 22), 
+    INSERT INTO link_input_synapse VALUES
+      (12345, 10, 22),
       (12345, 10, 22);
   ',
   'duplicate key value violates unique constraint "link_input_synapse_pkey"',

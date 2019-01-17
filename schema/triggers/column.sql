@@ -22,8 +22,8 @@ CREATE TRIGGER trigger_column_region_duty_cycles_change
   EXECUTE FUNCTION htm.region_duty_cycles_update();
 
 /**
- * After column dutycyles are updated, we can complete this small last 
- *  bit of boosting. Columns running under the mean average overlap duty 
+ * After column dutycyles are updated, we can complete this small last
+ *  bit of boosting. Columns running under the mean average overlap duty
  *  cycle have all their synapse permanences incremented.
  */
 CREATE TRIGGER trigger_column_synapse_permanence_boost_change

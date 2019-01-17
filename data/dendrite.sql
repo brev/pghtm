@@ -1,4 +1,4 @@
-/** 
+/**
  * Dendrite Data
  */
 
@@ -10,7 +10,7 @@ DECLARE
   neuron_count INT := htm.config('neuron_count');
   dendriteId INT;
 BEGIN
-  RAISE NOTICE 'Inserting % Dendrites (Distal)...', 
+  RAISE NOTICE 'Inserting % Dendrites (Distal)...',
     (neuron_count * dendrite_count);
 
   FOR neuronId IN 1..neuron_count LOOP
@@ -23,7 +23,7 @@ BEGIN
   END LOOP;
 
   RAISE NOTICE 'Inserting % Dendrites (Proximal)...', column_count;
-  
+
   FOR columnId IN 1..column_count LOOP
     INSERT
       INTO htm.dendrite (id, class)

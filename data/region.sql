@@ -7,7 +7,7 @@ BEGIN
   RAISE NOTICE 'Inserting 1 Region...';
 
   INSERT INTO htm.region (
-    id, 
+    id,
     duty_cycle_active_mean,
     duty_cycle_overlap_mean
   )

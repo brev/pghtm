@@ -23,7 +23,7 @@ SELECT is(
   END),
   'column_active_get_threshold() works'
 );
-     
+
 -- test column_boost_duty_update()
 SELECT has_function('column_boost_duty_update');
 SELECT function_lang_is('column_boost_duty_update', 'plpgsql');

@@ -9,11 +9,11 @@ SELECT plan(21);  -- Test count
 
 SELECT has_table('column');
 SELECT columns_are('column', ARRAY[
-  'id', 
+  'id',
   'boost_factor',
   'duty_cycle_active',
   'duty_cycle_overlap',
-  'region_id', 
+  'region_id',
   'x_coord'
 ]);
 SELECT has_pk('column');

@@ -8,11 +8,11 @@ SELECT plan(1);  -- Test count
 
 
 SELECT row_eq(
-  $$ SELECT COUNT(id) FROM link_dendrite_neuron; $$, 
+  $$ SELECT COUNT(id) FROM link_dendrite_neuron; $$,
   ROW((
     config('neuron_count')::INT *
     config('dendrite_count')::INT
-  )::BIGINT), 
+  )::BIGINT),
   'Link_Dendrite_Neuron has valid data'
 );
 

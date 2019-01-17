@@ -10,26 +10,26 @@ BEGIN
   ALTER TABLE htm.column DISABLE TRIGGER USER;
 
   RAISE NOTICE 'Inserting % Columns...', column_count;
-  
+
   FOR columnId IN 1..column_count LOOP
     INSERT INTO htm.column (
-      id, 
+      id,
       boost_factor,
-      duty_cycle_active, 
+      duty_cycle_active,
       duty_cycle_overlap,
-      region_id, 
+      region_id,
       x_coord
     )
     VALUES (
-      columnId, 
+      columnId,
       0.0,
-      1.0, 
       1.0,
-      1, 
+      1.0,
+      1,
       columnId
     );
   END LOOP;
-  
+
   -- re-enable triggers on table for normal functioning
   ALTER TABLE htm.column ENABLE TRIGGER USER;
 END

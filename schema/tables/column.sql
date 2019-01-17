@@ -6,9 +6,9 @@ CREATE TABLE htm.column (
   boost_factor        NUMERIC NOT NULL,
   duty_cycle_active   NUMERIC NOT NULL,
   duty_cycle_overlap  NUMERIC NOT NULL,
-  region_id           INTEGER NOT NULL, 
+  region_id           INTEGER NOT NULL,
   x_coord             INTEGER NOT NULL,
-  
+
   FOREIGN KEY (region_id)
     REFERENCES htm.region(id)
     ON UPDATE CASCADE

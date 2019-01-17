@@ -8,24 +8,24 @@ SELECT plan(3);  -- Test count
 
 
 SELECT row_eq(
-  $$ SELECT COUNT(id) FROM synapse; $$, 
+  $$ SELECT COUNT(id) FROM synapse; $$,
   ROW((
     (
-      config('neuron_count')::INT * 
+      config('neuron_count')::INT *
       config('dendrite_count')::INT *
       config('synapse_count')::INT
     ) + (
       config('column_count')::INT *
       config('synapse_count')::INT
     )
-  )::BIGINT), 
+  )::BIGINT),
   'Synapse has valid count total'
 );
 
 SELECT row_eq(
-  $$ 
+  $$
     SELECT (COUNT(id) > 0)
-    FROM synapse 
+    FROM synapse
     WHERE permanence < (
       config('synapse_threshold')::NUMERIC - config('synapse_decrement')::NUMERIC
     )
@@ -38,9 +38,9 @@ SELECT row_eq(
 );
 INSERT INTO input (indexes) VALUES (ARRAY[0,1,2,3,4]);
 SELECT row_eq(
-  $$ 
+  $$
     SELECT (COUNT(id) > 0)
-    FROM synapse 
+    FROM synapse
     WHERE permanence < (
       config('synapse_threshold')::NUMERIC - config('synapse_decrement')::NUMERIC
     )

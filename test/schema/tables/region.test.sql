@@ -9,7 +9,7 @@ SELECT plan(12);  -- Test count
 
 SELECT has_table('region');
 SELECT columns_are(
-  'region', 
+  'region',
   ARRAY [
     'id',
     'duty_cycle_active_mean',
