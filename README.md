@@ -1,6 +1,6 @@
 # pgHTM
 
-<font color="red">**PRIVATE! Not yet for public consumption.**</font>
+> **PRIVATE! Not yet for public consumption.**
 
 [Hierarchical Temporal Memory](https://www.numenta.com/machine-intelligence-technology/) 
 (HTM) in PostgreSQL.  Machine Intelligence Neurotechnology for streaming 
