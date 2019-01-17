@@ -1,14 +1,10 @@
 # pgHTM
 
+<font color="red">**PRIVATE! Not yet for public consumption.**</font>
+
 [Hierarchical Temporal Memory](https://www.numenta.com/machine-intelligence-technology/) 
-(HTM) in PostgreSQL.
-
-**PRIVATE! Not yet for public consumption.**
-
-
-# About
-
-Machine Intelligence Neuro-technology. BLAH BLAH.
+(HTM) in PostgreSQL.  Machine Intelligence Neurotechnology for streaming 
+prediction and anomaly detection.
 
 * [ ] Encoders
 * [x] Spatial Pooler
