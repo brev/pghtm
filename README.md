@@ -15,25 +15,28 @@ detection.
 
 ## Requirements
 
-* Main
-  * [PostgreSQL](https://www.postgresql.org/) Backend
+Main
 
-* Test
-  * Unit Testing:
-    * [Perl](https://www.perl.org/)
-    * [pgTAP](https://pgtap.org/) + pg_prove
-  * Code Coverage ([plpgsql](https://en.wikipedia.org/wiki/PL/pgSQL)):
-    * [Ruby](https://www.ruby-lang.org/)
-    * [piggly](http://kputnam.github.io/piggly/) + activerecord
+* [PostgreSQL](https://www.postgresql.org/) Backend
 
-* Web UI
-  * [GraphQL](https://graphql.org/) Midddleware
-    * [Docker](https://www.docker.com/)
-    * [Hasura](https://hasura.io/)
-  * Web Frontend
-    * [Node.js](https://nodejs.org/)
-    * [React](https://reactjs.org/) 
-        ([create-react-app](https://facebook.github.io/create-react-app/))
+Test
+
+* Unit Testing:
+  * [Perl](https://www.perl.org/)
+  * [pgTAP](https://pgtap.org/) + pg_prove
+* Code Coverage ([plpgsql](https://en.wikipedia.org/wiki/PL/pgSQL)):
+  * [Ruby](https://www.ruby-lang.org/)
+  * [piggly](http://kputnam.github.io/piggly/) + activerecord
+
+Web UI
+
+* [GraphQL](https://graphql.org/) Midddleware
+  * [Docker](https://www.docker.com/)
+  * [Hasura](https://hasura.io/)
+* Web Frontend
+  * [Node.js](https://nodejs.org/)
+  * [React](https://reactjs.org/) 
+      ([create-react-app](https://facebook.github.io/create-react-app/))
 
 ## Setup
 
