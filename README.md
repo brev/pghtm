@@ -1,110 +1,177 @@
 # pgHTM
 
-Hierarchical Temporal Memory (HTM) in PostgreSQL.
+[Hierarchical Temporal Memory](https://www.numenta.com/machine-intelligence-technology/) 
+(HTM) in PostgreSQL.
 
 **PRIVATE! Not yet for public consumption.**
 
 
+# About
+
+Machine Intelligence Neuro-technology. BLAH BLAH.
+
+* [ ] Encoders
+* [x] Spatial Pooler
+* [ ] Temporal Memory
+
+
+# Install
+
 ## Requirements
 
-### Production / Users
+### Main
 
-* PostgreSQL - Database Engine
-* pgHTM - This Schema
+* [PostgreSQL](https://www.postgresql.org/) Backend
 
-### Development & Testing
+### Test
 
-* Perl & CPAN - Perl Engine
-* Ruby, Gems, Activerecord - Ruby Engine
-* pgTAP + pg_prove - Unit Testing (full schema)
-* piggly - Code Coverage (plpgsql functions only)
+* Unit Testing:
+  * [Perl](https://www.perl.org/)
+  * [pgTAP](https://pgtap.org/) + pg_prove
+* Code Coverage ([plpgsql](https://en.wikipedia.org/wiki/PL/pgSQL)):
+  * [Ruby](https://www.ruby-lang.org/)
+  * [piggly](http://kputnam.github.io/piggly/) + activerecord
 
-### Admin / Visualization
+### Web UI
 
-* Docker - Container Engine
-* Node.js & npm or yarn - Javscript Engine
-* Hasura - GraphQL API Layer for Postgres
-* React (create-react-app) - Web Browser UI Engine
+* [GraphQL](https://graphql.org/) Midddleware
+  * [Docker](https://www.docker.com/)
+  * [Hasura](https://hasura.io/)
+* Web Frontend
+  * [Node.js](https://nodejs.org/)
+  * [React](https://reactjs.org/) 
+      ([create-react-app](https://facebook.github.io/create-react-app/))
 
+## Development
+ 
+### Mac OS/X Darwin
 
-## Installation
+* Expecting: [Homebrew](https://brew.sh/)
 
-### Development @ Mac OS/X
-
-Reccomended Sources:
-* **System**: Perl
-* **Homebrew**: Postgres, Ruby, Node.js
-* **Homebrew Cask**: Docker
+#### Main
 
 ```bash
-# clone repo into pghtm/ subdir of your src/ code dir
-pushd src/
-git clone git@github.com:brev/pghtm.git
-
-# postgres - db engine
-brew install postgresql
-pg_ctl -D /usr/local/var/postgres start   # start postgres
+brew install postgresql pgcli
+pg_ctl -D /usr/local/var/postgres restart
 export PGDATABASE=htmdb   # important! psql client & scripts expecting this
 createdb
 
-# pgtap - sql unit testing
+cd src   # your repo checkout parent dir
+git clone git@github.com:brev/pghtm.git
+cd pghtm/bin
+./create.sh
+./fill.sh
+cd ../..
+```
+
+#### Test
+
+Expecting:
+* OS/X default system Perl
+
+Unit Testing:
+
+```bash
 git clone https://github.com/theory/pgtap.git
-pushd pgtap/
+cd pgtap
 make
 make installcheck
 make install
 psql -c "CREATE EXTENSION pgtap;"
-## pg_prove - sql unit testing tool (TODO ditch `sudo` somehow)
-sudo cpan App::cpanminus
+sudo cpan App::cpanminus  # TODO ditch sudo somehow
 sudo cpan Test::Pod::Coverage
 sudo cpan TAP::Parser::SourceHandler::pgTAP
-popd
+cd ..
 
-# pgHTM - this schema
-pushd pghtm/
-pushd bin/
-./create.sh
-./fill.sh
+cd pghtm/bin
 ./test_schema.sh
 ./test_data_init.sh
-popd
+cd ../..
+```
 
-# piggly - plpgsql code coverage reporting
-brew install ruby
-## Hack on GEM_HOME and GEM_PATH env vars to get homebrew ruby+gems working.
+Code Coverage:
+
+```bash
+brew install ruby 
+## Modify GEM_HOME and GEM_PATH env vars to get homebrew ruby+gems working
 gem install piggly activerecord
-## Modify pghtm/test/config/database.yml, update with DB connection info.
+
+cd pghtm
+## Modify pghtm/test/config/database.yml, update DB connection info
 piggly trace --select /htm/ --database test/config/database.yml
-pushd bin/
+cd bin
 ./test_schema.sh 2> ../piggly/coverage.txt
 ./test_data_init.sh 2>> ../piggly/coverage.txt
-popd
+cd ..
 piggly untrace --select /htm/ --database test/config/database.yml
 piggly report --select /htm/ -f piggly/coverage.txt
 ## Open in Browser: piggly/reports/index.html
+cd ..
+```
 
-# hasura - graphql layer on top of postgres for webui
+#### Web UI
+
+```bash
 brew cask install docker
-## Start Docker.app from your Mac GUI Applications folder
-pushd webui/
-## Modify docker-run.sh, set HASURA_GRAPHQL_DATABASE_URL to DB connection info.
+brew install node
+
+cd pghtm/webui
+
+## Modify docker-run.sh, set HASURA_GRAPHQL_DATABASE_URL to DB connection info
 ##  On Mac, like: postgres://USERNAME@host.docker.internal/htmdb
 ./docker-run.sh
-popd
 ## Open graphql layer in Browser: http://localhost:8080/console
 ##  Select DATA tab, change Schema to "htm". Use buttons to Add All Tables, 
 ##  and Track All Relations.
 
-# web ui
-pushd webui/
 npm install
 npm start
-popd
 ## Open web UI layer in Browser: http://localhost:3000/spatialpooler/
+```
 
-# Usage: pgHTM
-## Run 1 test compute cycle (Spatial Pooler) on row put in `input` table.
-##  FYI: After this, the initial data tests (above) will no longer pass.
-psql -c "INSERT INTO htm.input (indexes) VALUES (ARRAY[0,1,2,3])"
+
+# Usage
+
+* After first use, the initial data tests (above) will no longer pass.
+* Try the more modern `pgcli` client instead of stock `psql`.
+
+```bash
+psql
+
+INSERT INTO htm.input (indexes) VALUES (ARRAY[0,1,2,3]);
+# INSERT 0 1
+
+SELECT indexes, columns_active FROM htm.input;
+#    indexes   | columns_active
+# -------------+----------------
+#  {0,1,2,3,4} | {28,31,46,72}
+# (1 row)
+
+\q
+```
+
+
+# Debug
+
+```bash
+psql
+
+\timing on
+# Timing is on.
+
+UPDATE htm.config SET logging = TRUE;
+# UPDATE 1
+# Time: 2.184 ms
+
+EXPLAIN ANALYZE VERBOSE INSERT INTO htm.input (indexes) VALUES (ARRAY[0,1,2,3]);
+# Lots of Info
+
+LOAD 'auto_explain';
+SET auto_explain.log_nested_statements = ON;
+SET auto_explain.log_min_duration = 0;
+# Run a query, Even more Info
+
+SET auto_explain.log_analyze  = TRUE;
+# Run a query, Ludicrous amounts of Info
 ```
 

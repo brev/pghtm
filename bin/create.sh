@@ -5,16 +5,14 @@ DATA="$SQL/data"
 SCHEMA="$SQL/schema"
 
 ####
-## Create pgHTM DB Schema.
+## Create HTM DB Schema.
 ##  Sort order matters below.
 ####
 
 # schema
 psql -f $SCHEMA/htm.sql
-psql -f $SCHEMA/tables/constant.sql
-psql -f $SCHEMA/tables/variable.sql
-psql -f $DATA/constant.sql
-psql -f $DATA/variable.sql
+psql -f $SCHEMA/tables/config.sql
+psql -f $DATA/config.sql
 
 # types
 psql -f $SCHEMA/types/dendrite.sql

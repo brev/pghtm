@@ -5,10 +5,10 @@
 DO
 $$
 DECLARE
-  column_count INT := htm.const('column_count');
-  dendrite_count INT := htm.const('dendrite_count');
-  neuron_count INT := htm.const('neuron_count');
-  synapse_count INT := htm.const('synapse_count');
+  column_count INT := htm.config('column_count');
+  dendrite_count INT := htm.config('dendrite_count');
+  neuron_count INT := htm.config('neuron_count');
+  synapse_count INT := htm.config('synapse_count');
   dendriteId INT;
   synapseId INT;
 BEGIN  
@@ -27,11 +27,11 @@ BEGIN
             synapseId, 
             dendriteId, 
             htm.random_range_numeric((
-              htm.var('synapse_threshold')::NUMERIC - 
-              htm.var('synapse_decrement')::NUMERIC
+              htm.config('synapse_threshold')::NUMERIC - 
+              htm.config('synapse_decrement')::NUMERIC
             ), (
-              htm.var('synapse_threshold')::NUMERIC + 
-              htm.var('synapse_increment')::NUMERIC
+              htm.config('synapse_threshold')::NUMERIC + 
+              htm.config('synapse_increment')::NUMERIC
             ))
           );
       END LOOP;
@@ -55,11 +55,11 @@ BEGIN
           synapseId, 
           dendriteId + columnId, 
           htm.random_range_numeric((
-            htm.var('synapse_threshold')::NUMERIC - 
-            htm.var('synapse_decrement')::NUMERIC
+            htm.config('synapse_threshold')::NUMERIC - 
+            htm.config('synapse_decrement')::NUMERIC
           ), (
-            htm.var('synapse_threshold')::NUMERIC + 
-            htm.var('synapse_increment')::NUMERIC
+            htm.config('synapse_threshold')::NUMERIC + 
+            htm.config('synapse_increment')::NUMERIC
           ))
         );
     END LOOP;

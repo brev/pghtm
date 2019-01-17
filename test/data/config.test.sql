@@ -1,5 +1,5 @@
 /**
- * Variables Data Test
+ * Config Data Test
  */
 
 BEGIN;
@@ -8,7 +8,7 @@ SELECT plan(1);  -- Test count
 
 
 SELECT row_eq(
-  $$ SELECT COUNT(id) FROM variable $$, 
+  $$ SELECT COUNT(id) FROM config $$, 
   ROW(1::BIGINT), 
   'Variables table has valid data'
 );

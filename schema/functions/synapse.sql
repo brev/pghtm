@@ -11,7 +11,7 @@ CREATE FUNCTION htm.synapse_is_connected(permanence NUMERIC)
 RETURNS BOOL
 AS $$ 
 DECLARE
-  synapse_threshold CONSTANT NUMERIC := htm.var('synapse_threshold');
+  synapse_threshold CONSTANT NUMERIC := htm.config('synapse_threshold');
 BEGIN
   RETURN permanence > synapse_threshold;
 END; 
@@ -24,7 +24,7 @@ CREATE FUNCTION htm.synapse_permanence_decrement(permanence NUMERIC)
 RETURNS NUMERIC
 AS $$ 
 DECLARE
-  decrement CONSTANT NUMERIC := htm.var('synapse_decrement');
+  decrement CONSTANT NUMERIC := htm.config('synapse_decrement');
 BEGIN
   RETURN GREATEST(permanence - decrement, 0.0);
 END; 
@@ -37,7 +37,7 @@ CREATE FUNCTION htm.synapse_permanence_increment(permanence NUMERIC)
 RETURNS NUMERIC
 AS $$ 
 DECLARE
-  increment CONSTANT NUMERIC := htm.var('synapse_increment');
+  increment CONSTANT NUMERIC := htm.config('synapse_increment');
 BEGIN
   RETURN LEAST(permanence + increment, 1.0);
 END; 

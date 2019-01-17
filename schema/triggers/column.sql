@@ -29,7 +29,7 @@ CREATE TRIGGER trigger_column_region_duty_cycles_change
 CREATE TRIGGER trigger_column_synapse_permanence_boost_change
   AFTER INSERT OR UPDATE
   ON htm.column
-  WHEN (htm.var('sp_learn')::BOOLEAN IS TRUE)
+  WHEN (htm.config('sp_learn')::BOOLEAN IS TRUE)
   EXECUTE FUNCTION htm.synapse_permanence_boost_update();
 
 /**
@@ -40,6 +40,6 @@ CREATE TRIGGER trigger_column_synapse_permanence_boost_change
 CREATE TRIGGER trigger_column_synapse_permanence_learn_change
   AFTER INSERT OR UPDATE
   ON htm.column
-  WHEN (htm.var('sp_learn')::BOOLEAN IS TRUE)
+  WHEN (htm.config('sp_learn')::BOOLEAN IS TRUE)
   EXECUTE FUNCTION htm.synapse_permanence_learn_update();
 

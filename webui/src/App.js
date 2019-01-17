@@ -49,7 +49,7 @@ const SpatialPooler = () => (
   </div>
 )
 
-const Home = () => (<h1>pgHTM</h1>)
+const Home = () => (<h1>HTM</h1>)
 const Region = () => (<h1>Region</h1>)
 
 

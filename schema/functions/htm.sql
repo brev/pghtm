@@ -13,8 +13,8 @@ CREATE FUNCTION htm.boost_factor_compute(
 RETURNS NUMERIC
 AS $$ 
 DECLARE
-  learning CONSTANT BOOL := htm.var('sp_learn');
-  strength CONSTANT NUMERIC := htm.var('boost_strength');
+  learning CONSTANT BOOL := htm.config('sp_learn');
+  strength CONSTANT NUMERIC := htm.config('boost_strength');
 BEGIN
   IF learning THEN
     RETURN EXP((0 - strength) * (duty_cycle - target_density));
@@ -25,17 +25,17 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
- * HTM - Get constant.
- *  You'll have to ::CAST on the other side.
+ * HTM - Get config setting.
+ *  You'll probably need to ::CAST the result on the other side.
  */
-CREATE FUNCTION htm.const(key VARCHAR)
+CREATE FUNCTION htm.config(key VARCHAR)
 RETURNS VARCHAR
 AS $$ 
 DECLARE
   result VARCHAR;
 BEGIN
   EXECUTE 
-    FORMAT('SELECT %I FROM htm.constant LIMIT 1', LOWER(key))
+    FORMAT('SELECT %I FROM htm.config LIMIT 1', key)
     INTO result;
 
   RETURN result;
@@ -62,7 +62,7 @@ RETURNS INTEGER
 AS $$
 DECLARE
   cool CONSTANT INTEGER := htm.input_rows_count();
-  warm CONSTANT INTEGER := htm.var('duty_cycle_period');
+  warm CONSTANT INTEGER := htm.config('duty_cycle_period');
 BEGIN
   RETURN LEAST (cool, warm);
 END;
@@ -75,7 +75,7 @@ CREATE FUNCTION htm.log(text)
 RETURNS BOOLEAN
 AS $$
 DECLARE
-  logging CONSTANT BOOLEAN := htm.var('logging');
+  logging CONSTANT BOOLEAN := htm.config('logging');
 BEGIN
   IF logging THEN 
     RAISE NOTICE '%', $1;
@@ -135,24 +135,6 @@ BEGIN
   NEW.modified = NOW();
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
-
-/**
- * HTM - Get variable.
- *  You'll have to ::CAST on the other side.
- */
-CREATE FUNCTION htm.var(key VARCHAR)
-RETURNS VARCHAR
-AS $$ 
-DECLARE
-  result VARCHAR;
-BEGIN
-  EXECUTE 
-    FORMAT('SELECT %I FROM htm.variable LIMIT 1', LOWER(key))
-    INTO result;
-
-  RETURN result;
-END; 
 $$ LANGUAGE plpgsql;
 
 /**

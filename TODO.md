@@ -1,16 +1,8 @@
 # Current
 
-* add pgcli to readme, also how to use ./bin, some basic pg examples, etc.
-  * \timing on
-  * explain analyze verbose
-  * LOAD 'auto_explain';
-    * SET auto_explain.log_nested_statements = ON;
-    * SET auto_explain.log_min_duration = 0;
-    * SET auto_explain.log_analyze  = true;  ## very slow and wordy
 * code flow chart
-* set correct datatypes on const/var
-* move any const to var possible
-* check queries, make sure not missing sort orders (assumed default, was not.)
+* ditch empty space chars
+* Make config read-only fields work
 * WebUI
 * Temporal Memory
 * Encoders
@@ -32,7 +24,6 @@
     * Inputs directly below column should be weighted slightly higher on init
       than inputs further away from column center.
 * pg users, roles, access controls, grants, revokes, etc.
-  * Make table htm.constant read-only
 * Externalize and speed up plpgsql stuff as C Extensions.
   * Continue on to full NuPIC Integration???
     * ditch views

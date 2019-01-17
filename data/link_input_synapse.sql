@@ -5,11 +5,11 @@
 DO
 $$
 DECLARE
-  column_count INT := htm.const('column_count');
-  dendrite_count INT := htm.const('dendrite_count');
-  neuron_count INT := htm.const('neuron_count');
-  synapse_count INT := htm.const('synapse_count');
-  input_width INT := htm.const('input_width');
+  column_count INT := htm.config('column_count');
+  dendrite_count INT := htm.config('dendrite_count');
+  neuron_count INT := htm.config('neuron_count');
+  synapse_count INT := htm.config('synapse_count');
+  input_width INT := htm.config('input_width');
   SynapseStart INT := dendrite_count * neuron_count * synapse_count;
   linkId INT;
 BEGIN

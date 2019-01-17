@@ -14,11 +14,11 @@ SELECT function_returns('column_active_get_threshold', 'bigint');
 SELECT is(
   column_active_get_threshold(),
   (CASE
-    WHEN htm.var('inhibition')::INTEGER = 0
+    WHEN htm.config('inhibition')::INTEGER = 0
       THEN NULL
-    WHEN htm.var('inhibition')::INTEGER = 1
-      THEN htm.const('column_threshold')::BIGINT
-    WHEN htm.var('inhibition')::INTEGER = 2
+    WHEN htm.config('inhibition')::INTEGER = 1
+      THEN htm.config('column_threshold')::BIGINT
+    WHEN htm.config('inhibition')::INTEGER = 2
       THEN NULL
   END),
   'column_active_get_threshold() works'

@@ -4,7 +4,7 @@
 DO
 $$
 DECLARE
-  column_count INT := htm.const('column_count');
+  column_count INT := htm.config('column_count');
 BEGIN
   -- disable triggers on table for initial data fill
   ALTER TABLE htm.column DISABLE TRIGGER USER;

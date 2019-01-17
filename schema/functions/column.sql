@@ -11,8 +11,8 @@ CREATE FUNCTION htm.column_active_get_threshold()
 RETURNS BIGINT 
 AS $$
 DECLARE
-  threshold CONSTANT BIGINT := htm.const('column_threshold');
-  inhibit CONSTANT INTEGER := htm.var('inhibition');
+  threshold CONSTANT BIGINT := htm.config('column_threshold');
+  inhibit CONSTANT INTEGER := htm.config('inhibition');
 BEGIN
   CASE
     WHEN inhibit = 0

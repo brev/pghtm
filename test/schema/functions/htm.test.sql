@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(58);  -- Test count
+SELECT plan(54);  -- Test count
 
 
 -- test boost_factor_compute()
@@ -14,8 +14,8 @@ SELECT function_returns('boost_factor_compute', 'numeric');
 SELECT is(
   boost_factor_compute(0.5, 0.5),
   (CASE 
-    WHEN htm.var('sp_learn')::BOOLEAN
-      THEN EXP((0 - htm.var('boost_strength')::NUMERIC) * (0.5 - 0.5))
+    WHEN htm.config('sp_learn')::BOOLEAN
+      THEN EXP((0 - htm.config('boost_strength')::NUMERIC) * (0.5 - 0.5))
     ELSE 1
   END),
   'boost_factor_compute() works on equivalents'
@@ -23,8 +23,8 @@ SELECT is(
 SELECT is(
   boost_factor_compute(0.5, 1.0),
   (CASE 
-    WHEN htm.var('sp_learn')::BOOLEAN
-      THEN EXP((0 - htm.var('boost_strength')::NUMERIC) * (0.5 - 1.0))
+    WHEN htm.config('sp_learn')::BOOLEAN
+      THEN EXP((0 - htm.config('boost_strength')::NUMERIC) * (0.5 - 1.0))
     ELSE 1
   END),
   'boost_factor_compute() works on low/high'
@@ -32,21 +32,21 @@ SELECT is(
 SELECT is(
   boost_factor_compute(1.0, 0.5),
   (CASE 
-    WHEN htm.var('sp_learn')::BOOLEAN
-      THEN EXP((0 - htm.var('boost_strength')::NUMERIC) * (1.0 - 0.5))
+    WHEN htm.config('sp_learn')::BOOLEAN
+      THEN EXP((0 - htm.config('boost_strength')::NUMERIC) * (1.0 - 0.5))
     ELSE 1
   END),
   'boost_factor_compute() works on high/low'
 );
 
--- test const()
-SELECT has_function('const', ARRAY['character varying']);
-SELECT function_lang_is('const', 'plpgsql');
-SELECT function_returns('const', 'character varying');
+-- test config()
+SELECT has_function('config', ARRAY['character varying']);
+SELECT function_lang_is('config', 'plpgsql');
+SELECT function_returns('config', 'character varying');
 SELECT is(
-  const('neuron_count')::INTEGER,
-  const('column_count')::INTEGER * const('row_count')::INTEGER,
-  'const() rows * columns = neurons'
+  config('neuron_count')::INTEGER,
+  config('column_count')::INTEGER * config('row_count')::INTEGER,
+  'config() rows * columns = neurons'
 );
 
 -- test count_unloop()
@@ -128,12 +128,6 @@ SELECT is(
 SELECT has_function('schema_modified_update');
 SELECT function_lang_is('schema_modified_update', 'plpgsql');
 SELECT function_returns('schema_modified_update', 'trigger');
-
--- test var()
-SELECT has_function('var', ARRAY['character varying']);
-SELECT function_lang_is('var', 'plpgsql');
-SELECT function_returns('var', 'character varying');
-SELECT is(var('duty_cycle_period')::INTEGER, 1000, 'var() works');
 
 -- test wrap_array_index()
 SELECT has_function('wrap_array_index', ARRAY['integer', 'integer']);
