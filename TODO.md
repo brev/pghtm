@@ -1,16 +1,14 @@
 # Current
 
-* code flow chart
+* Rando
+  * code flow chart
+  * Views -> Materialize and cache?
 * WebUI
 * Temporal Memory
 * Encoders
 
 # Future
 
-* Performance
-  * Config: Table-based is slow. Mutable. (Need read-only function).
-  * Immutable function is fast, but cannot be modified unless restart.
-  * Views -> Materialize and cache?
 * Dox
   * Tag dox w/@SpatialPooler, etc.
   * Rename intelligently
