@@ -2,8 +2,8 @@
  * Synapse Table
  */
 CREATE TABLE htm.synapse (
-  id          INTEGER NOT NULL PRIMARY KEY,
-  dendrite_id INTEGER NOT NULL,
+  id          INT NOT NULL PRIMARY KEY,
+  dendrite_id INT NOT NULL,
   permanence  NUMERIC NOT NULL,
 
   CHECK ((permanence >= 0.0) AND (permanence <= 1.0)),

@@ -15,7 +15,7 @@ DECLARE
 BEGIN
   RETURN permanence > synapse_threshold;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql STABLE;
 
 /**
  * Nudge potential synapse permanence down according to learning rules.
@@ -28,7 +28,7 @@ DECLARE
 BEGIN
   RETURN GREATEST(permanence - decrement, 0.0);
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql STABLE;
 
 /**
  * Nudge connected synapse permanence up according to learning rules.
@@ -41,7 +41,7 @@ DECLARE
 BEGIN
   RETURN LEAST(permanence + increment, 1.0);
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql STABLE;
 
 /**
  * Perform the overlapDutyCycle/synaptic-related parts of boosting.

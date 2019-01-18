@@ -4,17 +4,18 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(54);  -- Test count
+SELECT plan(61);  -- Test count
 
 
 -- test boost_factor_compute()
 SELECT has_function('boost_factor_compute');
 SELECT function_lang_is('boost_factor_compute', 'plpgsql');
+SELECT volatility_is('boost_factor_compute', 'stable');
 SELECT function_returns('boost_factor_compute', 'numeric');
 SELECT is(
   boost_factor_compute(0.5, 0.5),
   (CASE
-    WHEN htm.config('sp_learn')::BOOLEAN
+    WHEN htm.config('sp_learn')::BOOL
       THEN EXP((0 - htm.config('boost_strength')::NUMERIC) * (0.5 - 0.5))
     ELSE 1
   END),
@@ -23,7 +24,7 @@ SELECT is(
 SELECT is(
   boost_factor_compute(0.5, 1.0),
   (CASE
-    WHEN htm.config('sp_learn')::BOOLEAN
+    WHEN htm.config('sp_learn')::BOOL
       THEN EXP((0 - htm.config('boost_strength')::NUMERIC) * (0.5 - 1.0))
     ELSE 1
   END),
@@ -32,7 +33,7 @@ SELECT is(
 SELECT is(
   boost_factor_compute(1.0, 0.5),
   (CASE
-    WHEN htm.config('sp_learn')::BOOLEAN
+    WHEN htm.config('sp_learn')::BOOL
       THEN EXP((0 - htm.config('boost_strength')::NUMERIC) * (1.0 - 0.5))
     ELSE 1
   END),
@@ -42,16 +43,18 @@ SELECT is(
 -- test config()
 SELECT has_function('config', ARRAY['character varying']);
 SELECT function_lang_is('config', 'plpgsql');
+SELECT volatility_is('config', 'immutable');
 SELECT function_returns('config', 'character varying');
 SELECT is(
-  config('neuron_count')::INTEGER,
-  config('column_count')::INTEGER * config('row_count')::INTEGER,
-  'config() rows * columns = neurons'
+  config('neuron_count')::INT,
+  config('column_count')::INT * config('row_count')::INT,
+  'config() neurons = rows * columns OK'
 );
 
 -- test count_unloop()
 SELECT has_function('count_unloop', ARRAY['integer', 'integer', 'integer']);
 SELECT function_lang_is('count_unloop', 'plpgsql');
+SELECT volatility_is('count_unloop', 'immutable');
 SELECT function_returns('count_unloop', 'integer');
 SELECT is(count_unloop(1, 1, 3), 1, 'count_unloop() works 1');
 SELECT is(count_unloop(1, 2, 3), 2, 'count_unloop() works 2');
@@ -63,6 +66,7 @@ SELECT is(count_unloop(2, 3, 3), 6, 'count_unloop() works 6');
 -- test duty_cycle_period()
 SELECT has_function('duty_cycle_period');
 SELECT function_lang_is('duty_cycle_period', 'plpgsql');
+SELECT volatility_is('duty_cycle_period', 'stable');
 SELECT function_returns('duty_cycle_period', 'integer');
 SELECT is(
   duty_cycle_period(),
@@ -80,6 +84,7 @@ DELETE FROM input;
 -- test log()
 SELECT has_function('log', ARRAY['text']);
 SELECT function_lang_is('log', 'plpgsql');
+SELECT volatility_is('log', 'stable');
 SELECT function_returns('log', 'boolean');
 
 -- test random_range_int()
@@ -112,6 +117,7 @@ SELECT has_function(
   ARRAY['numeric', 'numeric', 'integer']
 );
 SELECT function_lang_is('running_moving_average', 'plpgsql');
+SELECT volatility_is('running_moving_average', 'immutable');
 SELECT function_returns('running_moving_average', 'numeric');
 SELECT is(
   running_moving_average(0.5, 0, 1000),
@@ -132,6 +138,7 @@ SELECT function_returns('schema_modified_update', 'trigger');
 -- test wrap_array_index()
 SELECT has_function('wrap_array_index', ARRAY['integer', 'integer']);
 SELECT function_lang_is('wrap_array_index', 'plpgsql');
+SELECT volatility_is('wrap_array_index', 'immutable');
 SELECT function_returns('wrap_array_index', 'integer');
 SELECT is(wrap_array_index(-2, 5), 3, 'wrap_array_index() works under 2');
 SELECT is(wrap_array_index(-1, 5), 4, 'wrap_array_index() works under 1');

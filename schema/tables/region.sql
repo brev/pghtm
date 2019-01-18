@@ -2,7 +2,7 @@
  * Region Table
  */
 CREATE TABLE htm.region (
-  id                      INTEGER NOT NULL PRIMARY KEY,
+  id                      INT NOT NULL PRIMARY KEY,
   duty_cycle_active_mean  NUMERIC NOT NULL,
   duty_cycle_overlap_mean NUMERIC NOT NULL,
 

@@ -11,8 +11,6 @@ SCHEMA="$SQL/schema"
 
 # schema
 psql -f $SCHEMA/htm.sql
-psql -f $SCHEMA/tables/config.sql
-psql -f $DATA/config.sql
 
 # types
 psql -f $SCHEMA/types/dendrite.sql

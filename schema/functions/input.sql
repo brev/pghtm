@@ -44,5 +44,5 @@ DECLARE
 BEGIN
   RETURN iteration;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql STABLE;
 

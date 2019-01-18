@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(7);  -- Test count
+SELECT plan(8);  -- Test count
 
 
 -- test input_columns_active_update()
@@ -15,6 +15,7 @@ SELECT function_returns('input_columns_active_update', 'trigger');
 -- test input_rows_count()
 SELECT has_function('input_rows_count');
 SELECT function_lang_is('input_rows_count', 'plpgsql');
+SELECT volatility_is('input_rows_count', 'stable');
 SELECT function_returns('input_rows_count', 'bigint');
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM input; $$,

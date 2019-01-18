@@ -8,7 +8,10 @@
  *  SP Compute cycle is complete.
  */
 CREATE TRIGGER trigger_column_input_columns_active_change
-  AFTER INSERT OR UPDATE
+  AFTER INSERT OR UPDATE OF
+    boost_factor,
+    duty_cycle_active,
+    duty_cycle_overlap
   ON htm.column
   EXECUTE FUNCTION htm.input_columns_active_update();
 
@@ -17,7 +20,10 @@ CREATE TRIGGER trigger_column_input_columns_active_change
  *  the parent region (for boosting).
  */
 CREATE TRIGGER trigger_column_region_duty_cycles_change
-  AFTER INSERT OR UPDATE
+  AFTER INSERT OR UPDATE OF
+    boost_factor,
+    duty_cycle_active,
+    duty_cycle_overlap
   ON htm.column
   EXECUTE FUNCTION htm.region_duty_cycles_update();
 
@@ -27,9 +33,12 @@ CREATE TRIGGER trigger_column_region_duty_cycles_change
  *  cycle have all their synapse permanences incremented.
  */
 CREATE TRIGGER trigger_column_synapse_permanence_boost_change
-  AFTER INSERT OR UPDATE
+  AFTER INSERT OR UPDATE OF
+    boost_factor,
+    duty_cycle_active,
+    duty_cycle_overlap
   ON htm.column
-  WHEN (htm.config('sp_learn')::BOOLEAN IS TRUE)
+  WHEN (htm.config('sp_learn')::BOOL IS TRUE)
   EXECUTE FUNCTION htm.synapse_permanence_boost_update();
 
 /**
@@ -38,8 +47,11 @@ CREATE TRIGGER trigger_column_synapse_permanence_boost_change
  *  permanances based on the winning columns. Check global feature flag first.
  */
 CREATE TRIGGER trigger_column_synapse_permanence_learn_change
-  AFTER INSERT OR UPDATE
+  AFTER INSERT OR UPDATE OF
+    boost_factor,
+    duty_cycle_active,
+    duty_cycle_overlap
   ON htm.column
-  WHEN (htm.config('sp_learn')::BOOLEAN IS TRUE)
+  WHEN (htm.config('sp_learn')::BOOL IS TRUE)
   EXECUTE FUNCTION htm.synapse_permanence_learn_update();
 

@@ -12,7 +12,7 @@ RETURNS BIGINT
 AS $$
 DECLARE
   threshold CONSTANT BIGINT := htm.config('column_threshold');
-  inhibit CONSTANT INTEGER := htm.config('inhibition');
+  inhibit CONSTANT INT := htm.config('inhibition');
 BEGIN
   CASE
     WHEN inhibit = 0
@@ -26,7 +26,7 @@ BEGIN
       THEN RETURN NULL;
   END CASE;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql STABLE;
 
 /**
  * Update column.duty_cycle_(active/overlap) based on changes to
@@ -36,7 +36,7 @@ CREATE FUNCTION htm.column_boost_duty_update()
 RETURNS TRIGGER
 AS $$
 DECLARE
-  period CONSTANT INTEGER := htm.duty_cycle_period();
+  period CONSTANT INT := htm.duty_cycle_period();
 BEGIN
   PERFORM htm.log('new input, updating column duty cycles, etc.');
   WITH column_next AS (
@@ -45,20 +45,20 @@ BEGIN
       htm.boost_factor_compute(
         htm.running_moving_average(
           htm.column.duty_cycle_active,
-          (column_active.id IS NOT NULL)::INTEGER,
-          htm.duty_cycle_period()
+          (column_active.id IS NOT NULL)::INT,
+          period
         ),
         region.duty_cycle_active_mean
       ) AS boost_factor,
       htm.running_moving_average(
         htm.column.duty_cycle_active,
-        (column_active.id IS NOT NULL)::INTEGER,
-        htm.duty_cycle_period()
+        (column_active.id IS NOT NULL)::INT,
+        period
       ) AS duty_cycle_active,
       htm.running_moving_average(
         htm.column.duty_cycle_overlap,
-        (column_overlap_boost.overlap IS NOT NULL)::INTEGER,
-        htm.duty_cycle_period()
+        (column_overlap_boost.overlap IS NOT NULL)::INT,
+        period
       ) AS duty_cycle_overlap
     FROM htm.column
     JOIN htm.region

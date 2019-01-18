@@ -14,5 +14,5 @@ DECLARE
 BEGIN
   RETURN active_synapses > dendrite_threshold;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql STABLE;
 

@@ -2,12 +2,12 @@
  * Column Table
  */
 CREATE TABLE htm.column (
-  id                  INTEGER NOT NULL PRIMARY KEY,
+  id                  INT NOT NULL PRIMARY KEY,
   boost_factor        NUMERIC NOT NULL,
   duty_cycle_active   NUMERIC NOT NULL,
   duty_cycle_overlap  NUMERIC NOT NULL,
-  region_id           INTEGER NOT NULL,
-  x_coord             INTEGER NOT NULL,
+  region_id           INT NOT NULL,
+  x_coord             INT NOT NULL,
 
   FOREIGN KEY (region_id)
     REFERENCES htm.region(id)
