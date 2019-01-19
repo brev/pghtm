@@ -13,6 +13,11 @@ detection.
 * [ ] Temporal Memory
 
 
+## Schema
+
+![pgHTM Entity Relationship Diagram](meta/pghtm-schema-er.png)
+
+
 ## Requirements
 
 **Main**
@@ -155,7 +160,7 @@ psql
 \timing on
 # Timing is on.
 
-UPDATE htm.config SET logging = TRUE;
+UPDATE htm.config SET log = TRUE;
 # UPDATE 1
 # Time: 2.184 ms
 

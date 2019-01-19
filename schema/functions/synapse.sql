@@ -4,51 +4,12 @@
 
 
 /**
- * Check if a synapse is considered connected (above permanence threshold)
- *  or not (potential).
- */
-CREATE FUNCTION htm.synapse_is_connected(permanence NUMERIC)
-RETURNS BOOL
-AS $$
-DECLARE
-  synapse_threshold CONSTANT NUMERIC := htm.config('synapse_threshold');
-BEGIN
-  RETURN permanence > synapse_threshold;
-END;
-$$ LANGUAGE plpgsql STABLE;
-
-/**
- * Nudge potential synapse permanence down according to learning rules.
- */
-CREATE FUNCTION htm.synapse_permanence_decrement(permanence NUMERIC)
-RETURNS NUMERIC
-AS $$
-DECLARE
-  decrement CONSTANT NUMERIC := htm.config('synapse_decrement');
-BEGIN
-  RETURN GREATEST(permanence - decrement, 0.0);
-END;
-$$ LANGUAGE plpgsql STABLE;
-
-/**
- * Nudge connected synapse permanence up according to learning rules.
- */
-CREATE FUNCTION htm.synapse_permanence_increment(permanence NUMERIC)
-RETURNS NUMERIC
-AS $$
-DECLARE
-  increment CONSTANT NUMERIC := htm.config('synapse_increment');
-BEGIN
-  RETURN LEAST(permanence + increment, 1.0);
-END;
-$$ LANGUAGE plpgsql STABLE;
-
-/**
  * Perform the overlapDutyCycle/synaptic-related parts of boosting.
  *  Promote underwhelmed columns via synaptic permanence increase to
  *  stoke future wins.
+ * @SpatialPooler
  */
-CREATE FUNCTION htm.synapse_permanence_boost_update()
+CREATE FUNCTION htm.synapse_proximal_boost_update()
 RETURNS TRIGGER
 AS $$
 DECLARE
@@ -57,7 +18,7 @@ BEGIN
   WITH synapse_next AS (
     SELECT
       synapse.id,
-      htm.synapse_permanence_increment(synapse.permanence) AS permanence
+      htm.synapse_proximal_get_increment(synapse.permanence) AS permanence
     FROM htm.synapse
     JOIN htm.dendrite
       ON dendrite.id = synapse.dendrite_id
@@ -80,11 +41,56 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
- * Perform Hebbian-style learning on synapse permanences. This is based on
- *  recently-actived winners in column_active. This was triggered from an
- *  update on the column table.
+ * Check if a proximal synapse is considered connected (above permanence
+ *  threshold) or not (potential).
+ * @SpatialPooler
  */
-CREATE FUNCTION htm.synapse_permanence_learn_update()
+CREATE FUNCTION htm.synapse_proximal_get_connection(permanence NUMERIC)
+RETURNS BOOL
+AS $$
+DECLARE
+  synapse_proximal_threshold CONSTANT NUMERIC :=
+    htm.config('synapse_proximal_threshold');
+BEGIN
+  RETURN permanence > synapse_proximal_threshold;
+END;
+$$ LANGUAGE plpgsql STABLE;
+
+/**
+ * Nudge proximal potential synapse permanence down according to learning rules.
+ * @SpatialPooler
+ */
+CREATE FUNCTION htm.synapse_proximal_get_decrement(permanence NUMERIC)
+RETURNS NUMERIC
+AS $$
+DECLARE
+  decrement CONSTANT NUMERIC := htm.config('synapse_proximal_decrement');
+BEGIN
+  RETURN GREATEST(permanence - decrement, 0.0);
+END;
+$$ LANGUAGE plpgsql STABLE;
+
+/**
+ * Nudge proximal connected synapse permanence up according to learning rules.
+ * @SpatialPooler
+ */
+CREATE FUNCTION htm.synapse_proximal_get_increment(permanence NUMERIC)
+RETURNS NUMERIC
+AS $$
+DECLARE
+  increment CONSTANT NUMERIC := htm.config('synapse_proximal_increment');
+BEGIN
+  RETURN LEAST(permanence + increment, 1.0);
+END;
+$$ LANGUAGE plpgsql STABLE;
+
+/**
+ * Perform Hebbian-style learning on proximal synapse permanences. This is
+ *  based on recently-actived winners in column_active. This was triggered
+ *  from an update on the column table.
+ * @SpatialPooler
+ */
+CREATE FUNCTION htm.synapse_proximal_learn_update()
 RETURNS TRIGGER
 AS $$
 DECLARE
@@ -95,9 +101,9 @@ BEGIN
       synapse.id,
       (CASE
         WHEN synapse_proximal_active.id IS NOT NULL
-          THEN htm.synapse_permanence_increment(synapse.permanence)
+          THEN htm.synapse_proximal_get_increment(synapse.permanence)
         ELSE
-          htm.synapse_permanence_decrement(synapse.permanence)
+          htm.synapse_proximal_get_decrement(synapse.permanence)
       END) AS permanence
     FROM htm.synapse
     LEFT JOIN htm.synapse_proximal_active

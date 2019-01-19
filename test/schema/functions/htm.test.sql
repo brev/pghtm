@@ -4,41 +4,8 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(61);  -- Test count
+SELECT plan(48);  -- Test count
 
-
--- test boost_factor_compute()
-SELECT has_function('boost_factor_compute');
-SELECT function_lang_is('boost_factor_compute', 'plpgsql');
-SELECT volatility_is('boost_factor_compute', 'stable');
-SELECT function_returns('boost_factor_compute', 'numeric');
-SELECT is(
-  boost_factor_compute(0.5, 0.5),
-  (CASE
-    WHEN htm.config('sp_learn')::BOOL
-      THEN EXP((0 - htm.config('boost_strength')::NUMERIC) * (0.5 - 0.5))
-    ELSE 1
-  END),
-  'boost_factor_compute() works on equivalents'
-);
-SELECT is(
-  boost_factor_compute(0.5, 1.0),
-  (CASE
-    WHEN htm.config('sp_learn')::BOOL
-      THEN EXP((0 - htm.config('boost_strength')::NUMERIC) * (0.5 - 1.0))
-    ELSE 1
-  END),
-  'boost_factor_compute() works on low/high'
-);
-SELECT is(
-  boost_factor_compute(1.0, 0.5),
-  (CASE
-    WHEN htm.config('sp_learn')::BOOL
-      THEN EXP((0 - htm.config('boost_strength')::NUMERIC) * (1.0 - 0.5))
-    ELSE 1
-  END),
-  'boost_factor_compute() works on high/low'
-);
 
 -- test config()
 SELECT has_function('config', ARRAY['character varying']);
@@ -62,24 +29,6 @@ SELECT is(count_unloop(1, 3, 3), 3, 'count_unloop() works 3');
 SELECT is(count_unloop(2, 1, 3), 4, 'count_unloop() works 4');
 SELECT is(count_unloop(2, 2, 3), 5, 'count_unloop() works 5');
 SELECT is(count_unloop(2, 3, 3), 6, 'count_unloop() works 6');
-
--- test duty_cycle_period()
-SELECT has_function('duty_cycle_period');
-SELECT function_lang_is('duty_cycle_period', 'plpgsql');
-SELECT volatility_is('duty_cycle_period', 'stable');
-SELECT function_returns('duty_cycle_period', 'integer');
-SELECT is(
-  duty_cycle_period(),
-  0,
-  'duty_cycle_period() works before input data rows'
-);
-INSERT INTO input (indexes) VALUES (ARRAY[0,1,2]);
-SELECT is(
-  duty_cycle_period(),
-  1,
-  'duty_cycle_period() works after input data rows'
-);
-DELETE FROM input;
 
 -- test log()
 SELECT has_function('log', ARRAY['text']);

@@ -27,11 +27,11 @@ BEGIN
             synapseId,
             dendriteId,
             htm.random_range_numeric((
-              htm.config('synapse_threshold')::NUMERIC -
-              htm.config('synapse_decrement')::NUMERIC
+              htm.config('synapse_proximal_threshold')::NUMERIC -
+              htm.config('synapse_proximal_decrement')::NUMERIC
             ), (
-              htm.config('synapse_threshold')::NUMERIC +
-              htm.config('synapse_increment')::NUMERIC
+              htm.config('synapse_proximal_threshold')::NUMERIC +
+              htm.config('synapse_proximal_increment')::NUMERIC
             ))
           );
       END LOOP;
@@ -55,11 +55,11 @@ BEGIN
           synapseId,
           dendriteId + columnId,
           htm.random_range_numeric((
-            htm.config('synapse_threshold')::NUMERIC -
-            htm.config('synapse_decrement')::NUMERIC
+            htm.config('synapse_proximal_threshold')::NUMERIC -
+            htm.config('synapse_proximal_decrement')::NUMERIC
           ), (
-            htm.config('synapse_threshold')::NUMERIC +
-            htm.config('synapse_increment')::NUMERIC
+            htm.config('synapse_proximal_threshold')::NUMERIC +
+            htm.config('synapse_proximal_increment')::NUMERIC
           ))
         );
     END LOOP;

@@ -4,45 +4,41 @@
 
 
 /**
- * Get inhibition global limit if turned on, otherwise off.
- *  Used to select winning active columns.
+ * Get column global inhibition level (if turned on), otherwise null/none.
+ *  Used to sparsify the set of winning active columns.
+ * @SpatialPooler
  */
-CREATE FUNCTION htm.column_active_get_threshold()
+CREATE FUNCTION htm.column_active_get_limit()
 RETURNS BIGINT
 AS $$
 DECLARE
-  threshold CONSTANT BIGINT := htm.config('column_threshold');
-  inhibit CONSTANT INT := htm.config('inhibition');
+  inhibit CONSTANT BOOL := htm.config('column_inhibit');
+  limit CONSTANT BIGINT := htm.config('column_active_limit');
 BEGIN
-  CASE
-    WHEN inhibit = 0
-      -- inhibition off
-      THEN RETURN NULL;
-    WHEN inhibit = 1
-      -- global inhibition on
-      THEN RETURN threshold;
-    WHEN inhibit = 2
-      -- local inhibition on (TODO not built yet)
-      THEN RETURN NULL;
-  END CASE;
+  IF inhibit THEN
+    RETURN limit;   -- column global inhibition on
+  ELSE
+    RETURN NULL;  -- column global inhibition off
+  END IF;
 END;
 $$ LANGUAGE plpgsql STABLE;
 
 /**
  * Update column.duty_cycle_(active/overlap) based on changes to
  *  previous views (after new input).
+ * @SpatialPooler
  */
 CREATE FUNCTION htm.column_boost_duty_update()
 RETURNS TRIGGER
 AS $$
 DECLARE
-  period CONSTANT INT := htm.duty_cycle_period();
+  period CONSTANT INT := htm.column_duty_cycle_period();
 BEGIN
   PERFORM htm.log('new input, updating column duty cycles, etc.');
   WITH column_next AS (
     SELECT
       htm.column.id,
-      htm.boost_factor_compute(
+      htm.column_boost_factor_compute(
         htm.running_moving_average(
           htm.column.duty_cycle_active,
           (column_active.id IS NOT NULL)::INT,
@@ -87,4 +83,41 @@ BEGIN
   RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
+
+/**
+ * Calculate new column boosting factor.
+ * @SpatialPooler
+ */
+CREATE FUNCTION htm.column_boost_factor_compute(
+  duty_cycle NUMERIC,
+  target_density NUMERIC
+)
+RETURNS NUMERIC
+AS $$
+DECLARE
+  learning CONSTANT BOOL := htm.config('synapse_proximal_learn');
+  strength CONSTANT NUMERIC := htm.config('column_boost_strength');
+BEGIN
+  IF learning THEN
+    RETURN EXP((0 - strength) * (duty_cycle - target_density));
+  ELSE
+    RETURN 1;  -- learning off
+  END IF;
+END;
+$$ LANGUAGE plpgsql STABLE;
+
+/**
+ * Get ideal column duty cycle period value from several options.
+ * @SpatialPooler
+ */
+CREATE FUNCTION htm.column_duty_cycle_period()
+RETURNS INT
+AS $$
+DECLARE
+  cool CONSTANT INT := htm.input_rows_count();
+  warm CONSTANT INT := htm.config('column_duty_cycle_period');
+BEGIN
+  RETURN LEAST (cool, warm);
+END;
+$$ LANGUAGE plpgsql STABLE;
 

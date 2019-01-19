@@ -1,5 +1,6 @@
 /**
  * Column (Overlap/Boosting) View
+ * @SpatialPooler
  */
 CREATE VIEW htm.column_overlap_boost AS (
   SELECT

@@ -1,5 +1,6 @@
 /**
  * Dendrite (Proximal: Active, Overlap) View
+ * @SpatialPooler
  */
 CREATE VIEW htm.dendrite_proximal_overlap_active AS (
   SELECT
@@ -12,7 +13,7 @@ CREATE VIEW htm.dendrite_proximal_overlap_active AS (
     ON synapse_proximal_active.id = synapse.id
   GROUP BY dendrite.id
   HAVING htm.dendrite_is_active(
-    COUNT(synapse_proximal_active.id)::INTEGER
+    COUNT(synapse_proximal_active.id)::INT
   )
 );
 

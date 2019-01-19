@@ -1,30 +1,26 @@
 # Current
 
-* Rando
-  * code flow chart
-  * Views -> Materialize and cache?
+* Sane defaults ?
 * WebUI
 * Temporal Memory
 * Encoders
 
 # Future
 
-* Dox
-  * Tag dox w/@SpatialPooler, etc.
-  * Rename intelligently
 * Schema
-  * Sane defaults ?
+  * on create: config as table/function?  configurable vs speedy
   * pg int's not unsigned - for input indexes[], got a trinary if wanted
 * Admin 
   * pg users, roles, access controls, grants, revokes, etc.
+* Performance: 
+  * Views -> Materialize and cache?
+  * ditch views? calc nupic style?
+  * array/matrix/vectorize maths and data (see related pg extensions)
   * Externalize and speed up plpgsql stuff as C Extensions.
-    * Continue on to full NuPIC Integration???
-      * ditch views
-        * more server-side, less nice data to client.
-          client reproduce threshold calcs and stuff. unless js/v8?..but slow!?
+  * Continue on to full NuPIC Integration?
 * SP Phase 2
   * Dimensionality
-  * Add topology AKA local column inhibition 
+  * Add topology AKA local column column_inhibit 
     * radius (aka? input spread. calc with.), etc.
     * Inputs directly below column should be weighted slightly higher on init
       than inputs further away from column center.
@@ -35,7 +31,7 @@
     be active.. but never is. Other columns still win. Reassign for better use.
   * High Tiering - In a situation few # of inputs, columns will tend to 
     canniablize each other and we'll never get stability. For high overlap %,
-    exclude columns from inhibition, and promote straight to active/winner.
+    exclude columns from column_inhibit, and promote straight to active/winner.
   * Shared Inputs - 1 input bit is linked to 2 or more active columns.
     Ideal is 1:1, so increments to shared inputs is slightly less than usual.
     No longer in Nupic.

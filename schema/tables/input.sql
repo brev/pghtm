@@ -6,11 +6,10 @@ CREATE TABLE htm.input (
   created   TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
   modified  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
 
-  -- input data
-  ts        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-  indexes   INTEGER[] NOT NULL,
-
-  -- sp output
-  columns_active INTEGER[]  -- NULL OK
+  -- @SpatialPooler input
+  ts      TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+  indexes INT[] NOT NULL,
+  -- @SpatialPooler output
+  columns_active INT[]  -- NULL OK
 );
 

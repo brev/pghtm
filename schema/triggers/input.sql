@@ -5,7 +5,8 @@
 
 /**
  * Auto-update column.boost and column.duty_cycle_(active/overlap), after
- *  activity and overlap scores are updated (after new input).
+ *  new input, using updated views for activity and overlap score calculations.
+ * @SpatialPooler
  */
 CREATE TRIGGER trigger_input_column_boost_duty_change
   AFTER INSERT

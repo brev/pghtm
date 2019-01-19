@@ -7,6 +7,7 @@
  * SP compute cycle has finished, we have active winning columns, let's
  *  store them back in the input table with the original input data row.
  *  SP compute cycle is finished.
+ * @SpatialPooler
  */
 CREATE FUNCTION htm.input_columns_active_update()
 RETURNS TRIGGER
@@ -35,6 +36,8 @@ $$ LANGUAGE plpgsql;
 
 /**
  * Get current system compute iteration count. # of Rows from htm.input.
+ *  Used for duty cyle period and calcs.
+ * @SpatialPooler
  */
 CREATE FUNCTION htm.input_rows_count()
 RETURNS BIGINT

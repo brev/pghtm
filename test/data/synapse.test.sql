@@ -27,10 +27,10 @@ SELECT row_eq(
     SELECT (COUNT(id) > 0)
     FROM synapse
     WHERE permanence < (
-      config('synapse_threshold')::NUMERIC - config('synapse_decrement')::NUMERIC
+      config('synapse_proximal_threshold')::NUMERIC - config('synapse_proximal_decrement')::NUMERIC
     )
     OR permanence > (
-      config('synapse_threshold')::NUMERIC + config('synapse_increment')::NUMERIC
+      config('synapse_proximal_threshold')::NUMERIC + config('synapse_proximal_increment')::NUMERIC
     )
   $$,
   ROW(FALSE),
@@ -42,10 +42,10 @@ SELECT row_eq(
     SELECT (COUNT(id) > 0)
     FROM synapse
     WHERE permanence < (
-      config('synapse_threshold')::NUMERIC - config('synapse_decrement')::NUMERIC
+      config('synapse_proximal_threshold')::NUMERIC - config('synapse_proximal_decrement')::NUMERIC
     )
     OR permanence > (
-      config('synapse_threshold')::NUMERIC + config('synapse_increment')::NUMERIC
+      config('synapse_proximal_threshold')::NUMERIC + config('synapse_proximal_increment')::NUMERIC
     )
   $$,
   ROW(TRUE),

@@ -36,7 +36,7 @@ psql -f $SCHEMA/tables/link_input_synapse.sql
 psql -f $SCHEMA/tables/link_neuron_synapse.sql
 
 # views
-psql -f $SCHEMA/views/synapse_connected.sql
+psql -f $SCHEMA/views/synapse_proximal_connected.sql
 psql -f $SCHEMA/views/synapse_proximal_active.sql
 psql -f $SCHEMA/views/dendrite_proximal_overlap_active.sql
 psql -f $SCHEMA/views/column_overlap_boost.sql
