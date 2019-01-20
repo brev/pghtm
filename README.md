@@ -17,9 +17,15 @@ reference implementation, but we have varied somewhat.
 * [ ] Temporal Memory
 
 
-## Schema
+## Overview
 
-![pgHTM Entity Relationship Diagram](meta/pghtm-schema-er.png)
+### Schema
+
+![pgHTM Schema Entity Relationship Diagram](meta/pghtm-schema.png)
+
+### Spatial Pooling
+
+![pgHTM Spatial Pooling Diagram](meta/pghtm-spatialpooler.png)
 
 
 ## Requirements
