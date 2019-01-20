@@ -5,10 +5,10 @@
 DO
 $$
 DECLARE
-  column_count INT := htm.config('column_count');
-  dendrite_count INT := htm.config('dendrite_count');
-  neuron_count INT := htm.config('neuron_count');
-  lastDendriteId INT := neuron_count * dendrite_count;
+  column_count CONSTANT INT := htm.config('column_count');
+  dendrite_count CONSTANT INT := htm.config('dendrite_count');
+  neuron_count CONSTANT INT := htm.config('neuron_count');
+  lastDendriteId CONSTANT INT := neuron_count * dendrite_count;
 BEGIN
   RAISE NOTICE 'Inserting % Links (Dendrite => Column)...', column_count;
 

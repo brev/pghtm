@@ -5,8 +5,8 @@
 DO
 $$
 DECLARE
-  dendrite_count INT := htm.config('dendrite_count');
-  neuron_count INT := htm.config('neuron_count');
+  dendrite_count CONSTANT INT := htm.config('dendrite_count');
+  neuron_count CONSTANT INT := htm.config('neuron_count');
   linkId INT;
 BEGIN
   RAISE NOTICE 'Inserting % Links (Dendrite => Neuron)...',

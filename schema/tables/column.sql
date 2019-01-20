@@ -3,9 +3,9 @@
  */
 CREATE TABLE htm.column (
   id                  INT NOT NULL PRIMARY KEY,
-  boost_factor        NUMERIC NOT NULL,
-  duty_cycle_active   NUMERIC NOT NULL,
-  duty_cycle_overlap  NUMERIC NOT NULL,
+  boost_factor        NUMERIC NOT NULL DEFAULT 0.0,
+  duty_cycle_active   NUMERIC NOT NULL DEFAULT 1.0,
+  duty_cycle_overlap  NUMERIC NOT NULL DEFAULT 1.0,
   region_id           INT NOT NULL,
   x_coord             INT NOT NULL,
 

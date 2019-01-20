@@ -25,9 +25,10 @@ DECLARE
       --  during Inhibition - IDEAL 2%.
       --  nupic sp:numActiveColumnsPerInhArea "kth nearest score"
       --  @SpatialPooler
-      ('column_active_limit', width * 0.04),
+      ('column_active_limit', (width * 0.04)::INT),
 
       -- column_boost_strength: SP Boosting strength
+      --  nupic sp:boostStrength
       --  @SpatialPooler
       ('column_boost_strength', 1.2),
 
@@ -35,6 +36,7 @@ DECLARE
       ('column_count', width),
 
       -- column_duty_cycle_period: Duty cycle period
+      --  nupic sp:dutyCyclePeriod
       --  @SpatialPooler
       ('column_duty_cycle_period', 1000),
 
@@ -59,7 +61,7 @@ DECLARE
       ('log', FALSE::INT),
 
       -- neuron_count: # of neurons per region (rows x cols)
-      ('neuron_count', height * width),
+      ('neuron_count', (height * width)::INT),
 
       -- row_count: # of neuron rows high in each column/region
       --  1  = First-order memory, better for static spatial inference
@@ -67,7 +69,7 @@ DECLARE
       ('row_count', height),
 
       -- synapse_count: # of synapses per dendrite
-      ('synapse_count', width * synapse_spread_pct),
+      ('synapse_count', (width * synapse_spread_pct)::INT),
 
       -- synapse_distal_learn: TM learning on? flag
       --  @TemporalMemory

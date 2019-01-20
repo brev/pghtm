@@ -5,10 +5,10 @@
 DO
 $$
 DECLARE
-  dendrite_count INT := htm.config('dendrite_count');
-  neuron_count INT := htm.config('neuron_count');
-  synapse_count INT := htm.config('synapse_count');
-  TotalSynapse INT := dendrite_count * neuron_count * synapse_count;
+  dendrite_count CONSTANT INT := htm.config('dendrite_count');
+  neuron_count CONSTANT INT := htm.config('neuron_count');
+  synapse_count CONSTANT INT := htm.config('synapse_count');
+  TotalSynapse CONSTANT INT := dendrite_count * neuron_count * synapse_count;
   neuronId INT;
 BEGIN
   RAISE NOTICE 'Inserting % Links (Neuron => Synapse)...', TotalSynapse;

@@ -1,6 +1,5 @@
 # Current
 
-* Sane defaults ?
 * WebUI
 * Temporal Memory
 * Encoders
@@ -35,6 +34,7 @@
   * Shared Inputs - 1 input bit is linked to 2 or more active columns.
     Ideal is 1:1, so increments to shared inputs is slightly less than usual.
     No longer in Nupic.
+  * Add wrapAround feature (see nupic sp)
   * "Cloning"? Replicating learning across lower levels of hierarchy to spread
     the details. Complex. No longer in Nupic.
 

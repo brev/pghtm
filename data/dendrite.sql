@@ -5,9 +5,10 @@
 DO
 $$
 DECLARE
-  column_count INT := htm.config('column_count');
-  dendrite_count INT := htm.config('dendrite_count');
-  neuron_count INT := htm.config('neuron_count');
+  column_count CONSTANT INT := htm.config('column_count');
+  dendrite_count CONSTANT INT := htm.config('dendrite_count');
+  neuron_count CONSTANT INT := htm.config('neuron_count');
+  columnId INT;
   dendriteId INT;
 BEGIN
   RAISE NOTICE 'Inserting % Dendrites (Distal)...',

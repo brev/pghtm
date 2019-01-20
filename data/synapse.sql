@@ -5,10 +5,10 @@
 DO
 $$
 DECLARE
-  column_count INT := htm.config('column_count');
-  dendrite_count INT := htm.config('dendrite_count');
-  neuron_count INT := htm.config('neuron_count');
-  synapse_count INT := htm.config('synapse_count');
+  column_count CONSTANT INT := htm.config('column_count');
+  dendrite_count CONSTANT INT := htm.config('dendrite_count');
+  neuron_count CONSTANT INT := htm.config('neuron_count');
+  synapse_count CONSTANT INT := htm.config('synapse_count');
   dendriteId INT;
   synapseId INT;
 BEGIN
@@ -18,9 +18,17 @@ BEGIN
 
   FOR neuronId IN 1..neuron_count LOOP
     FOR localDendriteId IN 1..dendrite_count LOOP
-      dendriteId := htm.count_unloop(neuronId, localDendriteId, dendrite_count);
+      dendriteId := htm.count_unloop(
+        neuronId,
+        localDendriteId,
+        dendrite_count
+      );
       FOR localSynapseId IN 1..synapse_count LOOP
-        synapseId := htm.count_unloop(dendriteId, localSynapseId, synapse_count);
+        synapseId := htm.count_unloop(
+          dendriteId,
+          localSynapseId,
+          synapse_count
+        );
         INSERT
           INTO htm.synapse (id, dendrite_id, permanence)
           VALUES (

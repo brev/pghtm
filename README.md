@@ -2,11 +2,15 @@
 
 > **PRIVATE! Not yet for public consumption.**
 
-[Hierarchical Temporal Memory](https://www.numenta.com/machine-intelligence-technology/) 
-(HTM) in PostgreSQL.  
-
 Machine Intelligence Neurotechnology for streaming prediction and anomaly 
 detection.
+
+[Hierarchical Temporal Memory](https://www.numenta.com/machine-intelligence-technology/) 
+(HTM) in PostgreSQL. [NuPIC](https://github.com/numenta/nupic) is our base 
+reference implementation, but we have varied somewhat.
+
+
+## Status
 
 * [ ] Encoders
 * [x] Spatial Pooler

@@ -5,8 +5,8 @@
 DO
 $$
 DECLARE
-  column_count INT := htm.config('column_count');
-  row_count INT := htm.config('row_count');
+  column_count CONSTANT INT := htm.config('column_count');
+  row_count CONSTANT INT := htm.config('row_count');
   neuronId INT;
 BEGIN
   RAISE NOTICE 'Inserting % Neurons...', (column_count * row_count);

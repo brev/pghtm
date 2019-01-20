@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(21);  -- Test count
+SELECT plan(27);  -- Test count
 
 
 SELECT has_table('column');
@@ -26,14 +26,20 @@ SELECT col_is_pk('column', 'id');
 SELECT col_type_is('column', 'boost_factor', 'numeric');
 SELECT col_not_null('column', 'boost_factor');
 SELECT col_has_check('column', 'boost_factor');
+SELECT col_has_default('column', 'boost_factor');
+SELECT col_default_is('column', 'boost_factor', 0.0);
 
 SELECT col_type_is('column', 'duty_cycle_active', 'numeric');
 SELECT col_not_null('column', 'duty_cycle_active');
 SELECT col_has_check('column', 'duty_cycle_active');
+SELECT col_has_default('column', 'duty_cycle_active');
+SELECT col_default_is('column', 'duty_cycle_active', 1.0);
 
 SELECT col_type_is('column', 'duty_cycle_overlap', 'numeric');
 SELECT col_not_null('column', 'duty_cycle_overlap');
 SELECT col_has_check('column', 'duty_cycle_overlap');
+SELECT col_has_default('column', 'duty_cycle_overlap');
+SELECT col_default_is('column', 'duty_cycle_overlap', 1.0);
 
 SELECT col_type_is('column', 'region_id', 'integer');
 SELECT col_not_null('column', 'region_id');

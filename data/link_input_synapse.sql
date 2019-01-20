@@ -5,12 +5,12 @@
 DO
 $$
 DECLARE
-  column_count INT := htm.config('column_count');
-  dendrite_count INT := htm.config('dendrite_count');
-  neuron_count INT := htm.config('neuron_count');
-  synapse_count INT := htm.config('synapse_count');
-  input_width INT := htm.config('input_width');
-  SynapseStart INT := dendrite_count * neuron_count * synapse_count;
+  column_count CONSTANT INT := htm.config('column_count');
+  dendrite_count CONSTANT INT := htm.config('dendrite_count');
+  neuron_count CONSTANT INT := htm.config('neuron_count');
+  synapse_count CONSTANT INT := htm.config('synapse_count');
+  input_width CONSTANT INT := htm.config('input_width');
+  SynapseStart CONSTANT INT := dendrite_count * neuron_count * synapse_count;
   linkId INT;
 BEGIN
   RAISE NOTICE 'Inserting % Links (Input => Synapse)...',
@@ -18,7 +18,11 @@ BEGIN
 
   FOR localColumnId IN 1..column_count LOOP
     FOR localSynapseId IN 1..synapse_count LOOP
-      linkId := htm.count_unloop(localColumnId, localSynapseId, synapse_count);
+      linkId := htm.count_unloop(
+        localColumnId,
+        localSynapseId,
+        synapse_count
+      );
       INSERT
         INTO htm.link_input_synapse(id, input_index, synapse_id)
         VALUES (

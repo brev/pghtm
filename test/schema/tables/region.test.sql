@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(12);  -- Test count
+SELECT plan(16);  -- Test count
 
 
 SELECT has_table('region');
@@ -25,10 +25,14 @@ SELECT col_is_pk('region', 'id');
 SELECT col_type_is('region', 'duty_cycle_active_mean', 'numeric');
 SELECT col_not_null('region', 'duty_cycle_active_mean');
 SELECT col_has_check('region', 'duty_cycle_active_mean');
+SELECT col_has_default('region', 'duty_cycle_active_mean');
+SELECT col_default_is('region', 'duty_cycle_active_mean', 0.0);
 
 SELECT col_type_is('region', 'duty_cycle_overlap_mean', 'numeric');
 SELECT col_not_null('region', 'duty_cycle_overlap_mean');
 SELECT col_has_check('region', 'duty_cycle_overlap_mean');
+SELECT col_has_default('region', 'duty_cycle_overlap_mean');
+SELECT col_default_is('region', 'duty_cycle_overlap_mean', 0.0);
 
 
 SELECT * FROM finish();
