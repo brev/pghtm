@@ -4,19 +4,8 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(48);  -- Test count
+SELECT plan(43);  -- Test count
 
-
--- test config()
-SELECT has_function('config', ARRAY['character varying']);
-SELECT function_lang_is('config', 'plpgsql');
-SELECT volatility_is('config', 'immutable');
-SELECT function_returns('config', 'character varying');
-SELECT is(
-  config('neuron_count')::INT,
-  config('column_count')::INT * config('row_count')::INT,
-  'config() neurons = rows * columns OK'
-);
 
 -- test count_unloop()
 SELECT has_function('count_unloop', ARRAY['integer', 'integer', 'integer']);
@@ -30,11 +19,11 @@ SELECT is(count_unloop(2, 1, 3), 4, 'count_unloop() works 4');
 SELECT is(count_unloop(2, 2, 3), 5, 'count_unloop() works 5');
 SELECT is(count_unloop(2, 3, 3), 6, 'count_unloop() works 6');
 
--- test log()
-SELECT has_function('log', ARRAY['text']);
-SELECT function_lang_is('log', 'plpgsql');
-SELECT volatility_is('log', 'stable');
-SELECT function_returns('log', 'boolean');
+-- test debug()
+SELECT has_function('debug', ARRAY['text']);
+SELECT function_lang_is('debug', 'plpgsql');
+SELECT volatility_is('debug', 'stable');
+SELECT function_returns('debug', 'boolean');
 
 -- test random_range_int()
 SELECT has_function('random_range_int', ARRAY['integer', 'integer']);

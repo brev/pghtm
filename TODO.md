@@ -6,9 +6,6 @@
 
 # Future
 
-* Schema
-  * on create: config as table/function?  configurable vs speedy
-  * pg int's not unsigned - for input indexes[], got a trinary if wanted
 * Admin 
   * pg users, roles, access controls, grants, revokes, etc.
 * Performance: 
@@ -17,6 +14,8 @@
   * array/matrix/vectorize maths and data (see related pg extensions)
   * Externalize and speed up plpgsql stuff as C Extensions.
   * Continue on to full NuPIC Integration?
+* Future
+  * pg int's not unsigned - for input indexes[], got a trinary if wanted
 * SP Phase 2
   * Dimensionality
   * Add topology AKA local column column_inhibit 

@@ -9,4 +9,5 @@ DELETE FROM htm.dendrite;
 DELETE FROM htm.neuron;
 DELETE FROM htm.column;
 DELETE FROM htm.region;
+DELETE FROM htm.config;
 

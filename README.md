@@ -170,7 +170,7 @@ psql
 \timing on
 # Timing is on.
 
-UPDATE htm.config SET log = TRUE;
+UPDATE htm.config SET debug = TRUE;
 # UPDATE 1
 # Time: 2.184 ms
 

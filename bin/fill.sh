@@ -2,6 +2,7 @@
 SQL=".."
 DATA="$SQL/data"
 
+psql -f $DATA/config.sql
 psql -f $DATA/region.sql
 psql -f $DATA/column.sql
 psql -f $DATA/neuron.sql

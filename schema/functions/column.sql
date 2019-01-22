@@ -34,7 +34,7 @@ AS $$
 DECLARE
   period CONSTANT INT := htm.column_duty_cycle_period();
 BEGIN
-  PERFORM htm.log('new input, updating column duty cycles, etc.');
+  PERFORM htm.debug('new input, updating column duty cycles, etc.');
   WITH column_next AS (
     SELECT
       htm.column.id,
