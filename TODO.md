@@ -1,7 +1,8 @@
 # Current
 
-* WebUI
+* Fix code coverage reporting
 * Temporal Memory
+* WebUI
 * Encoders
 
 # Future
