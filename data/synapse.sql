@@ -35,11 +35,11 @@ BEGIN
             synapseId,
             dendriteId,
             htm.random_range_numeric((
-              htm.config('synapse_proximal_threshold')::NUMERIC -
-              htm.config('synapse_proximal_decrement')::NUMERIC
+              htm.config('synapse_distal_threshold')::NUMERIC -
+              htm.config('synapse_distal_decrement')::NUMERIC
             ), (
-              htm.config('synapse_proximal_threshold')::NUMERIC +
-              htm.config('synapse_proximal_increment')::NUMERIC
+              htm.config('synapse_distal_threshold')::NUMERIC +
+              htm.config('synapse_distal_increment')::NUMERIC
             ))
           );
       END LOOP;

@@ -18,15 +18,12 @@ $$ LANGUAGE plpgsql IMMUTABLE;
  * Raise a notice message (debug output) if debugging enabled
  */
 CREATE FUNCTION htm.debug(text)
-RETURNS BOOL
+RETURNS VOID
 AS $$
-DECLARE
-  debug CONSTANT BOOL := htm.config('debug');
 BEGIN
-  IF debug THEN
+  IF htm.config('debug') THEN
     RAISE NOTICE '%', $1;
   END IF;
-  RETURN debug;
 END;
 $$ LANGUAGE plpgsql STABLE;
 

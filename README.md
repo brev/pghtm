@@ -22,12 +22,8 @@ reference implementation, but we have varied somewhat.
 
 **Test**
 
-* Unit Testing:
-  * [Perl](https://www.perl.org/)
-  * [pgTAP](https://pgtap.org/) + pg_prove
-* Code Coverage ([plpgsql](https://en.wikipedia.org/wiki/PL/pgSQL)):
-  * [Ruby](https://www.ruby-lang.org/)
-  * [piggly](http://kputnam.github.io/piggly/) + activerecord
+* [Perl](https://www.perl.org/)
+* [pgTAP](https://pgtap.org/) + pg_prove
 
 **Web UI**
 
@@ -84,26 +80,6 @@ cd pghtm/bin
 ./test_schema.sh
 ./test_data_init.sh
 cd ../..
-```
-
-**Code Coverage:**
-
-```bash
-brew install ruby 
-## Modify GEM_HOME and GEM_PATH env vars to get homebrew ruby+gems working
-gem install piggly activerecord
-
-cd pghtm
-## Modify pghtm/test/config/database.yml, update DB connection info
-piggly trace --select /htm/ --database test/config/database.yml
-cd bin
-./test_schema.sh 2> ../piggly/coverage.txt
-./test_data_init.sh 2>> ../piggly/coverage.txt
-cd ..
-piggly untrace --select /htm/ --database test/config/database.yml
-piggly report --select /htm/ -f piggly/coverage.txt
-## Open in Browser: piggly/reports/index.html
-cd ..
 ```
 
 #### Web UI

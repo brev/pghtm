@@ -4,6 +4,50 @@
 
 
 /**
+ * Check if a distal synapse is considered connected (above permanence
+ *  threshold) or not (potential).
+ * @TemporalMemory
+ */
+CREATE FUNCTION htm.synapse_distal_get_connection(permanence NUMERIC)
+RETURNS BOOL
+AS $$
+DECLARE
+  synapse_distal_threshold CONSTANT NUMERIC :=
+    htm.config('synapse_distal_threshold');
+BEGIN
+  RETURN permanence > synapse_distal_threshold;
+END;
+$$ LANGUAGE plpgsql STABLE;
+
+/**
+ * Nudge distal potential synapse permanence down according to learning rules.
+ * @SpatialPooler
+ */
+CREATE FUNCTION htm.synapse_distal_get_decrement(permanence NUMERIC)
+RETURNS NUMERIC
+AS $$
+DECLARE
+  decrement CONSTANT NUMERIC := htm.config('synapse_distal_decrement');
+BEGIN
+  RETURN GREATEST(permanence - decrement, 0.0);
+END;
+$$ LANGUAGE plpgsql STABLE;
+
+/**
+ * Nudge distal connected synapse permanence up according to learning rules.
+ * @SpatialPooler
+ */
+CREATE FUNCTION htm.synapse_distal_get_increment(permanence NUMERIC)
+RETURNS NUMERIC
+AS $$
+DECLARE
+  increment CONSTANT NUMERIC := htm.config('synapse_distal_increment');
+BEGIN
+  RETURN LEAST(permanence + increment, 1.0);
+END;
+$$ LANGUAGE plpgsql STABLE;
+
+/**
  * Perform the overlapDutyCycle/synaptic-related parts of boosting.
  *  Promote underwhelmed columns via synaptic permanence increase to
  *  stoke future wins.

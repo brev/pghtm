@@ -1,6 +1,5 @@
 # Current
 
-* Fix code coverage reporting
 * Temporal Memory
 * WebUI
 * Encoders
@@ -10,6 +9,8 @@
 * Admin 
   * pg users, roles, access controls, grants, revokes, etc.
 * Performance: 
+  * Can some vol/stable functions be moved to immutable?
+    * How does this interact with my config_getter_generator?
   * Views -> Materialize and cache?
   * ditch views? calc nupic style?
   * array/matrix/vectorize maths and data (see related pg extensions)

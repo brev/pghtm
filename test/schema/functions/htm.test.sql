@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(43);  -- Test count
+SELECT plan(42);  -- Test count
 
 
 -- test count_unloop()
@@ -23,7 +23,6 @@ SELECT is(count_unloop(2, 3, 3), 6, 'count_unloop() works 6');
 SELECT has_function('debug', ARRAY['text']);
 SELECT function_lang_is('debug', 'plpgsql');
 SELECT volatility_is('debug', 'stable');
-SELECT function_returns('debug', 'boolean');
 
 -- test random_range_int()
 SELECT has_function('random_range_int', ARRAY['integer', 'integer']);

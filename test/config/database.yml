@@ -1,6 +1,0 @@
-piggly:
-  adapter: postgresql
-  database: htmdb
-  username:
-  password:
-  host: localhost
