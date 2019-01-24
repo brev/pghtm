@@ -123,7 +123,7 @@ cd pghtm/webui
 
 npm install
 npm start
-## Open web UI layer in Browser: http://localhost:3000/spatialpooler/
+## Open web UI layer in Browser: http://localhost:3000/
 ```
 
 
@@ -139,9 +139,9 @@ INSERT INTO htm.input (indexes) VALUES (ARRAY[0,1,2,3]);
 # INSERT 0 1
 
 SELECT indexes, columns_active FROM htm.input;
-#    indexes   | columns_active
-# -------------+----------------
-#  {0,1,2,3,4} | {28,31,46,72}
+# indexes   | columns_active
+#-----------+----------------
+# {0,1,2,3} | {28,31,46,72}
 # (1 row)
 
 \q
