@@ -8,7 +8,7 @@ SELECT plan(2);  -- Test count
 
 
 SELECT row_eq(
-  $$ SELECT COUNT(id) FROM link_input_synapse; $$,
+  $$ SELECT COUNT(id) FROM link_proximal_input_synapse; $$,
   ROW((
     config('column_count')::INT *
     config('synapse_count')::INT
@@ -17,11 +17,11 @@ SELECT row_eq(
 );
 
 SELECT throws_ok('
-    INSERT INTO link_input_synapse VALUES
+    INSERT INTO link_proximal_input_synapse VALUES
       (12345, 10, 22),
       (12345, 10, 22);
   ',
-  'duplicate key value violates unique constraint "link_input_synapse_pkey"',
+  'duplicate key value violates unique constraint "link_proximal_input_synapse_pkey"',
   'Errors on non-unique combo of input_index and synapse_id'
 );
 

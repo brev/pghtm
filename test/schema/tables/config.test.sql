@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(83);  -- Test count
+SELECT plan(86);  -- Test count
 
 
 SELECT has_table('config');
@@ -28,6 +28,7 @@ SELECT columns_are('config', ARRAY[
   'column_inhibit',
   'debug',
   'dendrite_synapse_threshold',
+  'neuron_dendrite_threshold',
   'synapse_distal_learn',
   'synapse_distal_decrement',
   'synapse_distal_increment',
@@ -115,6 +116,10 @@ SELECT col_has_default('config', 'debug');
 SELECT col_type_is('config', 'dendrite_synapse_threshold', 'integer');
 SELECT col_not_null('config', 'dendrite_synapse_threshold');
 SELECT col_has_default('config', 'dendrite_synapse_threshold');
+
+SELECT col_type_is('config', 'neuron_dendrite_threshold', 'integer');
+SELECT col_not_null('config', 'neuron_dendrite_threshold');
+SELECT col_has_default('config', 'neuron_dendrite_threshold');
 
 SELECT col_type_is('config', 'synapse_distal_learn', 'boolean');
 SELECT col_not_null('config', 'synapse_distal_learn');

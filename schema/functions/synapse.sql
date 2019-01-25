@@ -67,10 +67,10 @@ BEGIN
     JOIN htm.dendrite
       ON dendrite.id = synapse.dendrite_id
       AND dendrite.class = 'proximal'
-    JOIN htm.link_dendrite_column
-      ON link_dendrite_column.dendrite_id = dendrite.id
+    JOIN htm.link_proximal_dendrite_column
+      ON link_proximal_dendrite_column.dendrite_id = dendrite.id
     JOIN htm.column
-      ON htm.column.id = link_dendrite_column.column_id
+      ON htm.column.id = link_proximal_dendrite_column.column_id
     JOIN htm.region
       ON region.id = htm.column.region_id
       AND region.duty_cycle_overlap_mean > htm.column.duty_cycle_overlap
@@ -155,10 +155,10 @@ BEGIN
     JOIN htm.dendrite
       ON dendrite.id = synapse.dendrite_id
       AND dendrite.class = 'proximal'
-    JOIN htm.link_dendrite_column
-      ON link_dendrite_column.dendrite_id = dendrite.id
+    JOIN htm.link_proximal_dendrite_column
+      ON link_proximal_dendrite_column.dendrite_id = dendrite.id
     JOIN htm.column_active
-      ON column_active.id = link_dendrite_column.column_id
+      ON column_active.id = link_proximal_dendrite_column.column_id
   )
   UPDATE htm.synapse
     SET permanence = synapse_next.permanence

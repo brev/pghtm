@@ -14,7 +14,7 @@ BEGIN
 
   FOR columnId IN 1..column_count LOOP
     INSERT
-      INTO htm.link_dendrite_column (id, dendrite_id, column_id)
+      INTO htm.link_proximal_dendrite_column (id, dendrite_id, column_id)
       VALUES (columnId, lastDendriteId + columnId, columnId);
   END LOOP;
 END

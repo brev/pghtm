@@ -1,10 +1,12 @@
-# Current
+# Current Work
 
-* Temporal Memory
-* WebUI
-* Encoders
+[x] Temporal Memory
+  * Combine neuron_distal_predict with neuron_proximal_burst to fill neuron.active
+  * Move column_active to be column.active to match
+[x] WebUI - Work with @jsfowles on react components
+[ ] Encoders
 
-# Future
+# Future Work
 
 * Admin 
   * pg users, roles, access controls, grants, revokes, etc.
@@ -12,8 +14,8 @@
   * Can some vol/stable functions be moved to immutable?
     * How does this interact with my config_getter_generator?
   * Views -> Materialize and cache?
-  * ditch views? calc nupic style?
   * array/matrix/vectorize maths and data (see related pg extensions)
+    * (ditch views. calc nupic style.)
   * Externalize and speed up plpgsql stuff as C Extensions.
   * Continue on to full NuPIC Integration?
 * Future
@@ -38,4 +40,7 @@
   * Add wrapAround feature (see nupic sp)
   * "Cloning"? Replicating learning across lower levels of hierarchy to spread
     the details. Complex. No longer in Nupic.
+* TM Phase 2
+  * dendrite_proximal_overlap_active => dendrite_proximal_active ?
+  * separate dendrite_is_active() into distal/proximal versions?
 

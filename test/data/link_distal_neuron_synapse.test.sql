@@ -1,5 +1,5 @@
 /**
- * Link Dendrite to Neuron Data Test
+ * Link Neuron to Synapse Data Test
  */
 
 BEGIN;
@@ -8,12 +8,13 @@ SELECT plan(1);  -- Test count
 
 
 SELECT row_eq(
-  $$ SELECT COUNT(id) FROM link_dendrite_neuron; $$,
+  $$ SELECT COUNT(id) FROM link_distal_neuron_synapse; $$,
   ROW((
     config('neuron_count')::INT *
-    config('dendrite_count')::INT
+    config('dendrite_count')::INT *
+    config('synapse_count')::INT
   )::BIGINT),
-  'Link_Dendrite_Neuron has valid data'
+  'Link_Neuron_Synapse has valid data'
 );
 
 

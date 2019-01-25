@@ -24,7 +24,7 @@ BEGIN
         synapse_count
       );
       INSERT
-        INTO htm.link_input_synapse(id, input_index, synapse_id)
+        INTO htm.link_proximal_input_synapse(id, input_index, synapse_id)
         VALUES (
           linkId,
           htm.random_range_int(1, input_width),

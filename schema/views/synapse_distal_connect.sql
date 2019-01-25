@@ -2,7 +2,7 @@
  * Synapse (Distal: Connected) View
  * @TemporalMemory
  */
-CREATE VIEW htm.synapse_distal_connected AS (
+CREATE VIEW htm.synapse_distal_connect AS (
   SELECT synapse.id
   FROM htm.synapse
   JOIN htm.dendrite

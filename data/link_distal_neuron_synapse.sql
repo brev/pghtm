@@ -16,7 +16,7 @@ BEGIN
   FOR synapseId IN 1..TotalSynapse LOOP
     neuronId := htm.random_range_int(1, neuron_count);
     INSERT
-      INTO htm.link_neuron_synapse(id, neuron_id, synapse_id)
+      INTO htm.link_distal_neuron_synapse(id, neuron_id, synapse_id)
       VALUES (synapseId, neuronId, synapseId);
   END LOOP;
 END

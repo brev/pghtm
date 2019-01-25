@@ -21,7 +21,9 @@ $$ LANGUAGE plpgsql;
  *  function. Config option data comes from htm.config table. This function
  *  should be triggered upon updates to that table. This way we can get
  *  blazing-fast and up-to-date config options without costly table access.
- *  NOTE: You'll need to ::CAST the result of htm.config() getter.
+ * You'll need to ::CAST the result of the getter:
+ *    result INT := htm.config('threshold');  -- plpgsql declaration
+ *    SELECT htm.config('threshold')::INT;    -- plain SQL
  */
 CREATE FUNCTION htm.config_generate()
 RETURNS VOID

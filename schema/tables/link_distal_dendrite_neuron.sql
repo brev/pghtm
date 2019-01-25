@@ -1,7 +1,7 @@
 /**
  * Link Dendrite to Neuron Table
  */
-CREATE TABLE htm.link_dendrite_neuron(
+CREATE TABLE htm.link_distal_dendrite_neuron(
   id          INT NOT NULL PRIMARY KEY,
   dendrite_id INT NOT NULL,
   neuron_id   INT NOT NULL,

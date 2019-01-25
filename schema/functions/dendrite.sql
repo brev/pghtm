@@ -5,15 +5,15 @@
 
 /**
  * Check if a dendrite is active (# active syanpses above threshold).
+ *  Currently for both distal and proximal.
  */
-CREATE FUNCTION htm.dendrite_is_active(active_synapses INT)
+CREATE FUNCTION htm.dendrite_is_active(synapses_active INT)
 RETURNS BOOL
 AS $$
 DECLARE
-  dendrite_synapse_threshold CONSTANT NUMERIC :=
-    htm.config('dendrite_synapse_threshold');
+  threshold CONSTANT INT := htm.config('dendrite_synapse_threshold');
 BEGIN
-  RETURN active_synapses > dendrite_synapse_threshold;
+  RETURN synapses_active > threshold;
 END;
 $$ LANGUAGE plpgsql STABLE;
 

@@ -1,7 +1,7 @@
 /**
  * Link Neuron to Synapse Table
  */
-CREATE TABLE htm.link_neuron_synapse(
+CREATE TABLE htm.link_distal_neuron_synapse(
   id          INT NOT NULL PRIMARY KEY,
   neuron_id   INT NOT NULL,
   synapse_id  INT NOT NULL,

@@ -95,6 +95,11 @@ BEGIN
       --  nupic tm:?=?
       dendrite_synapse_threshold INT NOT NULL DEFAULT 1,
 
+      -- neuron_dendrite_threshold: # active distal dendrites required for a
+      --  predictive neuron. Default of 1 acts like NuPIC-suggested LOGICAL OR.
+      --  nupic tm:?=?
+      neuron_dendrite_threshold INT NOT NULL DEFAULT 1,
+
       -- synapse_distal_learn: TM learning on? flag
       --  @TemporalMemory
       synapse_distal_learn BOOL NOT NULL DEFAULT TRUE,

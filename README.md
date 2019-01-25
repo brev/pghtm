@@ -135,7 +135,7 @@ SELECT indexes, columns_active FROM htm.input;
 
 * New **INPUT** row is inserted into `htm.input` table.
   * With new input row, combined with the already-populated view 
-    `htm.synapse_proximal_connected`, the view `htm.synapse_proximal_active` 
+    `htm.synapse_proximal_connect`, the view `htm.synapse_proximal_active` 
     auto-updates.
     * With that, view `htm.dendrite_proximal_overlap_active` auto-updates.
       * With that, Column View `htm.column_overlap_boost` auto-updates.
@@ -168,7 +168,7 @@ SELECT indexes, columns_active FROM htm.input;
           `htm.synapse_proximal_learn_update()`. Learning is perfomed by 
           adjusting synapse permanence values in `htm.synapse`.
 * After everything above, especially boosting/learning permanence value 
-  changes, the view `htm.synapse_proximal_connected` auto-updates,
+  changes, the view `htm.synapse_proximal_connect` auto-updates,
   ready for the next cycle of SP computation, and for the next new input.
 
 

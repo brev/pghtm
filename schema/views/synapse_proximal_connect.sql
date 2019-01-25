@@ -2,7 +2,7 @@
  * Synapse (Proximal: Connected) View
  * @SpatialPooler
  */
-CREATE VIEW htm.synapse_proximal_connected AS (
+CREATE VIEW htm.synapse_proximal_connect AS (
   SELECT synapse.id
   FROM htm.synapse
   JOIN htm.dendrite
