@@ -4,9 +4,10 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(4);  -- Test count
+SELECT plan(5);  -- Test count
 
 
+SELECT has_trigger('column', 'trigger_column_active_change');
 SELECT has_trigger('column', 'trigger_column_input_columns_active_change');
 SELECT has_trigger('column', 'trigger_column_region_duty_cycles_change');
 SELECT has_trigger('column', 'trigger_column_synapse_permanence_boost_change');

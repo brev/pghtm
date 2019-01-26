@@ -1,48 +1,39 @@
 # pgHTM
 
-> **PRIVATE! Not yet for public consumption.**
-
-Machine Intelligence Neurotechnology for streaming prediction and anomaly 
-detection.
+> **PRIVATE! Internal use only. Not yet for public release.**
 
 [Hierarchical Temporal Memory](https://www.numenta.com/machine-intelligence-technology/) 
-(HTM) in PostgreSQL. [NuPIC](https://github.com/numenta/nupic) is our base 
-reference implementation, but we have varied somewhat.
+(HTM) in PostgreSQL. 
+
+Machine Intelligence Neurotechnology for streaming prediction and anomaly 
+detection. 
+
+[NuPIC](https://github.com/numenta/nupic) is our base reference implementation, 
+but we have varied somewhat.
+
+**Progress:**
 
 * [ ] Encoders
 * [x] Spatial Pooler
 * [ ] Temporal Memory
 
 
-## Requirements
-
-**Main**
-
-* [PostgreSQL](https://www.postgresql.org/) Backend
-
-**Test**
-
-* [Perl](https://www.perl.org/)
-* [pgTAP](https://pgtap.org/) + pg_prove
-
-**Web UI**
-
-* [GraphQL](https://graphql.org/) Midddleware
-  * [Docker](https://www.docker.com/)
-  * [Hasura](https://hasura.io/)
-* Web Frontend
-  * [Node.js](https://nodejs.org/)
-  * [React](https://reactjs.org/) 
-      ([create-react-app](https://facebook.github.io/create-react-app/))
-
-
 ## Setup
+
+### Requirements
+
+Layer      | Technology
+-----------|-----------
+Backend    | [PostgreSQL](https://www.postgresql.org/)
+Test       | [Perl](https://www.perl.org/), [pgTAP](https://pgtap.org/)
+Middleware | [Docker](https://www.docker.com/), [Hasura](https://hasura.io/) GraphQL
+Frontend   | [Node.js](https://nodejs.org/), [React](https://facebook.github.io/create-react-app/)
 
 ### Development @ Mac OS/X
 
 * Expecting: [Homebrew](https://brew.sh/)
 
-#### Main
+#### Backend
 
 ```bash
 brew install postgresql pgcli
@@ -82,11 +73,10 @@ cd pghtm/bin
 cd ../..
 ```
 
-#### Web UI
+#### Middleware
 
 ```bash
 brew cask install docker
-brew install node
 
 cd pghtm/webui
 
@@ -96,6 +86,16 @@ cd pghtm/webui
 ## Open graphql layer in Browser: http://localhost:8080/console
 ##  Select DATA tab, change Schema to "htm". Use buttons to Add All Tables, 
 ##  and Track All Relations.
+
+cd ../..
+```
+
+#### Frontend
+
+```bash
+brew install node
+
+cd pghtm/webui
 
 npm install
 npm start
@@ -133,46 +133,114 @@ SELECT indexes, columns_active FROM htm.input;
 
 ![pgHTM Spatial Pooling Diagram](meta/pghtm-spatialpooler.png)
 
-* New **INPUT** row is inserted into `htm.input` table.
-  * With new input row, combined with the already-populated view 
-    `htm.synapse_proximal_connect`, the view `htm.synapse_proximal_active` 
-    auto-updates.
-    * With that, view `htm.dendrite_proximal_overlap_active` auto-updates.
-      * With that, Column View `htm.column_overlap_boost` auto-updates.
-        * Based on that, Column View `htm.column_active` auto-updates. This
-          is ready to be the the post-global-inhibition final winner columns.
-          However, before that, the following computations (below) will happen,
-          and the values here will adapt as boost factors, etc, change below.
-  * With new input row, trigger `trigger_input_column_boost_duty_change` fires, 
-    running function `htm.column_boost_duty_update()`. Column boost factors 
-    and duty cycles are re-calculated and stored in the `htm.column` table.
-    Column views will auto-update.
-      * With that, all of the following triggers will fire:
-        * `trigger_column_input_columns_active_change` will run function
-          `htm.input_columns_active_update()`. The active columns set in 
-          Column View `htm.column_active`, updated with current boosting, etc,
-          values, are now stored back alongside the original new input row in 
-          table `htm.input`. This is Spatial Pooler **OUTPUT** complete.
-          * As part of the above, trigger `trigger_input_modified_change` 
-            runs `htm.schema_modified_update()` before update, timestamping
-            when the SP results were added back with the original new input.
-            @TODO: This may not be necessary? already in same transaction?
-        * `trigger_column_region_duty_cycles_change` will run function
-          `htm.region_duty_cycles_update()`. Since table `htm.column` was
-          updated, we now re-calculate and store cross-column
-          statistics for future computations in table `htm.region`.
-        * `trigger_column_synapse_permanence_boost_change` fires and runs
-          `htm.synapse_proximal_boost_update()`. Some permanence values
-          are boosted in `htm.synapse`.
-        * `trigger_column_synapse_permanence_learn_change` fires and runs
-          `htm.synapse_proximal_learn_update()`. Learning is perfomed by 
-          adjusting synapse permanence values in `htm.synapse`.
-* After everything above, especially boosting/learning permanence value 
-  changes, the view `htm.synapse_proximal_connect` auto-updates,
-  ready for the next cycle of SP computation, and for the next new input.
+1. **INPUT**. New input row is inserted.
+
+    INSERT | `input.indexes`
+    -------|----------------
+
+    1. **VIEWS**. New input row is combined with connected synapses to 
+        auto-compute active synapses.
+
+        VIEW   | `synapse_proximal_active`
+        -------|--------------------------
+        Source | `input.indexes`
+        Source | `synapse_proximal_connect`
+      
+        1. Active synapses cause auto-update of active dendrites and overlap
+            scores.
+
+            VIEW   | `dendrite_proximal_overlap_active`
+            -------|-----------------------------------
+            Source | `synapse_proximal_active`
+
+            1. Active dendrites cause auto-update of possibly active columns 
+                and their overlaps. This is a pre-boosting, 
+                pre-global-inhibition list of possible winner columns. Before 
+                inhibition and winner column selection, the next section of 
+                computations (below) will execute, and the values in this view 
+                will adapt accordingly.
+
+                VIEW   | `column_overlap_boost`
+                -------|-----------------------------------
+                Source | `dendrite_proximal_overlap_active`
+
+    1. **TRIGGERS**. Column boost factors and duty cycles are re-calculated 
+        and stored for new input. Column and related views (previous section 
+        above) will auto-update dynamically in step.
+      
+        TRIGGER  | `trigger_input_column_boost_duty_change`
+        ---------|-----------------------------------------
+        Source   | `input.indexes`
+        Function | `column_boost_duty_update()`
+        Target   | `column.(boost_factor, duty_cycle_active/overlap)`
+      
+        1. Perform global inhibition to select final winner columns, and flag. 
+            
+            TRIGGER  | `trigger_column_active_change`
+            ---------|--------------------------
+            Source   | `column.(boost_factor, duty_cycle_active/overlap)`
+            Function | `column_active_update()`
+            Target   | `column.active`
+        
+            1. **OUTPUT**. Active columns are are now stored back alongside the 
+                original new input row.
+
+                TRIGGER  | `trigger_column_input_columns_active_change`                
+                ---------|---------------------------------------------
+                Source   | `column.active`
+                Function | `input_columns_active_update()`
+                Target   | `input.columns_active`
+
+                1. Track a timestamp when we put the SP output results back in 
+                    with its original related new input row.
+                    @TODO: This may not be necessary? already in transaction?
+                    
+                    TRIGGER  | `trigger_input_modified_change`
+                    ---------|--------------------------------
+                    Source   | `input.columns_active`
+                    Function | `schema_modified_update()`
+                    Target   | `input.modified`
+
+            1. Synaptic Learning is performed by adjusting synapse 
+                permanence values.
+            
+                TRIGGER  | `trigger_column_synapse_permanence_learn_change`
+                ---------|-------------------------------------------------
+                Source   | `column.active`
+                Function | `synapse_proximal_learn_update()`
+                Target   | `synapse.permanence`
+
+        1. Synaptic Boosting is performed by adjusting some synapse 
+            permanence values.
+        
+            TRIGGER  | `trigger_column_synapse_permanence_boost_change`
+            ---------|-------------------------------------------------
+            Source   | `column.(boost_factor, duty_cycle_active/overlap)`
+            Function | `synapse_proximal_boost_update()`
+            Target   | `synapse.permanence`
+                  
+        1. Re-calculate and store region-wide cross-column statistics for 
+            future computations.
+            
+            TRIGGER  | `trigger_column_region_duty_cycles_change`             
+            ---------|-------------------------------------------
+            Source   | `column.(boost_factor, duty_cycle_active/overlap)`
+            Function | `region_duty_cycles_update()`
+            Target   | `region.(duty cycles)`
+            
+    1. **VIEW** After everything above is complete (boosting/learning/etc),
+        the original list of connected synapses auto-updates. Connected
+        synapses are now ready for the next new input, and the cycle starts
+        over from top.
+
+        VIEW   | `synapse_proximal_connect`        
+        -------|---------------------------
+        Source | `synapse.permanence`
 
 
 ## Temporal Memory
+
+* TODO
 
 
 ## Debug
@@ -187,7 +255,7 @@ UPDATE htm.config SET debug = TRUE;
 # UPDATE 1
 # Time: 2.184 ms
 
-EXPLAIN ANALYZE VERBOSE INSERT INTO htm.input (indexes) VALUES (ARRAY[0,1,2,3]);
+EXPLAIN ANALYZE VERBOSE INSERT INTO htm.input (indexes) VALUES (ARRAY[0,1,2]);
 # Lots of Info
 
 LOAD 'auto_explain';
@@ -200,11 +268,41 @@ SET auto_explain.log_analyze  = TRUE;
 ```
 
 
-## License
+## Legal
 
-Copyright © 2019 - Brev Patterson, Lux Rota LLC
+> **PRIVATE! Internal use only. Not yet for public release.**
 
-TODO Private/Unreleased License
+### Copyright
+
+Copyright © 2018-2019 · Brev Patterson · Lux Rota LLC
+ 
+> Other owners retain copyright to their respective works.
+
+### Dual License
+
+Purpose                  | License
+-------------------------|-------- 
+Non-Commercial, Internal | [AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html)
+Commercial               | [Numenta](https://numenta.com/)
+
+#### AGPLv3
+
+```
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+```
+
+#### Numenta
 
 This code is an implementation of 
 [Hierarchical Temporal Memory](https://en.wikipedia.org/wiki/Hierarchical_temporal_memory), 
@@ -212,5 +310,5 @@ on which [Numenta](https://numenta.com) owns patents and intellectual property.
 While this code was written without using any of Numenta’s code, it is likely 
 that those patent laws still apply for commerical applications. Before using 
 this code commercially, it is reccomended to contact 
-[Lux Rota](https://luxrota.com) and [Numenta](https://numenta.com).
+[Numenta](https://numenta.com).
 

@@ -4,12 +4,13 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(27);  -- Test count
+SELECT plan(31);  -- Test count
 
 
 SELECT has_table('column');
 SELECT columns_are('column', ARRAY[
   'id',
+  'active',
   'boost_factor',
   'duty_cycle_active',
   'duty_cycle_overlap',
@@ -22,6 +23,11 @@ SELECT has_fk('column');
 SELECT col_type_is('column', 'id', 'integer');
 SELECT col_not_null('column', 'id');
 SELECT col_is_pk('column', 'id');
+
+SELECT col_type_is('column', 'active', 'boolean');
+SELECT col_not_null('column', 'active');
+SELECT col_has_default('column', 'active');
+SELECT col_default_is('column', 'active', false);
 
 SELECT col_type_is('column', 'boost_factor', 'numeric');
 SELECT col_not_null('column', 'boost_factor');

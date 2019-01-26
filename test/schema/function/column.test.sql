@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(21);  -- Test count
+SELECT plan(24);  -- Test count
 
 
 -- test htm.column_active_get_limit()
@@ -15,15 +15,18 @@ SELECT function_returns('column_active_get_limit', 'bigint');
 SELECT is(
   column_active_get_limit(),
   (CASE
-    WHEN htm.config('column_inhibit')::INT = 0
-      THEN NULL
-    WHEN htm.config('column_inhibit')::INT = 1
+    WHEN htm.config('column_inhibit')::BOOL
       THEN htm.config('column_active_limit')::BIGINT
-    WHEN htm.config('column_inhibit')::INT = 2
-      THEN NULL
+    ELSE
+      NULL
   END),
   'column_active_get_limit() works'
 );
+
+-- test column_active_update()
+SELECT has_function('column_active_update');
+SELECT function_lang_is('column_active_update', 'plpgsql');
+SELECT function_returns('column_active_update', 'trigger');
 
 -- test column_boost_duty_update()
 SELECT has_function('column_boost_duty_update');
