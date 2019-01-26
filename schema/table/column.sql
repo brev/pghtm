@@ -3,6 +3,7 @@
  */
 CREATE TABLE htm.column (
   id                  INT NOT NULL PRIMARY KEY,
+  active              BOOL NOT NULL DEFAULT FALSE,
   boost_factor        NUMERIC NOT NULL DEFAULT 0.0,
   duty_cycle_active   NUMERIC NOT NULL DEFAULT 1.0,
   duty_cycle_overlap  NUMERIC NOT NULL DEFAULT 1.0,

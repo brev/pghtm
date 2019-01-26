@@ -24,6 +24,40 @@ END;
 $$ LANGUAGE plpgsql STABLE;
 
 /**
+ * Update column.active based on recent changes to column.(duty cycles, etc).
+ * @SpatialPooler
+ */
+CREATE FUNCTION htm.column_active_update()
+RETURNS TRIGGER
+AS $$
+DECLARE
+BEGIN
+  PERFORM htm.debug('updating winner column activity flag');
+  WITH column_next AS (
+    SELECT
+      htm.column.id,
+      (
+        htm.column_active_get_limit() >= (
+          ROW_NUMBER() OVER(
+            ORDER BY column_overlap_boost.overlap_boosted DESC NULLS LAST
+          )
+        )
+      ) AS active  -- global column inhibition
+    FROM htm.column
+    LEFT JOIN htm.column_overlap_boost
+      ON column_overlap_boost.id = htm.column.id
+    ORDER BY column_overlap_boost.overlap_boosted DESC NULLS LAST
+  )
+  UPDATE htm.column
+    SET active = column_next.active
+    FROM column_next
+    WHERE column_next.id = htm.column.id;
+
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+/**
  * Update column.duty_cycle_(active/overlap) based on changes to
  *  previous views (after new input).
  * @SpatialPooler
@@ -41,14 +75,14 @@ BEGIN
       htm.column_boost_factor_compute(
         htm.running_moving_average(
           htm.column.duty_cycle_active,
-          (column_active.id IS NOT NULL)::INT,
+          htm.column.active::INT,
           period
         ),
         region.duty_cycle_active_mean
       ) AS boost_factor,
       htm.running_moving_average(
         htm.column.duty_cycle_active,
-        (column_active.id IS NOT NULL)::INT,
+        htm.column.active::INT,
         period
       ) AS duty_cycle_active,
       htm.running_moving_average(
@@ -59,8 +93,6 @@ BEGIN
     FROM htm.column
     JOIN htm.region
       ON region.id = htm.column.region_id
-    LEFT JOIN htm.column_active
-      ON column_active.id = htm.column.id
     LEFT JOIN htm.column_overlap_boost
       ON column_overlap_boost.id = htm.column.id
     GROUP BY
@@ -68,7 +100,6 @@ BEGIN
       htm.column.duty_cycle_active,
       htm.column.duty_cycle_overlap,
       region.duty_cycle_active_mean,
-      column_active.id,
       column_overlap_boost.id,
       column_overlap_boost.overlap
   )

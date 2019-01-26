@@ -130,7 +130,7 @@ $$ LANGUAGE plpgsql STABLE;
 
 /**
  * Perform Hebbian-style learning on proximal synapse permanences. This is
- *  based on recently-actived winners in column_active. This was triggered
+ *  based on recently-actived winners in column.active. This was triggered
  *  from an update on the column table.
  * @SpatialPooler
  */
@@ -157,8 +157,9 @@ BEGIN
       AND dendrite.class = 'proximal'
     JOIN htm.link_proximal_dendrite_column
       ON link_proximal_dendrite_column.dendrite_id = dendrite.id
-    JOIN htm.column_active
-      ON column_active.id = link_proximal_dendrite_column.column_id
+    JOIN htm.column
+      ON htm.column.id = link_proximal_dendrite_column.column_id
+      AND htm.column.active
   )
   UPDATE htm.synapse
     SET permanence = synapse_next.permanence

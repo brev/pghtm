@@ -1,15 +1,17 @@
 # Current Work
 
 [x] Temporal Memory
-  * Combine neuron_distal_predict with neuron_proximal_burst to fill neuron.active
-  * Move column_active to be column.active to match
-[x] WebUI - Work with @jsfowles on react components
+  * neuron_distal_predict + neuron_proximal_burst => neuron.active
+[x] WebUI
+  * Work with @jsfowles on react components
 [ ] Encoders
 
 # Future Work
 
-* Admin 
+* General:
   * pg users, roles, access controls, grants, revokes, etc.
+  * pg int's not unsigned - for input indexes[], got a trinary if wanted
+  * use advanced pg custom types somehow?  
 * Performance: 
   * Can some vol/stable functions be moved to immutable?
     * How does this interact with my config_getter_generator?
@@ -18,8 +20,6 @@
     * (ditch views. calc nupic style.)
   * Externalize and speed up plpgsql stuff as C Extensions.
   * Continue on to full NuPIC Integration?
-* Future
-  * pg int's not unsigned - for input indexes[], got a trinary if wanted
 * SP Phase 2
   * Dimensionality
   * Add topology AKA local column column_inhibit 
@@ -41,6 +41,6 @@
   * "Cloning"? Replicating learning across lower levels of hierarchy to spread
     the details. Complex. No longer in Nupic.
 * TM Phase 2
-  * dendrite_proximal_overlap_active => dendrite_proximal_active ?
   * separate dendrite_is_active() into distal/proximal versions?
+  * something in BAMI TM about each neuron not having full segments+synapses?
 

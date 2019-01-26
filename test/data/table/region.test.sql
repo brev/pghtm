@@ -4,15 +4,17 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(3);  -- Test count
+SELECT plan(4);  -- Test count
 
 
+-- test region count
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM region $$,
   ROW(1::BIGINT),
   'Region has valid data'
 );
 
+-- test region SP calcs
 SELECT row_eq(
   $$
     SELECT
@@ -31,8 +33,19 @@ SELECT row_eq(
       AVG(duty_cycle_overlap_mean) <> 0.0
     FROM region
   $$,
+  ROW(FALSE, TRUE),
+  'Region has valid active/overlap mean averages after input #1'
+);
+INSERT INTO input (indexes) VALUES (ARRAY[1,2,3,4,5]);
+SELECT row_eq(
+  $$
+    SELECT
+      AVG(duty_cycle_active_mean) <> 0.0,
+      AVG(duty_cycle_overlap_mean) <> 0.0
+    FROM region
+  $$,
   ROW(TRUE, TRUE),
-  'Region has valid active/overlap mean averages after data run'
+  'Region has valid active/overlap mean averages after input #2'
 );
 
 
