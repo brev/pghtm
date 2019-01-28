@@ -8,7 +8,7 @@ DO
 $$
 DECLARE
   -- height: Region/Column height # neuron rows
-  height CONSTANT INT := 1;
+  height CONSTANT INT := 2;
 
   -- width: Region/Column/Input width # neuron cols/bits
   width CONSTANT INT := 100;

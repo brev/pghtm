@@ -6,6 +6,8 @@
 /**
  * Check if a dendrite is active (# active syanpses above threshold).
  *  Currently for both distal and proximal.
+ * @SpatialPooler
+ * @TemporalMemory
  */
 CREATE FUNCTION htm.dendrite_is_active(synapses_active INT)
 RETURNS BOOL

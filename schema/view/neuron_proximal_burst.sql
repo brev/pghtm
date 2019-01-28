@@ -3,13 +3,12 @@
  * @TemporalMemory
  */
 CREATE VIEW htm.neuron_proximal_burst AS (
-  SELECT neuron.id
+  SELECT
+    neuron.id,
+    neuron.column_id
   FROM htm.neuron
-  WHERE ARRAY[neuron.column_id] <@ (
-    SELECT input.columns_active  -- most recent SP output
-    FROM htm.input
-    ORDER BY input.id DESC
-    LIMIT 1
-  )
+  JOIN htm.column
+    ON htm.column.id = neuron.column_id
+    AND htm.column.active
 );
 

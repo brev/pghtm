@@ -58,7 +58,7 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 BEGIN
-  PERFORM htm.debug('synapse boosting');
+  PERFORM htm.debug('SP performing proximal synaptic boosting');
   WITH synapse_next AS (
     SELECT
       synapse.id,
@@ -139,7 +139,7 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 BEGIN
-  PERFORM htm.debug('synapse learning');
+  PERFORM htm.debug('SP performing proximal synaptic learning');
   WITH synapse_next AS (
     SELECT
       synapse.id,

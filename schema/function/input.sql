@@ -13,7 +13,7 @@ CREATE FUNCTION htm.input_columns_active_update()
 RETURNS TRIGGER
 AS $$
 BEGIN
-  PERFORM htm.debug('have winner columns, storing in input table');
+  PERFORM htm.debug('SP saving winner columns back alongside input row');
   WITH input_next AS (
     SELECT
       input.id,

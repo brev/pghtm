@@ -1,7 +1,7 @@
 # Current Work
 
 [x] Temporal Memory
-  * neuron_distal_predict + neuron_proximal_burst => neuron.active
+  * Step 2
 [x] WebUI
   * Work with @jsfowles on react components
 [ ] Encoders

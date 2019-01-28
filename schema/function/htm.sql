@@ -74,7 +74,7 @@ CREATE FUNCTION htm.schema_modified_update()
 RETURNS TRIGGER
 AS $$
 BEGIN
-  PERFORM htm.debug('updating input.modified timestamp');
+  PERFORM htm.debug('Updating input.modified timestamp');
   NEW.modified = NOW();
   RETURN NEW;
 END;

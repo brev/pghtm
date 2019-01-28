@@ -88,7 +88,7 @@ CREATE FUNCTION htm.config_regenerate_update()
 RETURNS TRIGGER
 AS $$
 BEGIN
-  PERFORM htm.debug('htm.config table updated, regenerating htm.config() getter');
+  PERFORM htm.debug('Config table updated so regenerating config getter');
   PERFORM htm.config_generate();
   RETURN NULL;
 END;
