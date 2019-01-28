@@ -30,9 +30,8 @@ $$ LANGUAGE plpgsql STABLE;
 CREATE FUNCTION htm.column_active_update()
 RETURNS TRIGGER
 AS $$
-DECLARE
 BEGIN
-  PERFORM htm.debug('updating winner column activity flag');
+  PERFORM htm.debug('SP updating winner column activity state');
   WITH column_next AS (
     SELECT
       htm.column.id,
@@ -68,7 +67,7 @@ AS $$
 DECLARE
   period CONSTANT INT := htm.column_duty_cycle_period();
 BEGIN
-  PERFORM htm.debug('new input, updating column duty cycles, etc.');
+  PERFORM htm.debug('SP has new input so updating column boosting/duty_cycles');
   WITH column_next AS (
     SELECT
       htm.column.id,

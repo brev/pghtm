@@ -183,7 +183,8 @@ SELECT indexes, columns_active FROM htm.input;
             Target   | `column.active`
         
             1. **OUTPUT**. Active columns are are now stored back alongside the 
-                original new input row.
+                original new input row. This is the input to the Temporal
+                Memory in the next section (below).
 
                 TRIGGER  | `trigger_column_input_columns_active_change`                
                 ---------|---------------------------------------------
@@ -240,7 +241,29 @@ SELECT indexes, columns_active FROM htm.input;
 
 ## Temporal Memory
 
-* TODO
+1. **INPUT**. Active columns are provided by a finsihed Spatial Pooler.
+    
+    UPDATE | `input.columns_active`
+    -------|-----------------------
+
+    1. **VIEWS**. ??? TODO
+
+        VIEW   | `synapse_distal_active`
+        -------|--------------------------
+        Source | `input.columns_active`
+        Source | `synapse_distal_connect`
+        
+        ??? TODO
+
+    1. **TRIGGERS**. Newly active columns means we can now compute newly 
+        active neurons. Decide between distally-activated predicted neurons 
+        or proximally-activated bursting column-neurons.
+                    
+        TRIGGER  | `trigger_input_neuron_active_change`
+        ---------|--------------------------------
+        Source   | `input.columns_active`
+        Function | `neuron_active_update()`
+        Target   | `neuron.active`
 
 
 ## Debug
@@ -251,12 +274,17 @@ psql
 \timing on
 # Timing is on.
 
+SET log_duration TO TRUE;
+# 2019-01-28 00:01:34.109 PST [64827] LOG:  duration: 0.147 ms
+
 UPDATE htm.config SET debug = TRUE;
-# UPDATE 1
-# Time: 2.184 ms
+# Our debug logging now on
 
 EXPLAIN ANALYZE VERBOSE INSERT INTO htm.input (indexes) VALUES (ARRAY[0,1,2]);
-# Lots of Info
+# Run a query, explain a bit
+
+SET debug_print_parse TO TRUE;
+# Run a query, lots of query details
 
 LOAD 'auto_explain';
 SET auto_explain.log_nested_statements = ON;

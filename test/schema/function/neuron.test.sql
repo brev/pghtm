@@ -4,8 +4,13 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(8);  -- Test count
+SELECT plan(11);  -- Test count
 
+
+-- test neuron_active_update()
+SELECT has_function('neuron_active_update');
+SELECT function_lang_is('neuron_active_update', 'plpgsql');
+SELECT function_returns('neuron_active_update', 'trigger');
 
 -- test neuron_is_predict()
 SELECT has_function('neuron_is_predict', ARRAY['integer']);

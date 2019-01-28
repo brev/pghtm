@@ -13,7 +13,7 @@ CREATE FUNCTION htm.region_duty_cycles_update()
 RETURNS TRIGGER
 AS $$
 BEGIN
-  PERFORM htm.debug('region updating overall duty cycle mean averages');
+  PERFORM htm.debug('SP region updating overall duty cycle mean averages');
   WITH region_next AS (
     SELECT
       htm.column.region_id AS id,
