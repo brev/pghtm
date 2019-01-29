@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(21);  -- Test count
+SELECT plan(22);  -- Test count
 
 
 SELECT has_table('input');
@@ -14,7 +14,8 @@ SELECT columns_are('input', ARRAY[
   'modified',
   'ts',
   'indexes',
-  'columns_active'
+  'columns_active',
+  'columns_predict'
 ]);
 SELECT has_pk('input');
 
@@ -41,6 +42,8 @@ SELECT col_type_is('input', 'indexes', 'integer[]');
 SELECT col_not_null('input', 'indexes');
 
 SELECT col_type_is('input', 'columns_active', 'integer[]');
+
+SELECT col_type_is('input', 'columns_predict', 'integer[]');
 
 
 SELECT * FROM finish();

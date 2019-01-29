@@ -1,7 +1,7 @@
 # Current Work
 
 [x] Temporal Memory
-  * Step 2
+  * Step 3
 [x] WebUI
   * Work with @jsfowles on react components
 [ ] Encoders

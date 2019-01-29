@@ -93,12 +93,12 @@ BEGIN
       --  active dendrite. Can be used like a low-pass noise filter.
       --  nupic sp:stimulusThreshold=0
       --  nupic tm:?=?
-      dendrite_synapse_threshold INT NOT NULL DEFAULT 1,
+      dendrite_synapse_threshold INT NOT NULL DEFAULT 0,
 
       -- neuron_dendrite_threshold: # active distal dendrites required for a
-      --  predictive neuron. Default of 1 acts like NuPIC-suggested LOGICAL OR.
+      --  predictive neuron. Default of 0 acts like NuPIC-suggested LOGICAL OR.
       --  nupic tm:?=?
-      neuron_dendrite_threshold INT NOT NULL DEFAULT 1,
+      neuron_dendrite_threshold INT NOT NULL DEFAULT 0,
 
       -- synapse_distal_learn: TM learning on? flag
       --  @TemporalMemory

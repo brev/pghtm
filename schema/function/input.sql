@@ -16,22 +16,55 @@ BEGIN
   PERFORM htm.debug('SP saving winner columns back alongside input row');
   WITH input_next AS (
     SELECT
-      input.id,
+      i.id,
       (SELECT ARRAY(
-        SELECT id
-        FROM htm.column
-        WHERE active
-        ORDER BY id
+        SELECT c.id
+        FROM htm.column AS c
+        WHERE c.active
+        ORDER BY c.id
       )) AS columns_active
-    FROM htm.input
-    WHERE input.columns_active IS NULL
-    ORDER BY input.id DESC
+    FROM htm.input AS i
+    WHERE i.columns_active IS NULL
+    ORDER BY i.id DESC
     LIMIT 1
   )
-  UPDATE htm.input
-    SET columns_active = input_next.columns_active
-    FROM input_next
-    WHERE input_next.id = input.id;
+  UPDATE htm.input AS i
+    SET columns_active = inx.columns_active
+    FROM input_next AS inx
+    WHERE inx.id = i.id;
+
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+/**
+ * TM compute cycle has finished, we have predicted neuron-columns, let's
+ *  store them back in the input table with the original parent input
+ *  data row and SP winning active columns. TM compute cycle is finished.
+ * @TemporalMemory
+ */
+CREATE FUNCTION htm.input_columns_predict_update()
+RETURNS TRIGGER
+AS $$
+BEGIN
+  PERFORM htm.debug('TM saving predicted neuro-columns back with input row');
+  WITH input_next AS (
+    SELECT
+      i.id,
+      (SELECT ARRAY(
+        SELECT DISTINCT(ndp.column_id)
+        FROM htm.neuron_distal_predict AS ndp
+        ORDER BY ndp.column_id
+      )) AS columns_predict
+    FROM htm.input AS i
+    WHERE i.columns_predict IS NULL
+    ORDER BY i.id DESC
+    LIMIT 1
+  )
+  UPDATE htm.input AS i
+    SET columns_predict = inx.columns_predict
+    FROM input_next AS inx
+    WHERE inx.id = i.id;
 
   RETURN NULL;
 END;

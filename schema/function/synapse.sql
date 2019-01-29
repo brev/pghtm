@@ -61,24 +61,24 @@ BEGIN
   PERFORM htm.debug('SP performing proximal synaptic boosting');
   WITH synapse_next AS (
     SELECT
-      synapse.id,
-      htm.synapse_proximal_get_increment(synapse.permanence) AS permanence
-    FROM htm.synapse
-    JOIN htm.dendrite
-      ON dendrite.id = synapse.dendrite_id
-      AND dendrite.class = 'proximal'
-    JOIN htm.link_proximal_dendrite_column
-      ON link_proximal_dendrite_column.dendrite_id = dendrite.id
-    JOIN htm.column
-      ON htm.column.id = link_proximal_dendrite_column.column_id
-    JOIN htm.region
-      ON region.id = htm.column.region_id
-      AND region.duty_cycle_overlap_mean > htm.column.duty_cycle_overlap
+      s.id,
+      htm.synapse_proximal_get_increment(s.permanence) AS permanence
+    FROM htm.synapse AS s
+    JOIN htm.dendrite AS d
+      ON d.id = s.dendrite_id
+      AND d.class = 'proximal'
+    JOIN htm.link_proximal_dendrite_column AS lpdc
+      ON lpdc.dendrite_id = d.id
+    JOIN htm.column AS c
+      ON c.id = lpdc.column_id
+    JOIN htm.region AS r
+      ON r.id = c.region_id
+      AND r.duty_cycle_overlap_mean > c.duty_cycle_overlap
   )
-  UPDATE htm.synapse
-    SET permanence = synapse_next.permanence
-    FROM synapse_next
-    WHERE synapse_next.id = synapse.id;
+  UPDATE htm.synapse AS s
+    SET permanence = sn.permanence
+    FROM synapse_next AS sn
+    WHERE sn.id = s.id;
 
   RETURN NULL;
 END;
@@ -129,9 +129,49 @@ END;
 $$ LANGUAGE plpgsql STABLE;
 
 /**
+ * Perform Hebbian-style learning on distal synapse permanences. This is
+ *  based on recently-predicted neurons. This was triggered from an update
+ *  on the `neuron.active` field.
+ * @TemporalMemory
+ */
+CREATE FUNCTION htm.synapse_distal_learn_update()
+RETURNS TRIGGER
+AS $$
+DECLARE
+BEGIN
+  PERFORM htm.debug('TM performing distal synaptic learning');
+  WITH synapse_next AS (
+   SELECT
+      s.id,
+      (CASE
+        WHEN sda.id IS NOT NULL
+          THEN htm.synapse_distal_get_increment(s.permanence)
+        ELSE
+          htm.synapse_distal_get_decrement(s.permanence)
+      END) AS permanence
+    FROM htm.synapse AS s
+    LEFT JOIN htm.synapse_distal_active AS sda
+      ON sda.id = s.id
+    JOIN htm.dendrite_distal_active AS dda
+      ON dda.id = s.dendrite_id
+    JOIN htm.link_distal_dendrite_neuron AS lddn
+      ON lddn.dendrite_id = s.dendrite_id
+    JOIN htm.neuron_distal_predict AS ndp
+      ON ndp.id = lddn.neuron_id
+  )
+  UPDATE htm.synapse AS s
+    SET permanence = sn.permanence
+    FROM synapse_next AS sn
+    WHERE sn.id = s.id;
+
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+/**
  * Perform Hebbian-style learning on proximal synapse permanences. This is
- *  based on recently-actived winners in column.active. This was triggered
- *  from an update on the column table.
+ *  based on recently-actived winner column, triggered from an update on
+ *  the `column.active` field.
  * @SpatialPooler
  */
 CREATE FUNCTION htm.synapse_proximal_learn_update()
@@ -142,29 +182,29 @@ BEGIN
   PERFORM htm.debug('SP performing proximal synaptic learning');
   WITH synapse_next AS (
     SELECT
-      synapse.id,
+      s.id,
       (CASE
-        WHEN synapse_proximal_active.id IS NOT NULL
-          THEN htm.synapse_proximal_get_increment(synapse.permanence)
+        WHEN spa.id IS NOT NULL
+          THEN htm.synapse_proximal_get_increment(s.permanence)
         ELSE
-          htm.synapse_proximal_get_decrement(synapse.permanence)
+          htm.synapse_proximal_get_decrement(s.permanence)
       END) AS permanence
-    FROM htm.synapse
-    LEFT JOIN htm.synapse_proximal_active
-      ON htm.synapse_proximal_active.id = synapse.id
-    JOIN htm.dendrite
-      ON dendrite.id = synapse.dendrite_id
-      AND dendrite.class = 'proximal'
-    JOIN htm.link_proximal_dendrite_column
-      ON link_proximal_dendrite_column.dendrite_id = dendrite.id
-    JOIN htm.column
-      ON htm.column.id = link_proximal_dendrite_column.column_id
-      AND htm.column.active
+    FROM htm.synapse AS s
+    LEFT JOIN htm.synapse_proximal_active AS spa
+      ON spa.id = s.id
+    JOIN htm.dendrite AS d
+      ON d.id = s.dendrite_id
+      AND d.class = 'proximal'
+    JOIN htm.link_proximal_dendrite_column AS lpdc
+      ON lpdc.dendrite_id = d.id
+    JOIN htm.column AS c
+      ON c.id = lpdc.column_id
+      AND c.active
   )
-  UPDATE htm.synapse
-    SET permanence = synapse_next.permanence
-    FROM synapse_next
-    WHERE synapse_next.id = synapse.id;
+  UPDATE htm.synapse AS s
+    SET permanence = sn.permanence
+    FROM synapse_next AS sn
+    WHERE sn.id = s.id;
 
   RETURN NULL;
 END;
