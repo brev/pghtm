@@ -61,7 +61,7 @@ CREATE TRIGGER trigger_column_synapse_permanence_boost_change
  *  flag first.
  * @SpatialPooler
  */
-CREATE TRIGGER trigger_column_synapse_permanence_learn_change
+CREATE TRIGGER trigger_column_synapse_proximal_permanence_learn_change
   AFTER UPDATE OF active
   ON htm.column
   WHEN (htm.config('synapse_proximal_learn')::BOOL IS TRUE)

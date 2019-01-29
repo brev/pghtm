@@ -198,14 +198,14 @@ SELECT indexes, columns_active FROM htm.input;
                     
                     TRIGGER  | `trigger_input_modified_change`
                     ---------|--------------------------------
-                    Source   | `input.columns_active`
+                    Source   | `input.(columns_active, columns_predict)`
                     Function | `schema_modified_update()`
                     Target   | `input.modified`
 
-            1. Synaptic Learning is performed by adjusting synapse 
-                permanence values.
+            1. Synaptic Learning is performed on winning columns by adjusting proximal
+                synapse permanence values.
             
-                TRIGGER  | `trigger_column_synapse_permanence_learn_change`
+                TRIGGER  | `trigger_column_synapse_proximal_permanence_learn_change`
                 ---------|-------------------------------------------------
                 Source   | `column.active`
                 Function | `synapse_proximal_learn_update()`
@@ -264,6 +264,35 @@ SELECT indexes, columns_active FROM htm.input;
         Source   | `input.columns_active`
         Function | `neuron_active_update()`
         Target   | `neuron.active`
+
+        1. **OUTPUT**. Predicted neuron/columns are are now stored back alongside 
+            their original new input row, and parent SP active columns.
+            
+            TRIGGER  | `trigger_neuron_input_columns_predict_change`                
+            ---------|---------------------------------------------
+            Source   | `neuron.active`
+            Function | `input_columns_predict_update()`
+            Target   | `input.columns_predict`
+
+            1. Update `input.modified` timestamp field as new TM output results are 
+                being put back in alongside their original related new input row, and
+                parent SP winner columns.
+                @TODO: This may not be necessary? already in transaction?
+                
+                TRIGGER  | `trigger_input_modified_change`
+                ---------|--------------------------------
+                Source   | `input.(columns_active, columns_predict)`
+                Function | `schema_modified_update()`
+                Target   | `input.modified`
+
+        1. Synaptic Learning is performed on post-neuron-activation predictive neurons 
+            by adjusting distal synapse permanence values.
+            
+                TRIGGER  | `trigger_neuron_synapse_distal_permanence_learn_change`
+                ---------|-------------------------------------------------
+                Source   | `neuron.active`
+                Function | `synapse_distal_learn_update()`
+                Target   | `synapse.permanence`
 
 
 ## Debug

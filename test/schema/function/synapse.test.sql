@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(48);  -- Test count
+SELECT plan(51);  -- Test count
 
 
 -- test synapse_distal_get_connection()
@@ -157,6 +157,11 @@ SELECT is(
   1.0,
   'synapse_proximal_get_increment() learns up to max 1.0'
 );
+
+-- test synapse_distal_learn_update()
+SELECT has_function('synapse_distal_learn_update');
+SELECT function_lang_is('synapse_distal_learn_update', 'plpgsql');
+SELECT function_returns('synapse_distal_learn_update', 'trigger');
 
 -- test synapse_proximal_learn_update()
 SELECT has_function('synapse_proximal_learn_update');

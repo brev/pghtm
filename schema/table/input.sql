@@ -10,6 +10,8 @@ CREATE TABLE htm.input (
   ts      TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
   indexes INT[] NOT NULL,
   -- @SpatialPooler output
-  columns_active INT[]  -- NULL OK
+  columns_active INT[],   -- NULL OK
+  -- @TemporalMemory output
+  columns_predict INT[]   -- NULL OK
 );
 
