@@ -8,19 +8,8 @@ SELECT plan(1);  -- Test count
 
 
 SELECT row_eq(
-  $$
-    SELECT ROUND((
-      (SELECT COUNT(id)::NUMERIC FROM synapse_distal_connect) /
-      (
-        SELECT COUNT(synapse.id)::NUMERIC
-        FROM synapse
-        JOIN segment
-          ON segment.id = synapse.segment_id
-          AND segment.class = 'distal'
-      )
-    ), 1);
-  $$,
-  ROW(config('synapse_distal_spread_pct')::NUMERIC),
+  $$ SELECT COUNT(id) FROM synapse_distal_connect $$,
+  ROW(0::BIGINT),
   'Synapse Distal:Connect view has valid count total'
 );
 

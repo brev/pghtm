@@ -9,14 +9,8 @@ SELECT plan(1);  -- Test count
 
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM segment; $$,
-  ROW((
-    (
-      config('cell_count')::INT *
-      config('segment_count')::INT
-    ) +
-    config('column_count')::INT
-  )::BIGINT),
-  'Segment has valid data'
+  ROW((config('column_count')::INT)::BIGINT),
+  'Segment (proximal) has valid init data'
 );
 
 

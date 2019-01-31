@@ -11,24 +11,14 @@ DECLARE
   columnId INT;
   segmentId INT;
 BEGIN
-  RAISE NOTICE 'Inserting % Segments (Distal)...',
-    (cell_count * segment_count);
+  -- Distal dendrite segments are inserted as part of TM algo/functions
 
-  FOR cellId IN 1..cell_count LOOP
-    FOR localId IN 1..segment_count LOOP
-      segmentId := htm.count_unloop(cellId, localId, segment_count);
-      INSERT
-        INTO htm.segment (id, class)
-        VALUES (segmentId, 'distal');
-    END LOOP;
-  END LOOP;
-
+  -- Proximal static dendrite segments for SP
   RAISE NOTICE 'Inserting % Segments (Proximal)...', column_count;
-
   FOR columnId IN 1..column_count LOOP
     INSERT
       INTO htm.segment (id, class)
-      VALUES (segmentId + columnId, 'proximal');
+      VALUES (columnId, 'proximal');
   END LOOP;
 END
 $$;

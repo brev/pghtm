@@ -1,5 +1,5 @@
 /**
- * Link Segment to Cell Data Test
+ * Link (Distal) Segment to Cell Data Test
  */
 
 BEGIN;
@@ -9,11 +9,8 @@ SELECT plan(1);  -- Test count
 
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM link_distal_segment_cell; $$,
-  ROW((
-    config('cell_count')::INT *
-    config('segment_count')::INT
-  )::BIGINT),
-  'Link_Segment_Cell has valid data'
+  ROW(0::BIGINT),
+  'Link_Distal_Segment_Cell has valid init data (none)'
 );
 
 

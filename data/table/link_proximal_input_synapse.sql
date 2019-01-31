@@ -1,19 +1,16 @@
 /**
- * Link: Axon from Input to Synapse Data
+ * Link (Proximal): Axon from Input to Synapse Data
  */
 
 DO
 $$
 DECLARE
   column_count CONSTANT INT := htm.config('column_count');
-  segment_count CONSTANT INT := htm.config('segment_count');
-  cell_count CONSTANT INT := htm.config('cell_count');
   synapse_count CONSTANT INT := htm.config('synapse_count');
   input_width CONSTANT INT := htm.config('input_width');
-  SynapseStart CONSTANT INT := segment_count * cell_count * synapse_count;
   linkId INT;
 BEGIN
-  RAISE NOTICE 'Inserting % Links (Input => Synapse)...',
+  RAISE NOTICE 'Inserting % Proximal Links (Input => Synapse)...',
     (column_count * synapse_count);
 
   FOR localColumnId IN 1..column_count LOOP
@@ -28,7 +25,7 @@ BEGIN
         VALUES (
           linkId,
           htm.random_range_int(1, input_width),
-          SynapseStart + linkId
+          linkId
         );
     END LOOP;
   END LOOP;
