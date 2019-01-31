@@ -1,5 +1,5 @@
 /**
- * Link Cell to Synapse Data Test
+ * Link (Distal) Cell to Synapse Data Test
  */
 
 BEGIN;
@@ -9,12 +9,8 @@ SELECT plan(1);  -- Test count
 
 SELECT row_eq(
   $$ SELECT COUNT(id) FROM link_distal_cell_synapse; $$,
-  ROW((
-    config('cell_count')::INT *
-    config('segment_count')::INT *
-    config('synapse_count')::INT
-  )::BIGINT),
-  'Link_Cell_Synapse has valid data'
+  ROW(0::BIGINT),
+  'Link_Distal_Cell_Synapse has valid data (none)'
 );
 
 

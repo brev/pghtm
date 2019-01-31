@@ -1,5 +1,5 @@
 /**
- * Link Input to Synapse Data Test
+ * Link (Proximal) Input to Synapse Data Test
  */
 
 BEGIN;
@@ -13,7 +13,7 @@ SELECT row_eq(
     config('column_count')::INT *
     config('synapse_count')::INT
   )::BIGINT),
-  'Link_Input_Synapse has valid data'
+  'Link_Proximal_Input_Synapse has valid data'
 );
 
 SELECT throws_ok('
