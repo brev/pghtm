@@ -7,13 +7,13 @@ CREATE VIEW htm.synapse_distal_active AS (
   FROM htm.synapse
   JOIN htm.synapse_distal_connect
     ON synapse_distal_connect.id = synapse.id
-  JOIN htm.dendrite
-    ON dendrite.id = synapse.dendrite_id
-    AND dendrite.class = 'distal'
-  JOIN htm.link_distal_neuron_synapse
-    ON link_distal_neuron_synapse.synapse_id = synapse.id
-  JOIN htm.neuron
-    ON neuron.id = link_distal_neuron_synapse.neuron_id
-    AND neuron.active
+  JOIN htm.segment
+    ON segment.id = synapse.segment_id
+    AND segment.class = 'distal'
+  JOIN htm.link_distal_cell_synapse
+    ON link_distal_cell_synapse.synapse_id = synapse.id
+  JOIN htm.cell
+    ON cell.id = link_distal_cell_synapse.cell_id
+    AND cell.active
 );
 

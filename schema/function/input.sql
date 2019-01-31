@@ -38,7 +38,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
- * TM compute cycle has finished, we have predicted neuron-columns, let's
+ * TM compute cycle has finished, we have predicted cell-columns, let's
  *  store them back in the input table with the original parent input
  *  data row and SP winning active columns. TM compute cycle is finished.
  * @TemporalMemory
@@ -53,7 +53,7 @@ BEGIN
       i.id,
       (SELECT ARRAY(
         SELECT DISTINCT(ndp.column_id)
-        FROM htm.neuron_distal_predict AS ndp
+        FROM htm.cell_distal_predict AS ndp
         ORDER BY ndp.column_id
       )) AS columns_predict
     FROM htm.input AS i

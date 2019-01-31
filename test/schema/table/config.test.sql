@@ -13,9 +13,9 @@ SELECT columns_are('config', ARRAY[
 
   -- constants
   'column_count',
-  'dendrite_count',
+  'segment_count',
   'input_width',
-  'neuron_count',
+  'cell_count',
   'row_count',
   'synapse_count',
   'synapse_distal_spread_pct',
@@ -27,8 +27,8 @@ SELECT columns_are('config', ARRAY[
   'column_duty_cycle_period',
   'column_inhibit',
   'debug',
-  'dendrite_synapse_threshold',
-  'neuron_dendrite_threshold',
+  'segment_synapse_threshold',
+  'cell_segment_threshold',
   'synapse_distal_learn',
   'synapse_distal_decrement',
   'synapse_distal_increment',
@@ -55,20 +55,20 @@ SELECT col_not_null('config', 'column_count');
 SELECT col_has_default('config', 'column_count');
 SELECT col_has_check('config', 'column_count');
 
-SELECT col_type_is('config', 'dendrite_count', 'integer');
-SELECT col_not_null('config', 'dendrite_count');
-SELECT col_has_default('config', 'dendrite_count');
-SELECT col_has_check('config', 'dendrite_count');
+SELECT col_type_is('config', 'segment_count', 'integer');
+SELECT col_not_null('config', 'segment_count');
+SELECT col_has_default('config', 'segment_count');
+SELECT col_has_check('config', 'segment_count');
 
 SELECT col_type_is('config', 'input_width', 'integer');
 SELECT col_not_null('config', 'input_width');
 SELECT col_has_default('config', 'input_width');
 SELECT col_has_check('config', 'input_width');
 
-SELECT col_type_is('config', 'neuron_count', 'integer');
-SELECT col_not_null('config', 'neuron_count');
-SELECT col_has_default('config', 'neuron_count');
-SELECT col_has_check('config', 'neuron_count');
+SELECT col_type_is('config', 'cell_count', 'integer');
+SELECT col_not_null('config', 'cell_count');
+SELECT col_has_default('config', 'cell_count');
+SELECT col_has_check('config', 'cell_count');
 
 SELECT col_type_is('config', 'row_count', 'integer');
 SELECT col_not_null('config', 'row_count');
@@ -113,13 +113,13 @@ SELECT col_type_is('config', 'debug', 'boolean');
 SELECT col_not_null('config', 'debug');
 SELECT col_has_default('config', 'debug');
 
-SELECT col_type_is('config', 'dendrite_synapse_threshold', 'integer');
-SELECT col_not_null('config', 'dendrite_synapse_threshold');
-SELECT col_has_default('config', 'dendrite_synapse_threshold');
+SELECT col_type_is('config', 'segment_synapse_threshold', 'integer');
+SELECT col_not_null('config', 'segment_synapse_threshold');
+SELECT col_has_default('config', 'segment_synapse_threshold');
 
-SELECT col_type_is('config', 'neuron_dendrite_threshold', 'integer');
-SELECT col_not_null('config', 'neuron_dendrite_threshold');
-SELECT col_has_default('config', 'neuron_dendrite_threshold');
+SELECT col_type_is('config', 'cell_segment_threshold', 'integer');
+SELECT col_not_null('config', 'cell_segment_threshold');
+SELECT col_has_default('config', 'cell_segment_threshold');
 
 SELECT col_type_is('config', 'synapse_distal_learn', 'boolean');
 SELECT col_not_null('config', 'synapse_distal_learn');

@@ -12,13 +12,13 @@ SELECT row_eq(
   $$
     SELECT COUNT(synapse.id)
     FROM synapse
-    JOIN dendrite
-      ON dendrite.id = synapse.dendrite_id
-      AND dendrite.class = 'distal';
+    JOIN segment
+      ON segment.id = synapse.segment_id
+      AND segment.class = 'distal';
   $$,
   ROW((
-    config('neuron_count')::INT *
-    config('dendrite_count')::INT *
+    config('cell_count')::INT *
+    config('segment_count')::INT *
     config('synapse_count')::INT
   )::BIGINT),
   'Synapse (Distal) has valid count total'
@@ -27,9 +27,9 @@ SELECT row_eq(
   $$
     SELECT COUNT(synapse.id)
     FROM synapse
-    JOIN dendrite
-      ON dendrite.id = synapse.dendrite_id
-      AND dendrite.class = 'proximal';
+    JOIN segment
+      ON segment.id = synapse.segment_id
+      AND segment.class = 'proximal';
   $$,
   ROW((
     config('column_count')::INT *
@@ -41,8 +41,8 @@ SELECT row_eq(
   $$ SELECT COUNT(synapse.id) FROM synapse; $$,
   ROW((
     (
-      config('neuron_count')::INT *
-      config('dendrite_count')::INT *
+      config('cell_count')::INT *
+      config('segment_count')::INT *
       config('synapse_count')::INT
     ) + (
       config('column_count')::INT *
@@ -57,9 +57,9 @@ SELECT row_eq(
   $$
     SELECT (COUNT(synapse.id) > 0)
     FROM synapse
-    JOIN dendrite
-      ON dendrite.id = synapse.dendrite_id
-      AND dendrite.class = 'distal'
+    JOIN segment
+      ON segment.id = synapse.segment_id
+      AND segment.class = 'distal'
     WHERE (
       permanence < (
         config('synapse_distal_threshold')::NUMERIC -
@@ -78,9 +78,9 @@ SELECT row_eq(
   $$
     SELECT (COUNT(synapse.id) > 0)
     FROM synapse
-    JOIN dendrite
-      ON dendrite.id = synapse.dendrite_id
-      AND dendrite.class = 'proximal'
+    JOIN segment
+      ON segment.id = synapse.segment_id
+      AND segment.class = 'proximal'
     WHERE (
       permanence < (
         config('synapse_proximal_threshold')::NUMERIC -
@@ -102,9 +102,9 @@ SELECT row_eq(
   $$
     SELECT (COUNT(synapse.id) > 0)
     FROM synapse
-    JOIN dendrite
-      ON dendrite.id = synapse.dendrite_id
-      AND dendrite.class = 'distal'
+    JOIN segment
+      ON segment.id = synapse.segment_id
+      AND segment.class = 'distal'
     WHERE (
       permanence < (
         config('synapse_distal_threshold')::NUMERIC -
@@ -123,9 +123,9 @@ SELECT row_eq(
   $$
     SELECT (COUNT(synapse.id) > 0)
     FROM synapse
-    JOIN dendrite
-      ON dendrite.id = synapse.dendrite_id
-      AND dendrite.class = 'proximal'
+    JOIN segment
+      ON segment.id = synapse.segment_id
+      AND segment.class = 'proximal'
     WHERE (
       permanence < (
         config('synapse_proximal_threshold')::NUMERIC -

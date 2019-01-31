@@ -6,34 +6,34 @@ DO
 $$
 DECLARE
   column_count CONSTANT INT := htm.config('column_count');
-  dendrite_count CONSTANT INT := htm.config('dendrite_count');
-  neuron_count CONSTANT INT := htm.config('neuron_count');
+  segment_count CONSTANT INT := htm.config('segment_count');
+  cell_count CONSTANT INT := htm.config('cell_count');
   synapse_count CONSTANT INT := htm.config('synapse_count');
-  dendriteId INT;
+  segmentId INT;
   synapseId INT;
 BEGIN
   -- fill distal synapses data
   RAISE NOTICE 'Inserting % Synapses (Distal)...',
-    (neuron_count * dendrite_count * synapse_count);
+    (cell_count * segment_count * synapse_count);
 
-  FOR neuronId IN 1..neuron_count LOOP
-    FOR localDendriteId IN 1..dendrite_count LOOP
-      dendriteId := htm.count_unloop(
-        neuronId,
-        localDendriteId,
-        dendrite_count
+  FOR cellId IN 1..cell_count LOOP
+    FOR localSegmentId IN 1..segment_count LOOP
+      segmentId := htm.count_unloop(
+        cellId,
+        localSegmentId,
+        segment_count
       );
       FOR localSynapseId IN 1..synapse_count LOOP
         synapseId := htm.count_unloop(
-          dendriteId,
+          segmentId,
           localSynapseId,
           synapse_count
         );
         INSERT
-          INTO htm.synapse (id, dendrite_id, permanence)
+          INTO htm.synapse (id, segment_id, permanence)
           VALUES (
             synapseId,
-            dendriteId,
+            segmentId,
             htm.random_range_numeric((
               htm.config('synapse_distal_threshold')::NUMERIC -
               htm.config('synapse_distal_decrement')::NUMERIC
@@ -53,15 +53,15 @@ BEGIN
   FOR columnId IN 1..column_count LOOP
     FOR localSynapseId IN 1..synapse_count LOOP
       synapseId := htm.count_unloop(
-        dendriteId + columnId,
+        segmentId + columnId,
         localSynapseId,
         synapse_count
       );
       INSERT
-        INTO htm.synapse (id, dendrite_id, permanence)
+        INTO htm.synapse (id, segment_id, permanence)
         VALUES (
           synapseId,
-          dendriteId + columnId,
+          segmentId + columnId,
           htm.random_range_numeric((
             htm.config('synapse_proximal_threshold')::NUMERIC -
             htm.config('synapse_proximal_decrement')::NUMERIC

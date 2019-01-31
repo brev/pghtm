@@ -7,13 +7,13 @@
 DO
 $$
 DECLARE
-  -- height: Region/Column height # neuron rows
+  -- height: Region/Column height # cell rows
   height CONSTANT INT := 2;
 
-  -- width: Region/Column/Input width # neuron cols/bits
+  -- width: Region/Column/Input width # cell cols/bits
   width CONSTANT INT := 100;
 
-  -- synapse_spread_pct: Synapse spread, to calc # of synapses per dendrite
+  -- synapse_spread_pct: Synapse spread, to calc # of synapses per segment
   synapse_spread_pct CONSTANT NUMERIC := 0.5;
 
 BEGIN
@@ -29,26 +29,26 @@ BEGIN
       column_count INT NOT NULL DEFAULT %1$L,
       CHECK (column_count = %1$L),  -- CONSTANT
 
-      -- dendrite_count: # of dendrites per neuron
-      dendrite_count INT NOT NULL DEFAULT 4,
-      CHECK (dendrite_count = 4),  -- CONSTANT
+      -- segment_count: # of segments per cell
+      segment_count INT NOT NULL DEFAULT 4,
+      CHECK (segment_count = 4),  -- CONSTANT
 
       -- input_width: Input SDR Bit Width
       --  @SpatialPooler
       input_width INT NOT NULL DEFAULT %1$L,
       CHECK (input_width = %1$L),  -- CONSTANT
 
-      -- neuron_count: # of neurons per region (rows x cols)
-      neuron_count INT NOT NULL DEFAULT %2$L,
-      CHECK (neuron_count = %2$L),  -- CONSTANT
+      -- cell_count: # of cells per region (rows x cols)
+      cell_count INT NOT NULL DEFAULT %2$L,
+      CHECK (cell_count = %2$L),  -- CONSTANT
 
-      -- row_count: # of neuron rows high in each column/region
+      -- row_count: # of cell rows high in each column/region
       --  1  = First-order memory, better for static spatial inference
       --  2+ = Variable-order memory, better for dynamic temporal inference
       row_count INT NOT NULL DEFAULT %3$L,
       CHECK (row_count = %3$L),  -- CONSTANT
 
-      -- synapse_count: # of synapses per dendrite
+      -- synapse_count: # of synapses per segment
       synapse_count INT NOT NULL DEFAULT %4$L,
       CHECK (synapse_count = %4$L),  -- CONSTANT
 
@@ -89,16 +89,16 @@ BEGIN
       -- debug: output warn notices and do helpful/slow debugging?
       debug BOOL NOT NULL DEFAULT FALSE,
 
-      -- dendrite_synapse_threshold: # active synapses required for an
-      --  active dendrite. Can be used like a low-pass noise filter.
+      -- segment_synapse_threshold: # active synapses required for an
+      --  active segment. Can be used like a low-pass noise filter.
       --  nupic sp:stimulusThreshold=0
       --  nupic tm:?=?
-      dendrite_synapse_threshold INT NOT NULL DEFAULT 0,
+      segment_synapse_threshold INT NOT NULL DEFAULT 0,
 
-      -- neuron_dendrite_threshold: # active distal dendrites required for a
-      --  predictive neuron. Default of 0 acts like NuPIC-suggested LOGICAL OR.
+      -- cell_segment_threshold: # active distal segments required for a
+      --  predictive cell. Default of 0 acts like NuPIC-suggested LOGICAL OR.
       --  nupic tm:?=?
-      neuron_dendrite_threshold INT NOT NULL DEFAULT 0,
+      cell_segment_threshold INT NOT NULL DEFAULT 0,
 
       -- synapse_distal_learn: TM learning on? flag
       --  @TemporalMemory
@@ -146,7 +146,7 @@ BEGIN
     -- 1$ column_count, input_width
     width,
 
-    -- 2$ neuron_count
+    -- 2$ cell_count
     (height * width)::INT,
 
     -- 3$ row_count

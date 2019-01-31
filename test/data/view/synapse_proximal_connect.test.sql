@@ -14,9 +14,9 @@ SELECT row_eq(
       (
         SELECT COUNT(synapse.id)::NUMERIC
         FROM synapse
-        JOIN dendrite
-          ON dendrite.id = synapse.dendrite_id
-          AND dendrite.class = 'proximal'
+        JOIN segment
+          ON segment.id = synapse.segment_id
+          AND segment.class = 'proximal'
       )
     ), 1);
   $$,

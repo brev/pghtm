@@ -24,13 +24,13 @@ CREATE TRIGGER trigger_input_modified_change
     EXECUTE FUNCTION htm.schema_modified_update();
 
 /**
- * Auto-update `neuron.active` based on recently activated SP columns. Use
+ * Auto-update `cell.active` based on recently activated SP columns. Use
  * views which are also up-to-date.
  * @TemporalMemory
  */
-CREATE TRIGGER trigger_input_neuron_active_change
+CREATE TRIGGER trigger_input_cell_active_change
   AFTER UPDATE OF columns_active
   ON htm.input
   FOR EACH ROW
-    EXECUTE FUNCTION htm.neuron_active_update();
+    EXECUTE FUNCTION htm.cell_active_update();
 
