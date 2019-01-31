@@ -146,14 +146,14 @@ SELECT indexes, columns_active FROM htm.input;
         Source | `input.indexes`
         Source | `synapse_proximal_connect`
       
-        1. Active synapses cause auto-update of active dendrites and overlap
+        1. Active synapses cause auto-update of active segments and overlap
             scores.
 
-            VIEW   | `dendrite_proximal_overlap_active`
+            VIEW   | `segment_proximal_overlap_active`
             -------|-----------------------------------
             Source | `synapse_proximal_active`
 
-            1. Active dendrites cause auto-update of possibly active columns 
+            1. Active segments cause auto-update of possibly active columns 
                 and their overlaps. This is a pre-boosting, 
                 pre-global-inhibition list of possible winner columns. Before 
                 inhibition and winner column selection, the next section of 
@@ -162,7 +162,7 @@ SELECT indexes, columns_active FROM htm.input;
 
                 VIEW   | `column_overlap_boost`
                 -------|-----------------------------------
-                Source | `dendrite_proximal_overlap_active`
+                Source | `segment_proximal_overlap_active`
 
     1. **TRIGGERS**. Column boost factors and duty cycles are re-calculated 
         and stored for new input. Column and related views (previous section 
@@ -182,11 +182,11 @@ SELECT indexes, columns_active FROM htm.input;
             Function | `column_active_update()`
             Target   | `column.active`
         
-            1. **OUTPUT**. Active columns are are now stored back alongside the 
-                original new input row. This is the input to the Temporal
-                Memory in the next section (below).
+            1. **OUTPUT**. Active columns are are now stored back alongside 
+                the original new input row. This is the input to the 
+                Temporal Memory in the next section (below).
 
-                TRIGGER  | `trigger_column_input_columns_active_change`                
+                TRIGGER  | `trigger_column_input_columns_active_change` 
                 ---------|---------------------------------------------
                 Source   | `column.active`
                 Function | `input_columns_active_update()`
@@ -202,8 +202,8 @@ SELECT indexes, columns_active FROM htm.input;
                     Function | `schema_modified_update()`
                     Target   | `input.modified`
 
-            1. Synaptic Learning is performed on winning columns by adjusting proximal
-                synapse permanence values.
+            1. Synaptic Learning is performed on winning columns by 
+                adjusting proximal synapse permanence values.
             
                 TRIGGER  | `trigger_column_synapse_proximal_permanence_learn_change`
                 ---------|-------------------------------------------------
@@ -246,37 +246,38 @@ SELECT indexes, columns_active FROM htm.input;
     UPDATE | `input.columns_active`
     -------|-----------------------
 
-    1. **VIEWS**. ??? TODO
+    1. **VIEWS**. **TODO**
 
         VIEW   | `synapse_distal_active`
         -------|--------------------------
         Source | `input.columns_active`
         Source | `synapse_distal_connect`
         
-        ??? TODO
+        **TODO**
 
     1. **TRIGGERS**. Newly active columns means we can now compute newly 
-        active neurons. Decide between distally-activated predicted neurons 
-        or proximally-activated bursting column-neurons.
+        active cells. Decide between distally-activated predicted cells 
+        or proximally-activated bursting column-cells.
                     
-        TRIGGER  | `trigger_input_neuron_active_change`
+        TRIGGER  | `trigger_input_cell_active_change`
         ---------|--------------------------------
         Source   | `input.columns_active`
-        Function | `neuron_active_update()`
-        Target   | `neuron.active`
+        Function | `cell_active_update()`
+        Target   | `cell.active`
 
-        1. **OUTPUT**. Predicted neuron/columns are are now stored back alongside 
-            their original new input row, and parent SP active columns.
+        1. **OUTPUT**. Predicted cell/columns are are now stored back 
+            alongside their original new input row, and 
+            parent SP active columns.
             
-            TRIGGER  | `trigger_neuron_input_columns_predict_change`                
+            TRIGGER  | `trigger_cell_input_columns_predict_change`
             ---------|---------------------------------------------
-            Source   | `neuron.active`
+            Source   | `cell.active`
             Function | `input_columns_predict_update()`
             Target   | `input.columns_predict`
 
-            1. Update `input.modified` timestamp field as new TM output results are 
-                being put back in alongside their original related new input row, and
-                parent SP winner columns.
+            1. Update `input.modified` timestamp field as new TM output 
+                results are being put back in alongside their original 
+                related new input row, and parent SP winner columns.
                 @TODO: This may not be necessary? already in transaction?
                 
                 TRIGGER  | `trigger_input_modified_change`
@@ -285,14 +286,14 @@ SELECT indexes, columns_active FROM htm.input;
                 Function | `schema_modified_update()`
                 Target   | `input.modified`
 
-        1. Synaptic Learning is performed on post-neuron-activation predictive neurons 
-            by adjusting distal synapse permanence values.
+        1. Synaptic Learning is performed on post-cell-activation predictive 
+            cells by adjusting distal synapse permanence values.
             
-                TRIGGER  | `trigger_neuron_synapse_distal_permanence_learn_change`
-                ---------|-------------------------------------------------
-                Source   | `neuron.active`
-                Function | `synapse_distal_learn_update()`
-                Target   | `synapse.permanence`
+            TRIGGER  | `trigger_cell_synapse_distal_permanence_learn_change`
+            ---------|-------------------------------------------------
+            Source   | `cell.active`
+            Function | `synapse_distal_learn_update()`
+            Target   | `synapse.permanence`
 
 
 ## Debug

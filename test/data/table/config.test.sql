@@ -13,9 +13,9 @@ SELECT function_lang_is('config', 'plpgsql');
 SELECT volatility_is('config', 'immutable');
 SELECT function_returns('config', 'text');
 SELECT is(
-  config('neuron_count')::INT,
+  config('cell_count')::INT,
   config('column_count')::INT * config('row_count')::INT,
-  'config() neurons = rows * columns OK'
+  'config() cells = rows * columns OK'
 );
 
 

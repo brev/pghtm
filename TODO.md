@@ -2,6 +2,7 @@
 
 [x] Temporal Memory
   * Step 3
+  * Update dox charts
 [x] WebUI
   * Work with @jsfowles on react components
 [ ] Encoders
@@ -41,6 +42,6 @@
   * "Cloning"? Replicating learning across lower levels of hierarchy to spread
     the details. Complex. No longer in Nupic.
 * TM Phase 2
-  * separate dendrite_is_active() into distal/proximal versions?
-  * something in BAMI TM about each neuron not having full segments+synapses?
+  * separate segment_is_active() into distal/proximal versions?
+  * something in BAMI TM about each cell not having full segments+synapses?
 

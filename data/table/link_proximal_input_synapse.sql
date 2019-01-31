@@ -6,11 +6,11 @@ DO
 $$
 DECLARE
   column_count CONSTANT INT := htm.config('column_count');
-  dendrite_count CONSTANT INT := htm.config('dendrite_count');
-  neuron_count CONSTANT INT := htm.config('neuron_count');
+  segment_count CONSTANT INT := htm.config('segment_count');
+  cell_count CONSTANT INT := htm.config('cell_count');
   synapse_count CONSTANT INT := htm.config('synapse_count');
   input_width CONSTANT INT := htm.config('input_width');
-  SynapseStart CONSTANT INT := dendrite_count * neuron_count * synapse_count;
+  SynapseStart CONSTANT INT := segment_count * cell_count * synapse_count;
   linkId INT;
 BEGIN
   RAISE NOTICE 'Inserting % Links (Input => Synapse)...',
