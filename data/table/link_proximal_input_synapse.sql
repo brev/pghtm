@@ -6,9 +6,11 @@ DO
 $$
 DECLARE
   column_count CONSTANT INT := htm.config('column_count');
-  synapse_count CONSTANT INT := htm.config('synapse_count');
+  synapse_count CONSTANT INT := htm.config('synapse_proximal_count');
   input_width CONSTANT INT := htm.config('input_width');
   linkId INT;
+  localColumnId INT;
+  localSynapseId INT;
 BEGIN
   RAISE NOTICE 'Inserting % Proximal Links (Input => Synapse)...',
     (column_count * synapse_count);
@@ -21,9 +23,8 @@ BEGIN
         synapse_count
       );
       INSERT
-        INTO htm.link_proximal_input_synapse(id, input_index, synapse_id)
+        INTO htm.link_proximal_input_synapse(input_index, synapse_id)
         VALUES (
-          linkId,
           htm.random_range_int(1, input_width),
           linkId
         );

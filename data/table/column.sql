@@ -5,6 +5,7 @@ DO
 $$
 DECLARE
   column_count CONSTANT INT := htm.config('column_count');
+  columnId INT;
 BEGIN
   -- disable triggers on table for initial data fill
   ALTER TABLE htm.column DISABLE TRIGGER USER;
@@ -13,12 +14,10 @@ BEGIN
 
   FOR columnId IN 1..column_count LOOP
     INSERT INTO htm.column (
-      id,
       region_id,
       x_coord
     )
     VALUES (
-      columnId,
       1,
       columnId
     );

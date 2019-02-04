@@ -11,7 +11,7 @@ SELECT row_eq(
   $$ SELECT COUNT(id) FROM link_proximal_input_synapse; $$,
   ROW((
     config('column_count')::INT *
-    config('synapse_count')::INT
+    config('synapse_proximal_count')::INT
   )::BIGINT),
   'Link_Proximal_Input_Synapse has valid data'
 );

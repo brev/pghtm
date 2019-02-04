@@ -29,7 +29,7 @@ SELECT row_eq(
   $$,
   ROW((
     config('column_count')::INT *
-    config('synapse_count')::INT
+    config('synapse_proximal_count')::INT
   )::BIGINT),
   'Synapse (Proximal) has valid count total'
 );

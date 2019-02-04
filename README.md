@@ -183,8 +183,10 @@ SELECT indexes, columns_active FROM htm.input;
             Target   | `column.active`
         
             1. **OUTPUT**. Active columns are are now stored back alongside 
-                the original new input row. This is the input to the 
-                Temporal Memory in the next section (below).
+                the original new input row. Spatial Pooler compute cycle is
+                basically complete, besides next-timestep prep (the rest of
+                this section). These active columns are the input to the 
+                Temporal Memory (next section below).
 
                 TRIGGER  | `trigger_column_input_columns_active_change` 
                 ---------|---------------------------------------------
@@ -246,7 +248,7 @@ SELECT indexes, columns_active FROM htm.input;
     UPDATE | `input.columns_active`
     -------|-----------------------
 
-    1. **VIEWS**. **TODO**
+    1. **VIEWS**.
 
         VIEW   | `synapse_distal_active`
         -------|--------------------------
@@ -265,9 +267,17 @@ SELECT indexes, columns_active FROM htm.input;
         Function | `cell_active_update()`
         Target   | `cell.active`
 
-        1. **OUTPUT**. Predicted cell/columns are are now stored back 
-            alongside their original new input row, and 
-            parent SP active columns.
+        1. Cells that are being activated have their previous active
+            state saved in active_last field.
+
+            TODO trigger_cell_active_last_change
+
+        1. **OUTPUT**. Newly activated cells cause next-step predicted 
+            cell views to update. These newly Predicted cell/columns are 
+            now stored back alongside their original parent new input 
+            row, and SP active columns. Temporal Memory compute cycle
+            is complete, except for next-timestep prep (rest of 
+            this section).
             
             TRIGGER  | `trigger_cell_input_columns_predict_change`
             ---------|---------------------------------------------
@@ -286,6 +296,35 @@ SELECT indexes, columns_active FROM htm.input;
                 Function | `schema_modified_update()`
                 Target   | `input.modified`
 
+        1. Perform standard distal synaptic learning on existing 
+            learning anchor cells. +active, -inactive.
+            
+            TODO
+
+        1. Grow segments/synapses on learning anchor cells which did
+            not have them before. Connections will be made to cells
+            active on the pevious timestep, and will be learned on 
+            next time.
+
+            TRIGGER  | `trigger_cell_anchor_segment_synapse_grow_change`
+            ---------|---------------------------------------------
+            Source   | `cell.active`
+            Function | `cell_anchor_segment_synapse_grow_update()`
+            Targets  | `segment`, `synapse`
+
+
+
+
+```
+            VIEW | `cell_anchor`
+        
+    
+            May include new dendrite/synapse growth.
+        
+            1. Add segments/synapses as needed (from above), back to active cells of previous timestemp
+            
+        - bad predict? decrement synapses
+
         1. Synaptic Learning is performed on post-cell-activation predictive 
             cells by adjusting distal synapse permanence values.
             
@@ -294,6 +333,7 @@ SELECT indexes, columns_active FROM htm.input;
             Source   | `cell.active`
             Function | `synapse_distal_learn_update()`
             Target   | `synapse.permanence`
+```
 
 
 ## Debug

@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(86);  -- Test count
+SELECT plan(90);  -- Test count
 
 
 SELECT has_table('config');
@@ -17,7 +17,8 @@ SELECT columns_are('config', ARRAY[
   'input_width',
   'cell_count',
   'row_count',
-  'synapse_count',
+  'synapse_distal_count',
+  'synapse_proximal_count',
   'synapse_distal_spread_pct',
   'synapse_proximal_spread_pct',
 
@@ -75,10 +76,15 @@ SELECT col_not_null('config', 'row_count');
 SELECT col_has_default('config', 'row_count');
 SELECT col_has_check('config', 'row_count');
 
-SELECT col_type_is('config', 'synapse_count', 'integer');
-SELECT col_not_null('config', 'synapse_count');
-SELECT col_has_default('config', 'synapse_count');
-SELECT col_has_check('config', 'synapse_count');
+SELECT col_type_is('config', 'synapse_distal_count', 'integer');
+SELECT col_not_null('config', 'synapse_distal_count');
+SELECT col_has_default('config', 'synapse_distal_count');
+SELECT col_has_check('config', 'synapse_distal_count');
+
+SELECT col_type_is('config', 'synapse_proximal_count', 'integer');
+SELECT col_not_null('config', 'synapse_proximal_count');
+SELECT col_has_default('config', 'synapse_proximal_count');
+SELECT col_has_check('config', 'synapse_proximal_count');
 
 SELECT col_type_is('config', 'synapse_distal_spread_pct', 'numeric');
 SELECT col_not_null('config', 'synapse_distal_spread_pct');

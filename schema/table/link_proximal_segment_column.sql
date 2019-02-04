@@ -1,9 +1,10 @@
 /**
  * Link Segment to Column Table
  */
+
 CREATE TABLE htm.link_proximal_segment_column(
-  id          INT NOT NULL PRIMARY KEY,
-  segment_id INT NOT NULL,
+  id          SERIAL PRIMARY KEY,
+  segment_id  INT NOT NULL,
   column_id   INT NOT NULL,
 
   FOREIGN KEY (segment_id)
@@ -15,4 +16,6 @@ CREATE TABLE htm.link_proximal_segment_column(
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
+
+ALTER SEQUENCE htm.link_proximal_segment_column_id_seq RESTART WITH 1;
 

@@ -34,23 +34,23 @@ BEGIN
   PERFORM htm.debug('SP updating winner column activity state');
   WITH column_next AS (
     SELECT
-      htm.column.id,
+      c.id,
       (
         htm.column_active_get_limit() >= (
           ROW_NUMBER() OVER(
-            ORDER BY column_overlap_boost.overlap_boosted DESC NULLS LAST
+            ORDER BY cob.overlap_boosted DESC NULLS LAST
           )
         )
       ) AS active  -- global column inhibition
-    FROM htm.column
-    LEFT JOIN htm.column_overlap_boost
-      ON column_overlap_boost.id = htm.column.id
-    ORDER BY column_overlap_boost.overlap_boosted DESC NULLS LAST
+    FROM htm.column AS c
+    LEFT JOIN htm.column_overlap_boost AS cob
+      ON cob.id = c.id
+    ORDER BY cob.overlap_boosted DESC NULLS LAST
   )
-  UPDATE htm.column
-    SET active = column_next.active
-    FROM column_next
-    WHERE column_next.id = htm.column.id;
+  UPDATE htm.column AS c
+    SET active = cn.active
+    FROM column_next AS cn
+    WHERE cn.id = c.id;
 
   RETURN NULL;
 END;
@@ -70,45 +70,45 @@ BEGIN
   PERFORM htm.debug('SP has new input so updating column boosting/duty_cycles');
   WITH column_next AS (
     SELECT
-      htm.column.id,
+      c.id,
       htm.column_boost_factor_compute(
         htm.running_moving_average(
-          htm.column.duty_cycle_active,
-          htm.column.active::INT,
+          c.duty_cycle_active,
+          c.active::INT,
           period
         ),
-        region.duty_cycle_active_mean
+        r.duty_cycle_active_mean
       ) AS boost_factor,
       htm.running_moving_average(
-        htm.column.duty_cycle_active,
-        htm.column.active::INT,
+        c.duty_cycle_active,
+        c.active::INT,
         period
       ) AS duty_cycle_active,
       htm.running_moving_average(
-        htm.column.duty_cycle_overlap,
-        (column_overlap_boost.overlap IS NOT NULL)::INT,
+        c.duty_cycle_overlap,
+        (cob.overlap IS NOT NULL)::INT,
         period
       ) AS duty_cycle_overlap
-    FROM htm.column
-    JOIN htm.region
-      ON region.id = htm.column.region_id
-    LEFT JOIN htm.column_overlap_boost
-      ON column_overlap_boost.id = htm.column.id
+    FROM htm.column AS c
+    JOIN htm.region AS r
+      ON r.id = c.region_id
+    LEFT JOIN htm.column_overlap_boost AS cob
+      ON cob.id = c.id
     GROUP BY
-      htm.column.id,
-      htm.column.duty_cycle_active,
-      htm.column.duty_cycle_overlap,
-      region.duty_cycle_active_mean,
-      column_overlap_boost.id,
-      column_overlap_boost.overlap
+      c.id,
+      c.duty_cycle_active,
+      c.duty_cycle_overlap,
+      r.duty_cycle_active_mean,
+      cob.id,
+      cob.overlap
   )
-  UPDATE htm.column
+  UPDATE htm.column AS c
     SET
-      boost_factor = column_next.boost_factor,
-      duty_cycle_active = column_next.duty_cycle_active,
-      duty_cycle_overlap = column_next.duty_cycle_overlap
-    FROM column_next
-    WHERE column_next.id = htm.column.id;
+      boost_factor = cn.boost_factor,
+      duty_cycle_active = cn.duty_cycle_active,
+      duty_cycle_overlap = cn.duty_cycle_overlap
+    FROM column_next AS cn
+    WHERE cn.id = c.id;
 
   RETURN NULL;
 END;

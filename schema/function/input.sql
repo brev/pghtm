@@ -47,14 +47,14 @@ CREATE FUNCTION htm.input_columns_predict_update()
 RETURNS TRIGGER
 AS $$
 BEGIN
-  PERFORM htm.debug('TM saving predicted neuro-columns back with input row');
+  PERFORM htm.debug('TM saving predicted cell-columns back with input row');
   WITH input_next AS (
     SELECT
       i.id,
       (SELECT ARRAY(
-        SELECT DISTINCT(ndp.column_id)
-        FROM htm.cell_distal_predict AS ndp
-        ORDER BY ndp.column_id
+        SELECT DISTINCT(cp.column_id)
+        FROM htm.cell_predict AS cp
+        ORDER BY cp.column_id
       )) AS columns_predict
     FROM htm.input AS i
     WHERE i.columns_predict IS NULL

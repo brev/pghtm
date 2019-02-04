@@ -64,13 +64,13 @@ BEGIN
       s.id,
       htm.synapse_proximal_get_increment(s.permanence) AS permanence
     FROM htm.synapse AS s
-    JOIN htm.segment AS d
-      ON d.id = s.segment_id
-      AND d.class = 'proximal'
-    JOIN htm.link_proximal_segment_column AS lpdc
-      ON lpdc.segment_id = d.id
+    JOIN htm.segment AS seg
+      ON seg.id = s.segment_id
+      AND seg.class = 'proximal'
+    JOIN htm.link_proximal_segment_column AS lpsc
+      ON lpsc.segment_id = seg.id
     JOIN htm.column AS c
-      ON c.id = lpdc.column_id
+      ON c.id = lpsc.column_id
     JOIN htm.region AS r
       ON r.id = c.region_id
       AND r.duty_cycle_overlap_mean > c.duty_cycle_overlap
@@ -152,12 +152,12 @@ BEGIN
     FROM htm.synapse AS s
     LEFT JOIN htm.synapse_distal_active AS sda
       ON sda.id = s.id
-    JOIN htm.segment_distal_active AS dda
-      ON dda.id = s.segment_id
-    JOIN htm.link_distal_segment_cell AS lddn
-      ON lddn.segment_id = s.segment_id
-    JOIN htm.cell_distal_predict AS ndp
-      ON ndp.id = lddn.cell_id
+    JOIN htm.segment_distal_active AS segda
+      ON segda.id = s.segment_id
+    JOIN htm.link_distal_segment_cell AS ldsc
+      ON ldsc.segment_id = s.segment_id
+    JOIN htm.cell_predict AS cp
+      ON cp.id = ldsc.cell_id
   )
   UPDATE htm.synapse AS s
     SET permanence = sn.permanence
@@ -195,10 +195,10 @@ BEGIN
     JOIN htm.segment AS d
       ON d.id = s.segment_id
       AND d.class = 'proximal'
-    JOIN htm.link_proximal_segment_column AS lpdc
-      ON lpdc.segment_id = d.id
+    JOIN htm.link_proximal_segment_column AS lpsc
+      ON lpsc.segment_id = d.id
     JOIN htm.column AS c
-      ON c.id = lpdc.column_id
+      ON c.id = lpsc.column_id
       AND c.active
   )
   UPDATE htm.synapse AS s

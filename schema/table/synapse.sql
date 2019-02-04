@@ -1,9 +1,10 @@
 /**
  * Synapse Table
  */
+
 CREATE TABLE htm.synapse (
-  id          INT NOT NULL PRIMARY KEY,
-  segment_id INT NOT NULL,
+  id          SERIAL PRIMARY KEY,
+  segment_id  INT NOT NULL,
   permanence  NUMERIC NOT NULL,
 
   CHECK ((permanence >= 0.0) AND (permanence <= 1.0)),
@@ -12,4 +13,6 @@ CREATE TABLE htm.synapse (
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
+
+ALTER SEQUENCE htm.synapse_id_seq RESTART WITH 1;
 

@@ -1,9 +1,10 @@
 /**
  * Link Cell to Synapse Table
  */
+
 CREATE TABLE htm.link_distal_cell_synapse(
-  id          INT NOT NULL PRIMARY KEY,
-  cell_id   INT NOT NULL,
+  id          SERIAL PRIMARY KEY,
+  cell_id     INT NOT NULL,
   synapse_id  INT NOT NULL,
 
   FOREIGN KEY (cell_id)
@@ -15,3 +16,6 @@ CREATE TABLE htm.link_distal_cell_synapse(
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
+
+ALTER SEQUENCE htm.link_distal_cell_synapse_id_seq RESTART WITH 1;
+

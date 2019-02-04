@@ -1,8 +1,16 @@
 # Current Work
 
 [x] Temporal Memory
-  * Step 3
+  * Cell Axon => Synapse => Segment: CHECK Segments should not 
+      have 2+ synapses from the same Cell.
   * Update dox charts
+  * better distal tests, plug in small fake network parts:
+    * `insert into segment (id, class) values (101, 'distal');`
+    * `insert into link_distal_segment_cell (id, segment_id, cell_id) values (1, 101, CELL_ID);`
+    * `insert into synapse (id, segment_id, permanence) values (5001, 101, 0.5);`
+  * in.cols_active_predict = in.cols_active + in.cols_predict -> up hierarchy
+  * add created/modified to most tables w/trigger
+  * empty > fill busted again
 [x] WebUI
   * Work with @jsfowles on react components
 [ ] Encoders
@@ -41,7 +49,4 @@
   * Add wrapAround feature (see nupic sp)
   * "Cloning"? Replicating learning across lower levels of hierarchy to spread
     the details. Complex. No longer in Nupic.
-* TM Phase 2
-  * separate segment_is_active() into distal/proximal versions?
-  * something in BAMI TM about each cell not having full segments+synapses?
 

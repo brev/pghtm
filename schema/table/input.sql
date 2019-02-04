@@ -1,6 +1,7 @@
 /**
  * Input/SDR Table
  */
+
 CREATE TABLE htm.input (
   id        SERIAL PRIMARY KEY,
   created   TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
@@ -14,4 +15,6 @@ CREATE TABLE htm.input (
   -- @TemporalMemory output
   columns_predict INT[]   -- NULL OK
 );
+
+ALTER SEQUENCE htm.input_id_seq RESTART WITH 1;
 

@@ -13,8 +13,13 @@ DECLARE
   -- width: Region/Column/Input width # cell cols/bits
   width CONSTANT INT := 100;
 
-  -- synapse_spread_pct: Synapse spread, to calc # of synapses per segment
-  synapse_spread_pct CONSTANT NUMERIC := 0.5;
+  -- synapse_distal_spread_pct: Pct spread cells,
+  --  for calc # distal synapses per segment
+  synapse_distal_spread_pct CONSTANT NUMERIC := 0.5;
+
+  -- synapse_proximal_spread_pct: Pct spread input bits,
+  --  for calc # proximal synapses per column
+  synapse_proximal_spread_pct CONSTANT NUMERIC := 0.5;
 
 BEGIN
   EXECUTE FORMAT($sql$
@@ -48,20 +53,26 @@ BEGIN
       row_count INT NOT NULL DEFAULT %3$L,
       CHECK (row_count = %3$L),  -- CONSTANT
 
-      -- synapse_count: # of synapses per segment
-      synapse_count INT NOT NULL DEFAULT %4$L,
-      CHECK (synapse_count = %4$L),  -- CONSTANT
-
-      -- synapse_distal_spread_pct: pct input bits each column may connect
+      -- synapse_distal_count: # of synapses per distal segment to cell
       --  @TemporalMemory
-      synapse_distal_spread_pct NUMERIC NOT NULL DEFAULT %5$L,
-      CHECK (synapse_distal_spread_pct = %5$L),  -- CONSTANT
+      synapse_distal_count INT NOT NULL DEFAULT %4$L,
+      CHECK (synapse_distal_count = %4$L),  -- CONSTANT
 
-      -- synapse_proximal_spread_pct: pct input bits each column may connect
+      -- synapse_proximal_count: # synapses per proximal column segment to input
+      --  @SpatialPooler
+      synapse_proximal_count INT NOT NULL DEFAULT %5$L,
+      CHECK (synapse_proximal_count = %5$L),  -- CONSTANT
+
+      -- synapse_distal_spread_pct: pct cells each cell segment may connect to
+      --  @TemporalMemory
+      synapse_distal_spread_pct NUMERIC NOT NULL DEFAULT %6$L,
+      CHECK (synapse_distal_spread_pct = %6$L),  -- CONSTANT
+
+      -- synapse_proximal_spread_pct: pct input bits each column may connect to
       --  nupic sp:potentialPct "receptive field"
       --  @SpatialPooler
-      synapse_proximal_spread_pct NUMERIC NOT NULL DEFAULT %5$L,
-      CHECK (synapse_proximal_spread_pct = %5$L),  -- CONSTANT
+      synapse_proximal_spread_pct NUMERIC NOT NULL DEFAULT %7$L,
+      CHECK (synapse_proximal_spread_pct = %7$L),  -- CONSTANT
 
 
       /* VARIABLES */
@@ -70,7 +81,7 @@ BEGIN
       --  during Inhibition - IDEAL 2 pct.
       --  nupic sp:numActiveColumnsPerInhArea "kth nearest score"
       --  @SpatialPooler
-      column_active_limit INT NOT NULL DEFAULT %6$L,
+      column_active_limit INT NOT NULL DEFAULT %8$L,
 
       -- column_boost_strength: SP Boosting strength
       --  nupic sp:boostStrength
@@ -152,13 +163,19 @@ BEGIN
     -- 3$ row_count
     height,
 
-    -- 4$ synapse_count
-    (width * synapse_spread_pct)::INT,
+    -- 4$ synapse_distal_count
+    (width * synapse_distal_spread_pct)::INT,
 
-    -- 5$ synapse_distal_spread_pct, synapse_proximal_spread_pct
-    synapse_spread_pct,
+    -- 5$ synapse_proximal_count
+    (width * synapse_proximal_spread_pct)::INT,
 
-    -- 6$ column_active_limit
+    -- 6$ synapse_distal_spread_pct
+    synapse_distal_spread_pct,
+
+    -- 7$ synapse_proximal_spread_pct
+    synapse_proximal_spread_pct,
+
+    -- 8$ column_active_limit
     (width * 0.04)::INT
   );
 END

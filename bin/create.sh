@@ -45,8 +45,9 @@ psql -f $SCHEMA/view/synapse_distal_connect.sql
 psql -f $SCHEMA/view/synapse_distal_active.sql
 psql -f $SCHEMA/view/segment_proximal_overlap_active.sql
 psql -f $SCHEMA/view/segment_distal_active.sql
-psql -f $SCHEMA/view/cell_distal_predict.sql
-psql -f $SCHEMA/view/cell_proximal_burst.sql
+psql -f $SCHEMA/view/cell_predict.sql
+psql -f $SCHEMA/view/cell_burst.sql
+psql -f $SCHEMA/view/cell_anchor.sql
 psql -f $SCHEMA/view/column_overlap_boost.sql
 
 # triggers

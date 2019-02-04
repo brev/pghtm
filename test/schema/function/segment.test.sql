@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(8);  -- Test count
+SELECT plan(7);  -- Test count
 
 
 -- test segment_is_active()
@@ -22,11 +22,6 @@ SELECT is(
   segment_is_active(config('segment_synapse_threshold')::INT + 1),
   TRUE,
   'segment_is_active() true beyond threshold'
-);
-SELECT is(
-  segment_is_active(config('synapse_count')::INT),
-  TRUE,
-  'segment_is_active() true at max'
 );
 
 
