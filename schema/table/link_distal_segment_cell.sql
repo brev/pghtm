@@ -1,7 +1,6 @@
 /**
  * Link Segment to Cell Table
  */
-
 CREATE TABLE htm.link_distal_segment_cell(
   id          SERIAL PRIMARY KEY,
   segment_id  INT NOT NULL,
@@ -16,6 +15,4 @@ CREATE TABLE htm.link_distal_segment_cell(
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
-
-ALTER SEQUENCE htm.link_distal_segment_cell_id_seq RESTART WITH 1;
 

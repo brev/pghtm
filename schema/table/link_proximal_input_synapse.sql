@@ -1,7 +1,6 @@
 /**
  * Link Input to Synapse Table
  */
-
 CREATE TABLE htm.link_proximal_input_synapse(
   id          SERIAL PRIMARY KEY,
   input_index INT NOT NULL,
@@ -13,6 +12,4 @@ CREATE TABLE htm.link_proximal_input_synapse(
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
-
-ALTER SEQUENCE htm.link_proximal_input_synapse_id_seq RESTART WITH 1;
 

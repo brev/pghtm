@@ -1,7 +1,6 @@
 /**
  * Cell Table
  */
-
 CREATE TABLE htm.cell (
   id          SERIAL PRIMARY KEY,
   active      BOOL NOT NULL DEFAULT FALSE,
@@ -14,6 +13,4 @@ CREATE TABLE htm.cell (
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
-
-ALTER SEQUENCE htm.cell_id_seq RESTART WITH 1;
 

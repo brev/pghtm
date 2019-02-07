@@ -16,13 +16,25 @@ CREATE TRIGGER trigger_cell_active_last_change
     EXECUTE FUNCTION htm.cell_active_last_update();
 
 /**
+ * Learn on appropriate learning anchor cells that already had helpful
+ *  segments/synapses.
+ * @TemporalMemory
+ */
+CREATE TRIGGER trigger_cell_anchor_synapse_learn_change
+  AFTER UPDATE OF active
+  ON htm.cell
+  WHEN (htm.config('synapse_distal_learn')::BOOL IS TRUE)
+  EXECUTE FUNCTION htm.synapse_distal_anchor_learn_update();
+
+/**
  * Grow new segments/synapses on appropriate learning anchor cells.
  * @TemporalMemory
  */
-CREATE TRIGGER trigger_cell_anchor_segment_synapse_grow_change
+CREATE TRIGGER trigger_cell_anchor_synapse_segment_grow_change
   AFTER UPDATE OF active
   ON htm.cell
-  EXECUTE FUNCTION htm.cell_anchor_segment_synapse_grow_update();
+  WHEN (htm.config('synapse_distal_learn')::BOOL IS TRUE)
+  EXECUTE FUNCTION htm.cell_anchor_synapse_segment_grow_update();
 
 /**
  * After cell.active has been updated (and thus the distal views, too),

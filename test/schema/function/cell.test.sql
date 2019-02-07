@@ -17,10 +17,10 @@ SELECT has_function('cell_active_last_update');
 SELECT function_lang_is('cell_active_last_update', 'plpgsql');
 SELECT function_returns('cell_active_last_update', 'trigger');
 
--- test cell_anchor_segment_synapse_grow_update()
-SELECT has_function('cell_anchor_segment_synapse_grow_update');
-SELECT function_lang_is('cell_anchor_segment_synapse_grow_update', 'plpgsql');
-SELECT function_returns('cell_anchor_segment_synapse_grow_update', 'trigger');
+-- test cell_anchor_synapse_segment_grow_update()
+SELECT has_function('cell_anchor_synapse_segment_grow_update');
+SELECT function_lang_is('cell_anchor_synapse_segment_grow_update', 'plpgsql');
+SELECT function_returns('cell_anchor_synapse_segment_grow_update', 'trigger');
 
 -- test cell_is_predict()
 SELECT has_function('cell_is_predict', ARRAY['integer']);

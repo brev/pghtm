@@ -1,7 +1,6 @@
 /**
  * Synapse Table
  */
-
 CREATE TABLE htm.synapse (
   id          SERIAL PRIMARY KEY,
   segment_id  INT NOT NULL,
@@ -13,6 +12,4 @@ CREATE TABLE htm.synapse (
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
-
-ALTER SEQUENCE htm.synapse_id_seq RESTART WITH 1;
 

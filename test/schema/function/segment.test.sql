@@ -4,8 +4,13 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(7);  -- Test count
+SELECT plan(10);  -- Test count
 
+
+-- test segment_anchor_grow_updates()
+SELECT has_function('segment_anchor_grow_updates', ARRAY['integer[]']);
+SELECT function_lang_is('segment_anchor_grow_updates', 'plpgsql');
+SELECT function_returns('segment_anchor_grow_updates', 'integer[]');
 
 -- test segment_is_active()
 SELECT has_function('segment_is_active', ARRAY['integer']);

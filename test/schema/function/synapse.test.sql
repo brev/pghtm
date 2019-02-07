@@ -4,8 +4,17 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(51);  -- Test count
+SELECT plan(60);  -- Test count
 
+
+-- test synapse_distal_anchor_grow_updates()
+SELECT has_function('synapse_distal_anchor_grow_updates', ARRAY[
+  'integer[]',
+  'integer[]',
+  'integer[]'
+]);
+SELECT function_lang_is('synapse_distal_anchor_grow_updates', 'plpgsql');
+SELECT function_returns('synapse_distal_anchor_grow_updates', 'boolean');
 
 -- test synapse_distal_get_connection()
 SELECT has_function('synapse_distal_get_connection', ARRAY['numeric']);
@@ -79,6 +88,11 @@ SELECT is(
   1.0,
   'synapse_distal_get_increment() learns up to max 1.0'
 );
+
+-- test synapse_distal_nonpredict_punish_update()
+SELECT has_function('synapse_distal_nonpredict_punish_update');
+SELECT function_lang_is('synapse_distal_nonpredict_punish_update', 'plpgsql');
+SELECT function_returns('synapse_distal_nonpredict_punish_update', 'trigger');
 
 -- test synapse_proximal_boost_update()
 SELECT has_function('synapse_proximal_boost_update');
@@ -157,6 +171,11 @@ SELECT is(
   1.0,
   'synapse_proximal_get_increment() learns up to max 1.0'
 );
+
+-- test synapse_distal_anchor_learn_update()
+SELECT has_function('synapse_distal_anchor_learn_update');
+SELECT function_lang_is('synapse_distal_anchor_learn_update', 'plpgsql');
+SELECT function_returns('synapse_distal_anchor_learn_update', 'trigger');
 
 -- test synapse_distal_learn_update()
 SELECT has_function('synapse_distal_learn_update');

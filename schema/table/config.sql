@@ -3,7 +3,6 @@
  *  Use the htm.config() getter (dynamic generated function) to access these
  *    with blazing fast immutable speed.
  */
-
 DO
 $$
 DECLARE

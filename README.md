@@ -255,11 +255,26 @@ SELECT indexes, columns_active FROM htm.input;
         Source | `input.columns_active`
         Source | `synapse_distal_connect`
         
+        VIEW | `cell_anchor`
+        
         **TODO**
 
-    1. **TRIGGERS**. Newly active columns means we can now compute newly 
+    1. **TRIGGERS**. With newly active columns, but before we change
+        cell activity states (and thus predicted cells), we need to
+        punish predicted cells that were predicted but did not become
+        active. This is accomplished through synaptic permenance
+        decrements.
+        
+        TRIGGER  | `trigger_input_a_synapse_nonpredict_punish_change`
+        ---------|--------------------------------
+        Source   | `input.columns_active`
+        Function | `synapse_nonpredict_punish_update()`
+        Target   | `synapse.permanence`
+        
+    1. Newly active columns means we can now compute newly 
         active cells. Decide between distally-activated predicted cells 
-        or proximally-activated bursting column-cells.
+        or proximally-activated bursting column-cells. Predictions
+        will automatically update afterword.
                     
         TRIGGER  | `trigger_input_cell_active_change`
         ---------|--------------------------------
@@ -270,7 +285,11 @@ SELECT indexes, columns_active FROM htm.input;
         1. Cells that are being activated have their previous active
             state saved in active_last field.
 
-            TODO trigger_cell_active_last_change
+            TRIGGER  | `trigger_cell_active_last_change`
+            ---------|--------------------------------
+            Source   | `cell.active`
+            Function | `cell_active_last_update()`
+            Target   | `cell.active_last`
 
         1. **OUTPUT**. Newly activated cells cause next-step predicted 
             cell views to update. These newly Predicted cell/columns are 
@@ -296,35 +315,27 @@ SELECT indexes, columns_active FROM htm.input;
                 Function | `schema_modified_update()`
                 Target   | `input.modified`
 
-        1. Perform standard distal synaptic learning on existing 
-            learning anchor cells. +active, -inactive.
-            
-            TODO
+        1. Perform distal synaptic learning on learning anchor cells which 
+            already have existing segments/synapses connections.
+        
+            TRIGGER  | `trigger_cell_anchor_synapse_learn_change`
+            ---------|-------------------------------------------------
+            Source   | `cell.active`
+            Function | `synapse_distal_anchor_learn_update()`
+            Target   | `synapse.permanence`
 
-        1. Grow segments/synapses on learning anchor cells which did
+        1. Grow new segments/synapses on learning anchor cells which did
             not have them before. Connections will be made to cells
             active on the pevious timestep, and will be learned on 
             next time.
 
-            TRIGGER  | `trigger_cell_anchor_segment_synapse_grow_change`
+            TRIGGER  | `trigger_cell_anchor_synapse_segment_grow_change`
             ---------|---------------------------------------------
             Source   | `cell.active`
-            Function | `cell_anchor_segment_synapse_grow_update()`
+            Function | `cell_anchor_synapse_segment_grow_update()`
             Targets  | `segment`, `synapse`
 
-
-
-
-```
-            VIEW | `cell_anchor`
-        
-    
-            May include new dendrite/synapse growth.
-        
-            1. Add segments/synapses as needed (from above), back to active cells of previous timestemp
-            
-        - bad predict? decrement synapses
-
+```        
         1. Synaptic Learning is performed on post-cell-activation predictive 
             cells by adjusting distal synapse permanence values.
             

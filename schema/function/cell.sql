@@ -72,67 +72,44 @@ $$ LANGUAGE plpgsql;
  * Grow new segemnts/synapses on appropriate learning anchor cells.
  * @TemporalMemory
  */
-CREATE FUNCTION htm.cell_anchor_segment_synapse_grow_update()
+CREATE FUNCTION htm.cell_anchor_synapse_segment_grow_update()
 RETURNS TRIGGER
 AS $$
 DECLARE
   permanence CONSTANT NUMERIC :=
     htm.config('synapse_distal_threshold')::NUMERIC +
     htm.config('synapse_distal_increment')::NUMERIC;
+  synapse_max CONSTANT INT := htm.config('synapse_distal_count');
   anchors INT[];
-  anchor_id INT;
-  anchor_index INT;
-  anchors_length INT;
+  openings INT[];
   recents INT[];
-  recent_id INT;
-  recent_index INT;
-  recents_length INT;
-  segment_id INT;
-  synapse_id INT;
+  segments INT[];
+  segments_length INT;
 BEGIN
   SELECT ARRAY(
     SELECT ca.id
     FROM htm.cell_anchor AS ca
     WHERE ca.segment_grow
   ) INTO anchors;
-  anchors_length = COALESCE(array_length(anchors, 1), 0);
 
   SELECT ARRAY(
     SELECT c.id
     FROM htm.cell AS c
     WHERE c.active_last
   ) INTO recents;
-  recents_length = COALESCE(array_length(recents, 1), 0);
 
   IF (
-    (anchors_length > 0) AND
-    (recents_length > 0)
+    (COALESCE(ARRAY_LENGTH(anchors, 1), 0) > 0) AND
+    (COALESCE(ARRAY_LENGTH(recents, 1), 0) > 0)
   ) THEN
     PERFORM
       htm.debug('TM growing new segments/synapses on learning anchor cells');
-    FOR anchor_index IN 1..anchors_length LOOP
-      anchor_id := anchors[anchor_index];
-
-      PERFORM htm.debug('..TM growing new segment');
-      INSERT INTO htm.segment (class)
-        VALUES ('distal')
-        RETURNING id INTO segment_id;
-      INSERT INTO htm.link_distal_segment_cell (segment_id, cell_id)
-        VALUES (segment_id, anchor_id);
-
-      PERFORM
-        htm.debug('..TM growing new synapses');
-      -- TODO this should be some random sub-pct, not all
-      FOR recent_index IN 1..recents_length LOOP
-        recent_id := recents[recent_index];
-
-        INSERT INTO htm.synapse (segment_id, permanence)
-          VALUES (segment_id, permanence)
-          RETURNING id INTO synapse_id;
-        INSERT INTO htm.link_distal_cell_synapse (cell_id, synapse_id)
-          VALUES (recent_id, synapse_id);
-      END LOOP;
-    END LOOP;
+    -- grow new segments
+    segments := htm.segment_anchor_grow_updates(anchors);
+    segments_length := COALESCE(ARRAY_LENGTH(segments, 1), 0);
+    -- grow new synapses on new segments
+    openings := ARRAY_FILL(synapse_max, ARRAY[segments_length]);
+    PERFORM htm.synapse_distal_anchor_grow_updates(segments, openings, recents);
   END IF;
 
   RETURN NULL;

@@ -1,5 +1,5 @@
 /**
- * Cell "Learner" Anchor View
+ * Cell "Learning Anchor" View
  * @TemporalMemory
  */
 CREATE VIEW htm.cell_anchor AS (
@@ -13,11 +13,11 @@ CREATE VIEW htm.cell_anchor AS (
       SELECT
         cb.id,
         cb.column_id,
-        (COUNT(c.id) = 0) AS segment_grow,
+        (SUM(sda.synapse_count) IS NULL) AS segment_grow,
         ROW_NUMBER() OVER (
           PARTITION BY cb.column_id
           ORDER BY
-            COUNT(c.id) DESC,
+            COALESCE(SUM(sda.synapse_count), 0) DESC,
             COUNT(DISTINCT(ldsc.segment_id)) ASC,
             RANDOM() DESC
         ) AS order_id
@@ -26,13 +26,8 @@ CREATE VIEW htm.cell_anchor AS (
         ON cp.id = cb.id
       LEFT JOIN htm.link_distal_segment_cell AS ldsc
         ON ldsc.cell_id = cb.id
-      LEFT JOIN htm.synapse AS s
-        ON s.segment_id = ldsc.segment_id
-      LEFT JOIN htm.link_distal_cell_synapse AS ldcs
-        ON ldcs.synapse_id = s.id
-      LEFT JOIN htm.cell AS c
-        ON c.id = ldcs.cell_id
-        AND c.active_last
+      LEFT JOIN htm.segment_distal_anchor AS sda
+        ON sda.id = ldsc.segment_id
       WHERE cp.id IS NULL
       GROUP BY cb.id, cb.column_id
     ) UNION (
