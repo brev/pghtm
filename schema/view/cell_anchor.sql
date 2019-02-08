@@ -1,5 +1,6 @@
 /**
  * Cell "Learning Anchor" View
+ *  Best matching cell to learn on.
  * @TemporalMemory
  */
 CREATE VIEW htm.cell_anchor AS (

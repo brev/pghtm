@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(60);  -- Test count
+SELECT plan(57);  -- Test count
 
 
 -- test synapse_distal_anchor_grow_updates()
@@ -176,11 +176,6 @@ SELECT is(
 SELECT has_function('synapse_distal_anchor_learn_update');
 SELECT function_lang_is('synapse_distal_anchor_learn_update', 'plpgsql');
 SELECT function_returns('synapse_distal_anchor_learn_update', 'trigger');
-
--- test synapse_distal_learn_update()
-SELECT has_function('synapse_distal_learn_update');
-SELECT function_lang_is('synapse_distal_learn_update', 'plpgsql');
-SELECT function_returns('synapse_distal_learn_update', 'trigger');
 
 -- test synapse_proximal_learn_update()
 SELECT has_function('synapse_proximal_learn_update');

@@ -178,45 +178,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
- * Perform Hebbian-style learning on distal synapse permanences. This is
- *  based on recently-predicted cells. This was triggered from an update
- *  on the `cell.active` field.
- * @TemporalMemory
- */
-CREATE FUNCTION htm.synapse_distal_learn_update()
-RETURNS TRIGGER
-AS $$
-BEGIN
-  PERFORM htm.debug('TM performing distal synaptic learning');
-  WITH synapse_next AS (
-   SELECT
-      s.id,
-      (CASE
-        WHEN sda.id IS NOT NULL
-          THEN htm.synapse_distal_get_increment(s.permanence)
-        ELSE
-          htm.synapse_distal_get_decrement(s.permanence)
-      END) AS permanence
-    FROM htm.synapse AS s
-    LEFT JOIN htm.synapse_distal_active AS sda
-      ON sda.id = s.id
-    JOIN htm.segment_distal_active AS segda
-      ON segda.id = s.segment_id
-    JOIN htm.link_distal_segment_cell AS ldsc
-      ON ldsc.segment_id = s.segment_id
-    JOIN htm.cell_predict AS cp
-      ON cp.id = ldsc.cell_id
-  )
-  UPDATE htm.synapse AS s
-    SET permanence = sn.permanence
-    FROM synapse_next AS sn
-    WHERE sn.id = s.id;
-
-  RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
-
-/**
  * Check if a distal synapse is considered connected (above permanence
  *  threshold) or not (potential).
  * @TemporalMemory

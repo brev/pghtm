@@ -1,7 +1,7 @@
 /**
  * Segment Distal "Learner" Anchor View
  *  Used to help choose Learning Anchor Cells, and to figure which segments
- *  to grow new synapses on.
+ *  to grow new synapses on. Best matching segments to learn on.
  * @TemporalMemory
  */
 CREATE VIEW htm.segment_distal_anchor AS (

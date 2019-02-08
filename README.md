@@ -14,8 +14,9 @@ but we have varied somewhat.
 **Progress:**
 
 * [ ] Encoders
-* [x] Spatial Pooler
-* [ ] Temporal Memory
+* [X] Spatial Pooler
+* [X] Temporal Memory
+* [ ] Anomaly Prediction
 
 
 ## Setup
@@ -106,19 +107,26 @@ npm start
 ## Usage
 
 * After first use, the initial data tests (above) will no longer pass.
-* Try the more modern `pgcli` client instead of stock `psql`.
+* Hint: Try the more modern `pgcli` client instead of stock `psql`.
 
 ```bash
 psql
 
+-- example 3-step sequence
 INSERT INTO htm.input (indexes) VALUES (ARRAY[0,1,2,3]);
-# INSERT 0 1
+INSERT INTO htm.input (indexes) VALUES (ARRAY[10,11,12,13]);
+INSERT INTO htm.input (indexes) VALUES (ARRAY[20,21,22,23]);
+INSERT INTO htm.input (indexes) VALUES (ARRAY[0,1,2,3]);
 
-SELECT indexes, columns_active FROM htm.input;
-# indexes   | columns_active
-#-----------+----------------
-# {0,1,2,3} | {28,31,46,72}
-# (1 row)
+-- basic output: SDR and prediction
+SELECT * FROM htm.input ORDER BY id DESC LIMIT 1;
+# indexes   | columns_active | columns_predict
+#-----------+----------------+----------------
+# {0,1,2,3} | {28,31,46,72}  | {11,21,95,97}
+
+-- advanced output: union of active+predict to send up hierarchy
+SELECT (columns_active || columns_predict) FROM htm.input;
+# {11,21,28,31,46,72,95,97}
 
 \q
 ```
@@ -334,17 +342,6 @@ SELECT indexes, columns_active FROM htm.input;
             Source   | `cell.active`
             Function | `cell_anchor_synapse_segment_grow_update()`
             Targets  | `segment`, `synapse`
-
-```        
-        1. Synaptic Learning is performed on post-cell-activation predictive 
-            cells by adjusting distal synapse permanence values.
-            
-            TRIGGER  | `trigger_cell_synapse_distal_permanence_learn_change`
-            ---------|-------------------------------------------------
-            Source   | `cell.active`
-            Function | `synapse_distal_learn_update()`
-            Target   | `synapse.permanence`
-```
 
 
 ## Debug

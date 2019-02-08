@@ -1,28 +1,39 @@
 # Current Work
 
 [x] Temporal Memory
-  * Mass input insert not working like individual inserts?
-  * Distal cells => synapses, sub-%, not all synapse_distal_anchor_grow_updates()
+  * building.htm.systems - numenta or more open? sell related stuff? me take?
+  * BAMI TP final table, pseudocode, chooseRandom() listed twice
   * Cell Axon => Synapse => Segment: CHECK Segments should not 
       have 2+ synapses from the same Cell.
-  * Update dox charts
+  * add created/modified to most tables w/trigger
+  * Distal cells => synapses, sub-%, not all synapse_distal_anchor_grow_updates()
+  * Mass input insert not working like individual inserts?
+  * More deep renaming/rearch
   * better distal tests, plug in small fake network parts:
     * `insert into segment (id, class) values (101, 'distal');`
     * `insert into link_distal_segment_cell (id, segment_id, cell_id) 
         values (1, 101, CELL_ID);`
     * `insert into synapse (id, segment_id, permanence) values (5001, 101, 0.5);`
-  * in.cols_active_predict = in.cols_active + in.cols_predict -> up hierarchy
-  * add created/modified to most tables w/trigger
+  * Finish dox linkage to nupic SP/TM naming
+  * Update dox charts
 [x] WebUI
   * Work with @jsfowles on react components
 [ ] Encoders
+[ ] Anomaly Detection
 
 # Future Work
 
 * General:
+  * More detailed test per each view, etc.
   * pg users, roles, access controls, grants, revokes, etc.
   * pg int's not unsigned - for input indexes[], got a trinary if wanted
   * use advanced pg custom types somehow?  
+* Biz:
+  * Hosted web ui
+  * Electron skeleton
+  * Desktop platforms bundle postgres?
+  * Postgres mobile?
+  * Postgres Hosting for backend - research which modules allowed? load custom?
 * Performance: 
   * Can some vol/stable functions be moved to immutable?
     * How does this interact with my config_getter_generator?
@@ -32,6 +43,7 @@
   * Externalize and speed up plpgsql stuff as C Extensions.
   * Continue on to full NuPIC Integration?
 * SP Phase 2
+  * research/dox: BAMI SP vs old whitepaper SP?
   * Dimensionality
   * Add topology AKA local column column_inhibit 
     * radius (aka? input spread. calc with.), etc.
@@ -51,4 +63,9 @@
   * Add wrapAround feature (see nupic sp)
   * "Cloning"? Replicating learning across lower levels of hierarchy to spread
     the details. Complex. No longer in Nupic.
+* TM Phase 2
+  * research/dox: BAMI TM vs. old Temporal Pooling?
+  * Dimensionality
+  * Prune old unused synapses and segments
+  * Union Pooling? 
 
