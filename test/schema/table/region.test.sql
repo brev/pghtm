@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(16);  -- Test count
+SELECT plan(17);  -- Test count
 
 
 SELECT has_table('region');
@@ -17,6 +17,7 @@ SELECT columns_are(
   ]
 );
 SELECT has_pk('region');
+SELECT has_check('region');
 
 SELECT col_type_is('region', 'id', 'integer');
 SELECT col_not_null('region', 'id');

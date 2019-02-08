@@ -13,6 +13,7 @@ CREATE TABLE htm.link_distal_segment_cell(
   FOREIGN KEY (cell_id)
     REFERENCES htm.cell(id)
     ON UPDATE CASCADE
-    ON DELETE CASCADE
+    ON DELETE CASCADE,
+  UNIQUE (segment_id, cell_id)
 );
 

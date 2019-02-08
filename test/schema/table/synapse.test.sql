@@ -4,13 +4,14 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(13);  -- Test count
+SELECT plan(14);  -- Test count
 
 
 SELECT has_table('synapse');
 SELECT columns_are('synapse', ARRAY['id', 'segment_id', 'permanence']);
 SELECT has_pk('synapse');
 SELECT has_fk('synapse');
+SELECT has_check('synapse');
 
 SELECT col_type_is('synapse', 'id', 'integer');
 SELECT col_not_null('synapse', 'id');

@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(90);  -- Test count
+SELECT plan(91);  -- Test count
 
 
 SELECT has_table('config');
@@ -40,6 +40,7 @@ SELECT columns_are('config', ARRAY[
   'synapse_proximal_threshold'
 ]);
 SELECT has_pk('config');
+SELECT has_check('config');
 
 SELECT col_type_is('config', 'id', 'integer');
 SELECT col_not_null('config', 'id');

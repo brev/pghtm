@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(31);  -- Test count
+SELECT plan(32);  -- Test count
 
 
 SELECT has_table('column');
@@ -19,6 +19,7 @@ SELECT columns_are('column', ARRAY[
 ]);
 SELECT has_pk('column');
 SELECT has_fk('column');
+SELECT has_check('column');
 
 SELECT col_type_is('column', 'id', 'integer');
 SELECT col_not_null('column', 'id');

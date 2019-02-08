@@ -27,7 +27,10 @@ SELECT col_type_is('link_proximal_input_synapse', 'synapse_id', 'integer');
 SELECT col_not_null('link_proximal_input_synapse', 'synapse_id');
 SELECT col_is_fk('link_proximal_input_synapse', 'synapse_id');
 
-SELECT col_is_unique('link_proximal_input_synapse', ARRAY['input_index', 'synapse_id']);
+SELECT col_is_unique('link_proximal_input_synapse', ARRAY[
+  'input_index',
+  'synapse_id'
+]);
 
 
 SELECT * FROM finish();

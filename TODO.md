@@ -1,10 +1,9 @@
 # Current Work
 
 [x] Temporal Memory
+  * make sure schema tests work with any data state
   * building.htm.systems - numenta or more open? sell related stuff? me take?
   * BAMI TP final table, pseudocode, chooseRandom() listed twice
-  * Cell Axon => Synapse => Segment: CHECK Segments should not 
-      have 2+ synapses from the same Cell.
   * add created/modified to most tables w/trigger
   * Distal cells => synapses, sub-%, not all synapse_distal_anchor_grow_updates()
   * Mass input insert not working like individual inserts?

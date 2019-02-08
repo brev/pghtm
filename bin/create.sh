@@ -59,4 +59,5 @@ psql -f $SCHEMA/trigger/config.sql
 psql -f $SCHEMA/trigger/input.sql
 psql -f $SCHEMA/trigger/cell.sql
 psql -f $SCHEMA/trigger/column.sql
+psql -f $SCHEMA/trigger/link_distal_cell_synapse.sql
 

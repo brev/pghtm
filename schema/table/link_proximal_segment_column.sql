@@ -13,6 +13,7 @@ CREATE TABLE htm.link_proximal_segment_column(
   FOREIGN KEY (column_id)
     REFERENCES htm.column(id)
     ON UPDATE CASCADE
-    ON DELETE CASCADE
+    ON DELETE CASCADE,
+  UNIQUE (segment_id, column_id)
 );
 

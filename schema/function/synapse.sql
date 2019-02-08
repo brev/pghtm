@@ -255,6 +255,47 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
+ * Make sure segments have a unique synaptic connection to each cell axon.
+ *  No pre-synaptic cell should connect (with synapses) to the same
+ *  post-synaptic segment twice or more. Remove any orphan synapses
+ *  that might have been created just previously, and will no longer be valid.
+ * @TemporalMemory
+ */
+CREATE FUNCTION htm.synapse_distal_segment_unique_update()
+RETURNS TRIGGER
+AS $$
+DECLARE
+  allowed BOOL;
+BEGIN
+  -- already exists on segment?
+  SELECT (COUNT(s.id) = 0)
+    INTO allowed
+    FROM htm.synapse AS s
+    JOIN link_distal_cell_synapse AS ldcs
+      ON ldcs.synapse_id = s.id
+      AND ldcs.cell_id = NEW.cell_id
+    WHERE s.segment_id = (
+      SELECT s.segment_id
+      FROM htm.synapse AS s
+      WHERE s.id = NEW.synapse_id
+    );
+
+  IF allowed THEN
+    -- allowed, put it in
+    RETURN NEW;
+  ELSE
+    -- not allowed, already exists: remove any orphan synapses
+    PERFORM htm.debug('....TM skip duplicate segment distal link and clean');
+    DELETE
+      FROM synapse AS s
+      WHERE s.id = NEW.synapse_id;
+    -- and skip
+    RETURN NULL;
+  END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+/**
  * Perform the overlapDutyCycle/synaptic-related parts of boosting.
  *  Promote underwhelmed columns via synaptic permanence increase to
  *  stoke future wins.

@@ -13,6 +13,7 @@ CREATE TABLE htm.link_distal_cell_synapse(
   FOREIGN KEY (synapse_id)
     REFERENCES htm.synapse(id)
     ON UPDATE CASCADE
-    ON DELETE CASCADE
+    ON DELETE CASCADE,
+  UNIQUE (cell_id, synapse_id)
 );
 

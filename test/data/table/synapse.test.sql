@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(5);  -- Test count
+SELECT plan(7);  -- Test count
 
 
 -- test synapse counts
@@ -34,7 +34,7 @@ SELECT row_eq(
   'Synapse (Proximal) has valid count total'
 );
 
--- test synapse permanence init values (proximal only)
+-- test proximal synapse permanence init values step 0
 SELECT row_eq(
   $$
     SELECT (COUNT(synapse.id) > 0)
@@ -56,10 +56,8 @@ SELECT row_eq(
   ROW(FALSE),
   'Synapse (Proximal) permanences init in small range around threshold'
 );
-
--- test synapse permanence changes
-INSERT INTO input (indexes) VALUES (ARRAY[0,1,2,3,4]);
-/*
+-- test distal synapse permanence init values step 1
+INSERT INTO input (indexes) VALUES (ARRAY[0,1,2,3]);
 SELECT row_eq(
   $$
     SELECT (COUNT(synapse.id) > 0)
@@ -67,22 +65,15 @@ SELECT row_eq(
     JOIN segment
       ON segment.id = synapse.segment_id
       AND segment.class = 'distal'
-    WHERE (
-      permanence < (
-        config('synapse_distal_threshold')::NUMERIC -
-        config('synapse_distal_decrement')::NUMERIC
-      )
-      OR permanence > (
-        config('synapse_distal_threshold')::NUMERIC +
-        config('synapse_distal_increment')::NUMERIC
-      )
+    WHERE permanence > (
+      config('synapse_distal_threshold')::NUMERIC +
+      config('synapse_distal_increment')::NUMERIC
     )
   $$,
-  ROW(TRUE),
-  'Synapse (Distal) permanences learn away from threshold range'
+  ROW(FALSE),
+  'Synapse (Distal) permanences init correctly'
 );
-*/
-SELECT is(1,1,'TODO');
+-- test proximal synapse permanence changes on step 1
 SELECT row_eq(
   $$
     SELECT (COUNT(synapse.id) > 0)
@@ -103,6 +94,63 @@ SELECT row_eq(
   $$,
   ROW(TRUE),
   'Synapse (Proximal) permanences learn away from threshold range'
+);
+-- test distal synapse permanence changes on step 2
+INSERT INTO input (indexes) VALUES (ARRAY[10,11,12,13]);
+INSERT INTO input (indexes) VALUES (ARRAY[20,21,22,23]);
+INSERT INTO input (indexes) VALUES (ARRAY[0,1,2,3]);
+INSERT INTO input (indexes) VALUES (ARRAY[10,11,12,13]);
+INSERT INTO input (indexes) VALUES (ARRAY[20,21,22,23]);
+INSERT INTO input (indexes) VALUES (ARRAY[0,1,2,3]);
+SELECT row_eq(
+  $$
+    SELECT (COUNT(synapse.id) > 0)
+    FROM synapse
+    JOIN segment
+      ON segment.id = synapse.segment_id
+      AND segment.class = 'distal'
+    WHERE (
+      permanence <= config('synapse_distal_threshold')::NUMERIC
+      OR permanence > (
+        config('synapse_distal_threshold')::NUMERIC +
+        config('synapse_distal_increment')::NUMERIC
+      )
+    )
+  $$,
+  ROW(TRUE),
+  'Synapse (Distal) permanences learn away from threshold range'
+);
+
+-- test trigger_trigger_link_distal_cell_synapse_segment_unique_change
+---- function synapse_distal_segment_unique_update()
+---- this needs to be after enough input rows have been fed to TM
+WITH
+  link_new AS (
+    SELECT
+      (SELECT MAX(id) FROM cell) AS cell_id,
+      (SELECT MAX(id) FROM synapse) AS synapse_id
+  )
+  INSERT INTO link_distal_cell_synapse (cell_id, synapse_id)
+  SELECT cell_id, synapse_id
+  FROM link_new;
+SELECT row_eq(
+  $$
+    WITH link_test AS (
+      WITH link_new AS (
+        SELECT
+          (SELECT MAX(id) FROM cell) AS cell_id,
+          (SELECT MAX(id) FROM synapse) AS synapse_id
+      )
+      INSERT INTO link_distal_cell_synapse (cell_id, synapse_id)
+      SELECT cell_id, synapse_id
+      FROM link_new
+      RETURNING id
+    )
+    SELECT (COUNT(id) > 0)
+    FROM link_test
+  $$,
+  ROW(FALSE),
+  'Synapse (Distal) unique link per segment ok'
 );
 
 
