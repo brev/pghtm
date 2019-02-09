@@ -38,20 +38,22 @@ DECLARE
   insert_count INT;
   new_rows TEXT[];
   new_sql TEXT;
+  recents_copy INT[];
+  recent_cell_id INT;
   synapses INT[];
   synapses_length INT;
 BEGIN
-  FOR index IN 1..segments_length LOOP
+  FOR segment_index IN 1..segments_length LOOP
     -- how many synapses? least of: # needed, and # until max/segment
-    insert_count = LEAST(openings[index], recents_length);
+    insert_count = LEAST(openings[segment_index], recents_length);
     new_rows := ARRAY[]::TEXT[];
 
     PERFORM htm.debug('..TM growing new synapses on new segment');
-    -- TODO this should be some random sub-pct, not all
     FOR recent_index IN 1..insert_count LOOP
+      -- build sql
       new_rows := ARRAY_APPEND(
         new_rows,
-        FORMAT('(%L, %L)', segments[index], permanence)
+        FORMAT('(%L, %L)', segments[segment_index], permanence)
       );
     END LOOP;
     new_sql := FORMAT(query_synapse, ARRAY_TO_STRING(new_rows, ','));
@@ -60,10 +62,17 @@ BEGIN
 
     PERFORM htm.debug('..TM growing new links from prev cells => new synapses');
     new_rows := ARRAY[]::TEXT[];
-    FOR index IN 1..synapses_length LOOP
+    recents_copy := recents;  -- fresh copy to slowly eat
+    FOR synapse_index IN 1..synapses_length LOOP
+      -- pop a random source cell axon off the list
+      recent_cell_id := recents_copy[
+        htm.random_range_int(1, COALESCE(ARRAY_LENGTH(recents_copy, 1), 0))
+      ];
+      recents_copy := ARRAY_REMOVE(recents_copy, recent_cell_id);
+      -- build sql
       new_rows := ARRAY_APPEND(
         new_rows,
-        FORMAT('(%L, %L)', recents[index], synapses[index])
+        FORMAT('(%L, %L)', recent_cell_id, synapses[synapse_index])
       );
     END LOOP;
     new_sql := FORMAT(query_link, ARRAY_TO_STRING(new_rows, ','));

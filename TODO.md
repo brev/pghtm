@@ -1,11 +1,13 @@
 # Current Work
 
 [x] Temporal Memory
+  * Is this order backwards?
+    * 1. TM punishing predicted cells not in active columns
+    * 2. TM updating cell activity state via bursting/predicted
   * make sure schema tests work with any data state
   * building.htm.systems - numenta or more open? sell related stuff? me take?
   * BAMI TP final table, pseudocode, chooseRandom() listed twice
   * add created/modified to most tables w/trigger
-  * Distal cells => synapses, sub-%, not all synapse_distal_anchor_grow_updates()
   * Mass input insert not working like individual inserts?
   * More deep renaming/rearch
   * better distal tests, plug in small fake network parts:
