@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(10);  -- Test count
+SELECT plan(14);  -- Test count
 
 
 SELECT has_table('segment');
@@ -23,6 +23,11 @@ SELECT col_has_check('segment', 'id');
 
 SELECT col_type_is('segment', 'class', 'segment_class');
 SELECT col_not_null('segment', 'class');
+
+SELECT col_type_is('segment', 'created', 'timestamp with time zone');
+SELECT col_not_null('segment', 'created');
+SELECT col_has_default('segment', 'created');
+SELECT col_default_is('segment', 'created', 'now()');
 
 
 SELECT * FROM finish();

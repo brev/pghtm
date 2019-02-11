@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(17);  -- Test count
+SELECT plan(21);  -- Test count
 
 
 SELECT has_table('link_distal_segment_cell');
@@ -24,13 +24,22 @@ SELECT col_not_null('link_distal_segment_cell', 'id');
 SELECT col_is_pk('link_distal_segment_cell', 'id');
 SELECT col_has_check('link_distal_segment_cell', 'id');
 
-SELECT col_type_is('link_distal_segment_cell', 'segment_id', 'integer');
-SELECT col_not_null('link_distal_segment_cell', 'segment_id');
-SELECT col_is_fk('link_distal_segment_cell', 'segment_id');
-
 SELECT col_type_is('link_distal_segment_cell', 'cell_id', 'integer');
 SELECT col_not_null('link_distal_segment_cell', 'cell_id');
 SELECT col_is_fk('link_distal_segment_cell', 'cell_id');
+
+SELECT col_type_is(
+  'link_distal_segment_cell',
+  'created',
+  'timestamp with time zone'
+);
+SELECT col_not_null('link_distal_segment_cell', 'created');
+SELECT col_has_default('link_distal_segment_cell', 'created');
+SELECT col_default_is('link_distal_segment_cell', 'created', 'now()');
+
+SELECT col_type_is('link_distal_segment_cell', 'segment_id', 'integer');
+SELECT col_not_null('link_distal_segment_cell', 'segment_id');
+SELECT col_is_fk('link_distal_segment_cell', 'segment_id');
 
 SELECT col_is_unique('link_distal_segment_cell', ARRAY[
   'segment_id',

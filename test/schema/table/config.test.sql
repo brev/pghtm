@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(91);  -- Test count
+SELECT plan(99);  -- Test count
 
 
 SELECT has_table('config');
@@ -50,6 +50,16 @@ SELECT col_is_pk('config', 'id');
 SELECT col_has_default('config', 'id');
 SELECT col_default_is('config', 'id', 1);
 SELECT col_has_check('config', 'id');
+
+SELECT col_type_is('config', 'created', 'timestamp with time zone');
+SELECT col_not_null('config', 'created');
+SELECT col_has_default('config', 'created');
+SELECT col_default_is('config', 'created', 'now()');
+
+SELECT col_type_is('config', 'modified', 'timestamp with time zone');
+SELECT col_not_null('config', 'modified');
+SELECT col_has_default('config', 'modified');
+SELECT col_default_is('config', 'modified', 'now()');
 
 
 -- constants

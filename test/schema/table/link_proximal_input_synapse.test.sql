@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(16);  -- Test count
+SELECT plan(20);  -- Test count
 
 
 SELECT has_table('link_proximal_input_synapse');
@@ -23,6 +23,15 @@ SELECT col_type_is('link_proximal_input_synapse', 'id', 'integer');
 SELECT col_not_null('link_proximal_input_synapse', 'id');
 SELECT col_is_pk('link_proximal_input_synapse', 'id');
 SELECT col_has_check('link_proximal_input_synapse', 'id');
+
+SELECT col_type_is(
+  'link_proximal_input_synapse',
+  'created',
+  'timestamp with time zone'
+);
+SELECT col_not_null('link_proximal_input_synapse', 'created');
+SELECT col_has_default('link_proximal_input_synapse', 'created');
+SELECT col_default_is('link_proximal_input_synapse', 'created', 'now()');
 
 SELECT col_type_is('link_proximal_input_synapse', 'input_index', 'integer');
 SELECT col_not_null('link_proximal_input_synapse', 'input_index');

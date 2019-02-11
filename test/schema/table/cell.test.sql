@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(22);  -- Test count
+SELECT plan(30);  -- Test count
 
 
 SELECT has_table('cell');
@@ -39,6 +39,16 @@ SELECT col_default_is('cell', 'active_last', false);
 SELECT col_type_is('cell', 'column_id', 'integer');
 SELECT col_not_null('cell', 'column_id');
 SELECT col_is_fk('cell', 'column_id');
+
+SELECT col_type_is('cell', 'created', 'timestamp with time zone');
+SELECT col_not_null('cell', 'created');
+SELECT col_has_default('cell', 'created');
+SELECT col_default_is('cell', 'created', 'now()');
+
+SELECT col_type_is('cell', 'modified', 'timestamp with time zone');
+SELECT col_not_null('cell', 'modified');
+SELECT col_has_default('cell', 'modified');
+SELECT col_default_is('cell', 'modified', 'now()');
 
 SELECT col_type_is('cell', 'y_coord', 'integer');
 SELECT col_not_null('cell', 'y_coord');
