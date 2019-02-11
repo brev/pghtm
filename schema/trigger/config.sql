@@ -12,3 +12,12 @@ CREATE TRIGGER trigger_config_regenerate_change
   ON htm.config
   EXECUTE FUNCTION htm.config_regenerate_update();
 
+/**
+ * Auto-update htm.config.modified column/field to NOW() on row update.
+ */
+CREATE TRIGGER trigger_config_modified_change
+  BEFORE UPDATE
+  ON htm.config
+  FOR EACH ROW
+    EXECUTE FUNCTION htm.schema_modified_update();
+

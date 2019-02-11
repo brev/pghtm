@@ -1,20 +1,10 @@
 # Current Work
 
 [x] Temporal Memory
-  * Is this order backwards?
-    * 1. TM punishing predicted cells not in active columns
-    * 2. TM updating cell activity state via bursting/predicted
-  * make sure schema tests work with any data state
   * building.htm.systems - numenta or more open? sell related stuff? me take?
   * BAMI TP final table, pseudocode, chooseRandom() listed twice
-  * add created/modified to most tables w/trigger
-  * Mass input insert not working like individual inserts?
   * More deep renaming/rearch
-  * better distal tests, plug in small fake network parts:
-    * `insert into segment (id, class) values (101, 'distal');`
-    * `insert into link_distal_segment_cell (id, segment_id, cell_id) 
-        values (1, 101, CELL_ID);`
-    * `insert into synapse (id, segment_id, permanence) values (5001, 101, 0.5);`
+  * Mass input insert not working like individual inserts?
   * Finish dox linkage to nupic SP/TM naming
   * Update dox charts
 [x] WebUI
@@ -69,4 +59,33 @@
   * Dimensionality
   * Prune old unused synapses and segments
   * Union Pooling? 
+  * Try to prevent creating dupe synapses on segment to cell ahead of
+    time instead of cleaning up mess afterwords. This would work beautifully
+    if postgres and multi-dim-arrays wasn't such bullshit:
+
+    ```sql
+      -- get a list of active_last recent cells for each anchor cell to 
+      --  connect to, avoiding any axon<=>segment connections that are
+      --  already present.
+      SELECT
+        ca.id,  
+        SELECT ARRAY(
+          SELECT c.id
+          FROM htm.cell AS c
+          JOIN htm.link_distal_cell_synapse AS ldcs
+            ON ldcs.cell_id = c.id
+          JOIN htm.synapse AS s
+            ON s.id = ldcs.synapse_id
+          LEFT JOIN htm.link_distal_segment_cell AS ldsc
+            ON ldsc.segment_id = s.segment_id
+            AND ldsc.cell_id = ca.id
+          WHERE c.active_last
+          GROUP BY c.id
+          HAVING COUNT(ldsc.cell_id) < 1
+          ORDER BY c.id
+        )
+      FROM htm.cell_anchor AS ca
+      WHERE ca.segment_grow
+      ORDER BY ca.id
+    ```
 

@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(20);  -- Test count
+SELECT plan(22);  -- Test count
 
 
 SELECT has_table('cell');
@@ -13,14 +13,18 @@ SELECT columns_are('cell', ARRAY[
   'active',
   'active_last',
   'column_id',
+  'created',
+  'modified',
   'y_coord'
 ]);
 SELECT has_pk('cell');
 SELECT has_fk('cell');
+SELECT has_check('cell');
 
 SELECT col_type_is('cell', 'id', 'integer');
 SELECT col_not_null('cell', 'id');
 SELECT col_is_pk('cell', 'id');
+SELECT col_has_check('cell', 'id');
 
 SELECT col_type_is('cell', 'active', 'boolean');
 SELECT col_not_null('cell', 'active');

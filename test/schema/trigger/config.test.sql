@@ -4,10 +4,11 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(1);  -- Test count
+SELECT plan(2);  -- Test count
 
 
 SELECT has_trigger('config', 'trigger_config_regenerate_change');
+SELECT has_trigger('config', 'trigger_config_modified_change');
 
 
 SELECT * FROM finish();

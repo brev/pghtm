@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(3);  -- Test count
+SELECT plan(5);  -- Test count
 
 
 -- test column count
@@ -12,6 +12,13 @@ SELECT row_eq(
   $$ SELECT COUNT(id) FROM htm.column; $$,
   ROW(config('column_count')::BIGINT),
   'Column has valid data'
+);
+
+-- test column_duty_cycle_period() before data
+SELECT is(
+  column_duty_cycle_period(),
+  0,
+  'column_duty_cycle_period() works before input data rows'
 );
 
 -- test column fields
@@ -39,6 +46,13 @@ SELECT row_eq(
   $$,
   ROW(TRUE, TRUE, TRUE, TRUE),
   'Column has valid activity, boost, and duty cycles after input'
+);
+
+-- test column_duty_cycle_period() after data
+SELECT is(
+  column_duty_cycle_period(),
+  1,
+  'column_duty_cycle_period() works after input data rows'
 );
 
 

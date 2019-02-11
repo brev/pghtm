@@ -42,7 +42,7 @@ CREATE TRIGGER trigger_input_column_boost_duty_change
  * Auto-update htm.input.modified column/field to NOW() on row update.
  */
 CREATE TRIGGER trigger_input_modified_change
-  BEFORE UPDATE OF columns_active, columns_predict
+  BEFORE UPDATE
   ON htm.input
   FOR EACH ROW
     EXECUTE FUNCTION htm.schema_modified_update();

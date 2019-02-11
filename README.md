@@ -202,16 +202,6 @@ SELECT (columns_active || columns_predict) FROM htm.input;
                 Function | `input_columns_active_update()`
                 Target   | `input.columns_active`
 
-                1. Track a timestamp when we put the SP output results back in 
-                    with its original related new input row.
-                    @TODO: This may not be necessary? already in transaction?
-                    
-                    TRIGGER  | `trigger_input_modified_change`
-                    ---------|--------------------------------
-                    Source   | `input.(columns_active, columns_predict)`
-                    Function | `schema_modified_update()`
-                    Target   | `input.modified`
-
             1. Synaptic Learning is performed on winning columns by 
                 adjusting proximal synapse permanence values.
             
@@ -311,17 +301,6 @@ SELECT (columns_active || columns_predict) FROM htm.input;
             Source   | `cell.active`
             Function | `input_columns_predict_update()`
             Target   | `input.columns_predict`
-
-            1. Update `input.modified` timestamp field as new TM output 
-                results are being put back in alongside their original 
-                related new input row, and parent SP winner columns.
-                @TODO: This may not be necessary? already in transaction?
-                
-                TRIGGER  | `trigger_input_modified_change`
-                ---------|--------------------------------
-                Source   | `input.(columns_active, columns_predict)`
-                Function | `schema_modified_update()`
-                Target   | `input.modified`
 
         1. Perform distal synaptic learning on learning anchor cells which 
             already have existing segments/synapses connections.

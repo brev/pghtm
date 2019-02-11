@@ -23,8 +23,9 @@ DECLARE
 BEGIN
   EXECUTE FORMAT($sql$
     CREATE TABLE htm.config(
-      id INT NOT NULL PRIMARY KEY DEFAULT 1,
-      CHECK (id = 1),
+      id        INT NOT NULL PRIMARY KEY DEFAULT 1,
+      created   TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+      modified  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
 
 
       /* CONSTANTS */
@@ -148,7 +149,9 @@ BEGIN
       --  > is connected, <= is potential
       --  nupic sp:synPermConnected=0.1
       --  @SpatialPooler
-      synapse_proximal_threshold NUMERIC NOT NULL DEFAULT 0.1
+      synapse_proximal_threshold NUMERIC NOT NULL DEFAULT 0.1,
+
+      CHECK (id = 1)
     );
   $sql$,
     /* Substitutions */

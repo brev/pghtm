@@ -12,6 +12,8 @@ CREATE TABLE htm.input (
   -- @SpatialPooler output
   columns_active INT[],   -- NULL OK
   -- @TemporalMemory output
-  columns_predict INT[]   -- NULL OK
+  columns_predict INT[],  -- NULL OK
+
+  CHECK (id > 0)
 );
 

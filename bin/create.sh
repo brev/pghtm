@@ -56,8 +56,10 @@ psql -f $SCHEMA/view/column_overlap_boost.sql
 
 # triggers
 psql -f $SCHEMA/trigger/config.sql
-psql -f $SCHEMA/trigger/input.sql
-psql -f $SCHEMA/trigger/cell.sql
+psql -f $SCHEMA/trigger/region.sql
 psql -f $SCHEMA/trigger/column.sql
+psql -f $SCHEMA/trigger/cell.sql
 psql -f $SCHEMA/trigger/link_distal_cell_synapse.sql
+psql -f $SCHEMA/trigger/synapse.sql
+psql -f $SCHEMA/trigger/input.sql
 

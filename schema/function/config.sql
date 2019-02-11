@@ -35,11 +35,12 @@ DECLARE
   new_sql TEXT;
 BEGIN
   FOR config_name IN (
-    SELECT columns.column_name
-    FROM information_schema.columns
-    WHERE columns.table_schema = 'htm'
-      AND columns.table_name = 'config'
-    ORDER BY columns.ordinal_position ASC
+    SELECT c.column_name
+    FROM information_schema.columns AS c
+    WHERE c.table_schema = 'htm'
+      AND c.table_name = 'config'
+      AND c.column_name NOT IN ('id', 'created', 'modified')
+    ORDER BY c.ordinal_position ASC
   ) LOOP
     EXECUTE
       FORMAT('SELECT %I FROM htm.config LIMIT 1', config_name)

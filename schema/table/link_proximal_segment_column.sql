@@ -3,8 +3,9 @@
  */
 CREATE TABLE htm.link_proximal_segment_column(
   id          SERIAL PRIMARY KEY,
-  segment_id  INT NOT NULL,
+  created     TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
   column_id   INT NOT NULL,
+  segment_id  INT NOT NULL,
 
   FOREIGN KEY (segment_id)
     REFERENCES htm.segment(id)
@@ -14,6 +15,7 @@ CREATE TABLE htm.link_proximal_segment_column(
     REFERENCES htm.column(id)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
+  CHECK (id > 0),
   UNIQUE (segment_id, column_id)
 );
 

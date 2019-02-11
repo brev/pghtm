@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(32);  -- Test count
+SELECT plan(33);  -- Test count
 
 
 SELECT has_table('column');
@@ -12,8 +12,10 @@ SELECT columns_are('column', ARRAY[
   'id',
   'active',
   'boost_factor',
+  'created',
   'duty_cycle_active',
   'duty_cycle_overlap',
+  'modified',
   'region_id',
   'x_coord'
 ]);
@@ -24,6 +26,7 @@ SELECT has_check('column');
 SELECT col_type_is('column', 'id', 'integer');
 SELECT col_not_null('column', 'id');
 SELECT col_is_pk('column', 'id');
+SELECT col_has_check('column', 'id');
 
 SELECT col_type_is('column', 'active', 'boolean');
 SELECT col_not_null('column', 'active');

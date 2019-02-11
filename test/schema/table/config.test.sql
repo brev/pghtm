@@ -10,6 +10,8 @@ SELECT plan(91);  -- Test count
 SELECT has_table('config');
 SELECT columns_are('config', ARRAY[
   'id',
+  'created',
+  'modified',
 
   -- constants
   'column_count',

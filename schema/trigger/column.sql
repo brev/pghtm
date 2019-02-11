@@ -27,6 +27,15 @@ CREATE TRIGGER trigger_column_input_columns_active_change
   EXECUTE FUNCTION htm.input_columns_active_update();
 
 /**
+ * Auto-update htm.column.modified column/field to NOW() on row update.
+ */
+CREATE TRIGGER trigger_column_modified_change
+  BEFORE UPDATE
+  ON htm.column
+  FOR EACH ROW
+    EXECUTE FUNCTION htm.schema_modified_update();
+
+/**
  * After column.duty_cycle_active is updated, we'll store the min/max in
  *  the parent region (for boosting).
  * @SpatialPooler

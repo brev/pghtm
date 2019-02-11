@@ -4,21 +4,25 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(15);  -- Test count
+SELECT plan(17);  -- Test count
 
 
 SELECT has_table('link_distal_segment_cell');
-SELECT columns_are(
-  'link_distal_segment_cell',
-  ARRAY['id', 'segment_id', 'cell_id']
-);
+SELECT columns_are('link_distal_segment_cell', ARRAY[
+  'id',
+  'cell_id',
+  'created',
+  'segment_id'
+]);
 SELECT has_pk('link_distal_segment_cell');
 SELECT has_fk('link_distal_segment_cell');
 SELECT has_unique('link_distal_segment_cell');
+SELECT has_check('link_distal_segment_cell');
 
 SELECT col_type_is('link_distal_segment_cell', 'id', 'integer');
 SELECT col_not_null('link_distal_segment_cell', 'id');
 SELECT col_is_pk('link_distal_segment_cell', 'id');
+SELECT col_has_check('link_distal_segment_cell', 'id');
 
 SELECT col_type_is('link_distal_segment_cell', 'segment_id', 'integer');
 SELECT col_not_null('link_distal_segment_cell', 'segment_id');

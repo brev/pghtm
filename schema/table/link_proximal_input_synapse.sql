@@ -3,6 +3,7 @@
  */
 CREATE TABLE htm.link_proximal_input_synapse(
   id          SERIAL PRIMARY KEY,
+  created     TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
   input_index INT NOT NULL,
   synapse_id  INT NOT NULL,
 
@@ -10,6 +11,7 @@ CREATE TABLE htm.link_proximal_input_synapse(
     REFERENCES htm.synapse(id)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
+  CHECK (id > 0),
   UNIQUE (input_index, synapse_id)
 );
 

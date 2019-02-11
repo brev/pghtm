@@ -4,24 +4,26 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(22);  -- Test count
+SELECT plan(24);  -- Test count
 
 
 SELECT has_table('input');
 SELECT columns_are('input', ARRAY[
   'id',
-  'created',
-  'modified',
-  'ts',
-  'indexes',
   'columns_active',
-  'columns_predict'
+  'columns_predict',
+  'created',
+  'indexes',
+  'modified',
+  'ts'
 ]);
 SELECT has_pk('input');
+SELECT has_check('input');
 
 SELECT col_type_is('input', 'id', 'integer');
 SELECT col_not_null('input', 'id');
 SELECT col_is_pk('input', 'id');
+SELECT col_has_check('input', 'id');
 
 SELECT col_type_is('input', 'created', 'timestamp with time zone');
 SELECT col_not_null('input', 'created');

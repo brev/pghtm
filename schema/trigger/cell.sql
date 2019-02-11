@@ -47,3 +47,12 @@ CREATE TRIGGER trigger_cell_input_columns_predict_change
   ON htm.cell
   EXECUTE FUNCTION htm.input_columns_predict_update();
 
+/**
+ * Auto-update htm.cell.modified column/field to NOW() on row update.
+ */
+CREATE TRIGGER trigger_cell_modified_change
+  BEFORE UPDATE
+  ON htm.cell
+  FOR EACH ROW
+    EXECUTE FUNCTION htm.schema_modified_update();
+

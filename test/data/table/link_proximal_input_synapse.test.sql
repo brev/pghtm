@@ -16,13 +16,12 @@ SELECT row_eq(
   'Link_Proximal_Input_Synapse has valid data'
 );
 
-SELECT throws_ok('
-    INSERT INTO link_proximal_input_synapse VALUES
-      (12345, 10, 22),
-      (12345, 10, 22);
-  ',
-  'duplicate key value violates unique constraint "link_proximal_input_synapse_pkey"',
-  'Errors on non-unique combo of input_index and synapse_id'
+SELECT throws_ok($$
+    INSERT INTO link_proximal_input_synapse (input_index, synapse_id)
+      VALUES (10, 22), (10, 22);
+  $$,
+  '23505',
+  'duplicate key value violates unique constraint "link_proximal_input_synapse_input_index_synapse_id_key"'
 );
 
 

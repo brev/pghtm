@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(24);  -- Test count
+SELECT plan(22);  -- Test count
 
 
 -- test htm.column_active_get_limit()
@@ -71,18 +71,6 @@ SELECT has_function('column_duty_cycle_period');
 SELECT function_lang_is('column_duty_cycle_period', 'plpgsql');
 SELECT volatility_is('column_duty_cycle_period', 'stable');
 SELECT function_returns('column_duty_cycle_period', 'integer');
-SELECT is(
-  column_duty_cycle_period(),
-  0,
-  'column_duty_cycle_period() works before input data rows'
-);
-INSERT INTO input (indexes) VALUES (ARRAY[0,1,2]);
-SELECT is(
-  column_duty_cycle_period(),
-  1,
-  'column_duty_cycle_period() works after input data rows'
-);
-DELETE FROM input;
 
 
 SELECT * FROM finish();
