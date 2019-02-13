@@ -4,25 +4,27 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(14);  -- Test count
+SELECT plan(16);  -- Test count
 
 
 SELECT has_table('segment');
 SELECT columns_are('segment', ARRAY[
   'id',
-  'class',
+  'cell_id',
   'created'
 ]);
 SELECT has_pk('segment');
 SELECT has_check('segment');
+SELECT has_fk('segment');
 
 SELECT col_type_is('segment', 'id', 'integer');
 SELECT col_not_null('segment', 'id');
 SELECT col_is_pk('segment', 'id');
 SELECT col_has_check('segment', 'id');
 
-SELECT col_type_is('segment', 'class', 'segment_class');
-SELECT col_not_null('segment', 'class');
+SELECT col_type_is('segment', 'cell_id', 'integer');
+SELECT col_not_null('segment', 'cell_id');
+SELECT col_is_fk('segment', 'cell_id');
 
 SELECT col_type_is('segment', 'created', 'timestamp with time zone');
 SELECT col_not_null('segment', 'created');

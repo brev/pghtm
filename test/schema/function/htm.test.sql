@@ -4,20 +4,8 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(42);  -- Test count
+SELECT plan(32);  -- Test count
 
-
--- test count_unloop()
-SELECT has_function('count_unloop', ARRAY['integer', 'integer', 'integer']);
-SELECT function_lang_is('count_unloop', 'plpgsql');
-SELECT volatility_is('count_unloop', 'immutable');
-SELECT function_returns('count_unloop', 'integer');
-SELECT is(count_unloop(1, 1, 3), 1, 'count_unloop() works 1');
-SELECT is(count_unloop(1, 2, 3), 2, 'count_unloop() works 2');
-SELECT is(count_unloop(1, 3, 3), 3, 'count_unloop() works 3');
-SELECT is(count_unloop(2, 1, 3), 4, 'count_unloop() works 4');
-SELECT is(count_unloop(2, 2, 3), 5, 'count_unloop() works 5');
-SELECT is(count_unloop(2, 3, 3), 6, 'count_unloop() works 6');
 
 -- test debug()
 SELECT has_function('debug', ARRAY['text']);

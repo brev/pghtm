@@ -3,16 +3,15 @@
  * @TemporalMemory
  */
 CREATE VIEW htm.segment_distal_active AS (
-  SELECT segment.id
-  FROM htm.segment
-  JOIN htm.synapse
-    ON synapse.segment_id = segment.id
-  JOIN htm.synapse_distal_active
-    ON synapse_distal_active.id = synapse.id
-  WHERE segment.class = 'distal'
-  GROUP BY segment.id
+  SELECT s.id
+  FROM htm.segment AS s
+  JOIN htm.synapse_distal AS sd
+    ON sd.segment_id = s.id
+  JOIN htm.synapse_distal_active AS sda
+    ON sda.id = sd.id
+  GROUP BY s.id
   HAVING htm.segment_is_active(
-    COUNT(synapse_distal_active.id)::INT
+    COUNT(sda.id)::INT
   )
 );
 

@@ -13,15 +13,16 @@ SELECT row_eq(
   ROW(FALSE),
   'Segment Distal Active view has valid init count'
 );
-INSERT INTO input (indexes) VALUES (ARRAY[0,1,2,3,4]);
-/*
+INSERT INTO input (indexes) VALUES (ARRAY[0,1,2,3]);
+INSERT INTO input (indexes) VALUES (ARRAY[10,11,12,13]);
+INSERT INTO input (indexes) VALUES (ARRAY[20,21,22,23]);
+INSERT INTO input (indexes) VALUES (ARRAY[0,1,2,3]);
+INSERT INTO input (indexes) VALUES (ARRAY[10,11,12,13]);
 SELECT row_eq(
   $$ SELECT (COUNT(id) > 0) FROM segment_distal_active $$,
   ROW(TRUE),
   'Segment Distal Active view has valid data count'
 );
-*/
-SELECT is(1,1,'TODO');
 
 
 SELECT * FROM finish();

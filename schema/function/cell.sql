@@ -22,33 +22,33 @@ BEGIN
         AND col.active
     )
     SELECT
-      cell.id,
+      c.id,
       (CASE
-        WHEN (COUNT(cell_predict.id) > 0) THEN
+        WHEN (COUNT(cp.id) > 0) THEN
           TRUE  -- predicted => active
         WHEN (
-          (column_predict.id IS NULL) AND
-          (COUNT(cell_burst.id) > 0)
+          (colp.id IS NULL) AND
+          (COUNT(cb.id) > 0)
         ) THEN
           TRUE  -- bursting => active
         ELSE
           FALSE  -- not predict, not burst, nor bursting with predicted column
       END) AS active
-    FROM htm.cell
-    LEFT JOIN column_predict
-      ON column_predict.id = cell.column_id
-    LEFT JOIN htm.cell_predict
-      ON cell_predict.id = cell.id
-    LEFT JOIN htm.cell_burst
-      ON cell_burst.id = cell.id
+    FROM htm.cell AS c
+    LEFT JOIN column_predict AS colp
+      ON colp.id = c.column_id
+    LEFT JOIN htm.cell_predict AS cp
+      ON cp.id = c.id
+    LEFT JOIN htm.cell_burst AS cb
+      ON cb.id = c.id
     GROUP BY
-      cell.id,
-      column_predict.id
+      c.id,
+      colp.id
   )
-  UPDATE htm.cell
-    SET active = cell_next.active
-    FROM cell_next
-    WHERE cell_next.id = cell.id;
+  UPDATE htm.cell AS c
+    SET active = cn.active
+    FROM cell_next AS cn
+    WHERE cn.id = c.id;
 
   RETURN NULL;
 END;

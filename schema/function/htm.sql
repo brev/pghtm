@@ -4,17 +4,6 @@
 
 
 /**
- * Unroll index counts from inside nested loops to a single index count.
- */
-CREATE FUNCTION htm.count_unloop(outerCount INT, innerCount INT, innerMax INT)
-RETURNS INT
-AS $$
-BEGIN
-  RETURN ((outerCount - 1) * innerMax) + innerCount;
-END;
-$$ LANGUAGE plpgsql IMMUTABLE;
-
-/**
  * Raise a notice message (debug output) if debugging enabled
  */
 CREATE FUNCTION htm.debug(text)

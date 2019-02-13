@@ -16,18 +16,18 @@ BEGIN
   PERFORM htm.debug('SP region updating overall duty cycle mean averages');
   WITH region_next AS (
     SELECT
-      htm.column.region_id AS id,
-      AVG(htm.column.duty_cycle_active) AS duty_cycle_active_mean,
-      AVG(htm.column.duty_cycle_overlap) AS duty_cycle_overlap_mean
-    FROM htm.column
-    GROUP BY htm.column.region_id
+      c.region_id AS id,
+      AVG(c.duty_cycle_active) AS duty_cycle_active_mean,
+      AVG(c.duty_cycle_overlap) AS duty_cycle_overlap_mean
+    FROM htm.column AS c
+    GROUP BY c.region_id
   )
-  UPDATE htm.region
+  UPDATE htm.region AS r
     SET
-      duty_cycle_active_mean = region_next.duty_cycle_active_mean,
-      duty_cycle_overlap_mean = region_next.duty_cycle_overlap_mean
-    FROM region_next
-    WHERE region_next.id = region.id;
+      duty_cycle_active_mean = rn.duty_cycle_active_mean,
+      duty_cycle_overlap_mean = rn.duty_cycle_overlap_mean
+    FROM region_next AS rn
+    WHERE rn.id = r.id;
 
   RETURN NULL;
 END;

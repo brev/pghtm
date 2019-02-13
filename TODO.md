@@ -1,12 +1,12 @@
 # Current Work
 
 [x] Temporal Memory
+  * Update dox charts
   * building.htm.systems - numenta or more open? sell related stuff? me take?
   * BAMI TP final table, pseudocode, chooseRandom() listed twice
-  * More deep renaming/rearch
   * Mass input insert not working like individual inserts?
-  * Finish dox linkage to nupic SP/TM naming
-  * Update dox charts
+    * synapse_distal_active subquery input ?
+  * Finish dox tying to nupic SP/TM naming
 [x] WebUI
   * Work with @jsfowles on react components
 [ ] Encoders
@@ -48,7 +48,7 @@
   * High Tiering - In a situation few # of inputs, columns will tend to 
     canniablize each other and we'll never get stability. For high overlap %,
     exclude columns from column_inhibit, and promote straight to active/winner.
-  * Shared Inputs - 1 input bit is linked to 2 or more active columns.
+  * Shared Inputs - 1 input bit is connected to 2 or more active columns.
     Ideal is 1:1, so increments to shared inputs is slightly less than usual.
     No longer in Nupic.
   * Add wrapAround feature (see nupic sp)
@@ -72,16 +72,14 @@
         SELECT ARRAY(
           SELECT c.id
           FROM htm.cell AS c
-          JOIN htm.link_distal_cell_synapse AS ldcs
-            ON ldcs.cell_id = c.id
-          JOIN htm.synapse AS s
-            ON s.id = ldcs.synapse_id
-          LEFT JOIN htm.link_distal_segment_cell AS ldsc
-            ON ldsc.segment_id = s.segment_id
-            AND ldsc.cell_id = ca.id
+          JOIN htm.synapse_distal AS sd
+            ON sd.input_cell_id = c.id
+          LEFT JOIN htm.segment AS s
+            ON s.id = sd.segment_id
+            AND s.cell_id = ca.id
           WHERE c.active_last
           GROUP BY c.id
-          HAVING COUNT(ldsc.cell_id) < 1
+          HAVING COUNT(s.cell_id) < 1
           ORDER BY c.id
         )
       FROM htm.cell_anchor AS ca

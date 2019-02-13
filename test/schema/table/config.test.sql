@@ -14,14 +14,15 @@ SELECT columns_are('config', ARRAY[
   'modified',
 
   -- constants
-  'column_count',
-  'segment_count',
-  'input_width',
   'cell_count',
+  'column_count',
+  'column_synapse_threshold',
+  'input_width',
   'row_count',
+  'segment_count',
   'synapse_distal_count',
-  'synapse_proximal_count',
   'synapse_distal_spread_pct',
+  'synapse_proximal_count',
   'synapse_proximal_spread_pct',
 
   -- variables
@@ -30,15 +31,15 @@ SELECT columns_are('config', ARRAY[
   'column_duty_cycle_period',
   'column_inhibit',
   'debug',
-  'segment_synapse_threshold',
   'cell_segment_threshold',
-  'synapse_distal_learn',
+  'segment_synapse_threshold',
   'synapse_distal_decrement',
   'synapse_distal_increment',
+  'synapse_distal_learn',
   'synapse_distal_threshold',
-  'synapse_proximal_learn',
   'synapse_proximal_decrement',
   'synapse_proximal_increment',
+  'synapse_proximal_learn',
   'synapse_proximal_threshold'
 ]);
 SELECT has_pk('config');

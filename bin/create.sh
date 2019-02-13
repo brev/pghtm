@@ -12,9 +12,6 @@ SCHEMA="$SQL/schema"
 # schema
 psql -f $SCHEMA/htm.sql
 
-# types
-psql -f $SCHEMA/type/segment_class.sql
-
 # functions
 psql -f $SCHEMA/function/config.sql
 psql -f $SCHEMA/function/htm.sql
@@ -22,7 +19,8 @@ psql -f $SCHEMA/function/region.sql
 psql -f $SCHEMA/function/column.sql
 psql -f $SCHEMA/function/cell.sql
 psql -f $SCHEMA/function/segment.sql
-psql -f $SCHEMA/function/synapse.sql
+psql -f $SCHEMA/function/synapse_distal.sql
+psql -f $SCHEMA/function/synapse_proximal.sql
 psql -f $SCHEMA/function/input.sql
 
 # tables
@@ -31,12 +29,9 @@ psql -f $SCHEMA/table/region.sql
 psql -f $SCHEMA/table/column.sql
 psql -f $SCHEMA/table/cell.sql
 psql -f $SCHEMA/table/segment.sql
-psql -f $SCHEMA/table/synapse.sql
+psql -f $SCHEMA/table/synapse_distal.sql
+psql -f $SCHEMA/table/synapse_proximal.sql
 psql -f $SCHEMA/table/input.sql
-psql -f $SCHEMA/table/link_distal_segment_cell.sql
-psql -f $SCHEMA/table/link_distal_cell_synapse.sql
-psql -f $SCHEMA/table/link_proximal_segment_column.sql
-psql -f $SCHEMA/table/link_proximal_input_synapse.sql
 
 # sequences
 psql -f $SCHEMA/sequence/htm.sql
@@ -46,7 +41,6 @@ psql -f $SCHEMA/view/synapse_proximal_connect.sql
 psql -f $SCHEMA/view/synapse_proximal_active.sql
 psql -f $SCHEMA/view/synapse_distal_connect.sql
 psql -f $SCHEMA/view/synapse_distal_active.sql
-psql -f $SCHEMA/view/segment_proximal_overlap_active.sql
 psql -f $SCHEMA/view/segment_distal_active.sql
 psql -f $SCHEMA/view/segment_distal_anchor.sql
 psql -f $SCHEMA/view/cell_predict.sql
@@ -59,7 +53,7 @@ psql -f $SCHEMA/trigger/config.sql
 psql -f $SCHEMA/trigger/region.sql
 psql -f $SCHEMA/trigger/column.sql
 psql -f $SCHEMA/trigger/cell.sql
-psql -f $SCHEMA/trigger/link_distal_cell_synapse.sql
-psql -f $SCHEMA/trigger/synapse.sql
+psql -f $SCHEMA/trigger/synapse_distal.sql
+psql -f $SCHEMA/trigger/synapse_proximal.sql
 psql -f $SCHEMA/trigger/input.sql
 

@@ -60,7 +60,10 @@ CREATE TRIGGER trigger_column_synapse_permanence_boost_change
     duty_cycle_active,
     duty_cycle_overlap
   ON htm.column
-  WHEN (htm.config('synapse_proximal_learn')::BOOL IS TRUE)
+  WHEN (
+    (htm.config('synapse_proximal_learn')::BOOL IS TRUE) AND
+    (htm.config('column_boost_strength')::NUMERIC > 0.0)
+  )
   EXECUTE FUNCTION htm.synapse_proximal_boost_update();
 
 /**

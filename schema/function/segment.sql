@@ -12,11 +12,9 @@ RETURNS INT[]
 AS $$
 DECLARE
   anchors_length CONSTANT INT := COALESCE(ARRAY_LENGTH(anchors, 1), 0);
-  query_link CONSTANT TEXT :=
-    'INSERT INTO htm.link_distal_segment_cell (segment_id, cell_id) VALUES %s';
   query_segment CONSTANT TEXT := $sql$
       WITH segments_new AS (
-        INSERT INTO htm.segment (class)
+        INSERT INTO htm.segment (cell_id)
           VALUES %s
           RETURNING id
       ) SELECT ARRAY(
@@ -29,39 +27,29 @@ DECLARE
 BEGIN
   PERFORM htm.debug('..TM growing new segments');
   FOR index IN 1..anchors_length LOOP
-    new_rows := ARRAY_APPEND(new_rows, FORMAT('(''%s'')', 'distal'));
+    new_rows := ARRAY_APPEND(
+      new_rows,
+      FORMAT('(%s)', anchors[index])
+    );
   END LOOP;
   new_sql := FORMAT(query_segment, ARRAY_TO_STRING(new_rows, ','));
   EXECUTE new_sql INTO segments;
-
-  PERFORM htm.debug('..TM growing new links from new segments => cells');
-  new_rows := ARRAY[]::TEXT[];
-  FOR index IN 1..anchors_length LOOP
-    new_rows := ARRAY_APPEND(
-      new_rows,
-      FORMAT('(%s, %s)', segments[index], anchors[index])
-    );
-  END LOOP;
-  new_sql := FORMAT(query_link, ARRAY_TO_STRING(new_rows, ','));
-  EXECUTE new_sql;
 
   RETURN segments;
 END;
 $$ LANGUAGE plpgsql;
 
 /**
- * Check if a segment is active (# active syanpses above threshold).
- *  Currently for both distal and proximal.
- * @SpatialPooler
+ * Check if a segment is active (# active distal syanpses above threshold).
  * @TemporalMemory
  */
-CREATE FUNCTION htm.segment_is_active(synapses_active INT)
+CREATE FUNCTION htm.segment_is_active(synapse_distal_active INT)
 RETURNS BOOL
 AS $$
 DECLARE
   threshold CONSTANT INT := htm.config('segment_synapse_threshold');
 BEGIN
-  RETURN synapses_active > threshold;
+  RETURN synapse_distal_active > threshold;
 END;
 $$ LANGUAGE plpgsql STABLE;
 

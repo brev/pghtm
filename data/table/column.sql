@@ -13,14 +13,8 @@ BEGIN
   RAISE NOTICE 'Inserting % Columns...', column_count;
 
   FOR columnId IN 1..column_count LOOP
-    INSERT INTO htm.column (
-      region_id,
-      x_coord
-    )
-    VALUES (
-      1,
-      columnId
-    );
+    INSERT INTO htm.column (region_id, x_coord)
+    VALUES (1, columnId);
   END LOOP;
 
   -- re-enable triggers on table for normal functioning

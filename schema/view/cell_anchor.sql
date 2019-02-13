@@ -19,16 +19,16 @@ CREATE VIEW htm.cell_anchor AS (
           PARTITION BY cb.column_id
           ORDER BY
             COALESCE(SUM(sda.synapse_count), 0) DESC,
-            COUNT(DISTINCT(ldsc.segment_id)) ASC,
+            COUNT(DISTINCT(s.id)) ASC,
             RANDOM() DESC
         ) AS order_id
       FROM htm.cell_burst AS cb
       LEFT JOIN htm.cell_predict AS cp
         ON cp.id = cb.id
-      LEFT JOIN htm.link_distal_segment_cell AS ldsc
-        ON ldsc.cell_id = cb.id
+      LEFT JOIN htm.segment AS s
+        ON s.cell_id = cb.id
       LEFT JOIN htm.segment_distal_anchor AS sda
-        ON sda.id = ldsc.segment_id
+        ON sda.id = s.id
       WHERE cp.id IS NULL
       GROUP BY cb.id, cb.column_id
     ) UNION (

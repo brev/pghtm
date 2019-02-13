@@ -1,5 +1,5 @@
 /**
- * Synapse Trigger Test
+ * Synapse (Proximal) Trigger Test
  */
 
 BEGIN;
@@ -7,7 +7,10 @@ SET search_path TO htm, public;
 SELECT plan(1);  -- Test count
 
 
-SELECT has_trigger('synapse', 'trigger_synapse_modified_change');
+SELECT has_trigger(
+  'synapse_proximal',
+  'trigger_synapse_proximal_modified_change'
+);
 
 
 SELECT * FROM finish();

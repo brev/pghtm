@@ -3,11 +3,10 @@
  * @TemporalMemory
  */
 CREATE VIEW htm.synapse_distal_connect AS (
-  SELECT synapse.id
-  FROM htm.synapse
-  JOIN htm.segment
-    ON segment.id = synapse.segment_id
-    AND segment.class = 'distal'
-  WHERE htm.synapse_distal_get_connection(synapse.permanence)
+  SELECT sd.id
+  FROM htm.synapse_distal AS sd
+  JOIN htm.segment AS s
+    ON s.id = sd.segment_id
+  WHERE htm.synapse_distal_get_connection(sd.permanence)
 );
 

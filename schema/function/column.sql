@@ -151,3 +151,17 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql STABLE;
 
+/**
+ * Check if a column is active (# active proximal syanpses above threshold).
+ * @SpatialPooler
+ */
+CREATE FUNCTION htm.column_is_active(synapse_proximal_active INT)
+RETURNS BOOL
+AS $$
+DECLARE
+  threshold CONSTANT INT := htm.config('column_synapse_threshold');
+BEGIN
+  RETURN synapse_proximal_active > threshold;
+END;
+$$ LANGUAGE plpgsql STABLE;
+
