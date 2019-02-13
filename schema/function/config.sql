@@ -40,7 +40,7 @@ BEGIN
     WHERE c.table_schema = 'htm'
       AND c.table_name = 'config'
       AND c.column_name NOT IN ('id', 'created', 'modified')
-    ORDER BY c.ordinal_position ASC
+    ORDER BY c.column_name
   ) LOOP
     EXECUTE
       FORMAT('SELECT %I FROM htm.config LIMIT 1', config_name)

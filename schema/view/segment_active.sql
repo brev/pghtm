@@ -2,7 +2,7 @@
  * Segment (Distal: Active) View
  * @TemporalMemory
  */
-CREATE VIEW htm.segment_distal_active AS (
+CREATE VIEW htm.segment_active AS (
   SELECT s.id
   FROM htm.segment AS s
   JOIN htm.synapse_distal AS sd

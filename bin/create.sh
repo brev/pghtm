@@ -41,8 +41,8 @@ psql -f $SCHEMA/view/synapse_proximal_connect.sql
 psql -f $SCHEMA/view/synapse_proximal_active.sql
 psql -f $SCHEMA/view/synapse_distal_connect.sql
 psql -f $SCHEMA/view/synapse_distal_active.sql
-psql -f $SCHEMA/view/segment_distal_active.sql
-psql -f $SCHEMA/view/segment_distal_anchor.sql
+psql -f $SCHEMA/view/segment_active.sql
+psql -f $SCHEMA/view/segment_anchor.sql
 psql -f $SCHEMA/view/cell_predict.sql
 psql -f $SCHEMA/view/cell_burst.sql
 psql -f $SCHEMA/view/cell_anchor.sql

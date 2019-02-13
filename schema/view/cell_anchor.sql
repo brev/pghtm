@@ -27,7 +27,7 @@ CREATE VIEW htm.cell_anchor AS (
         ON cp.id = cb.id
       LEFT JOIN htm.segment AS s
         ON s.cell_id = cb.id
-      LEFT JOIN htm.segment_distal_anchor AS sda
+      LEFT JOIN htm.segment_anchor AS sda
         ON sda.id = s.id
       WHERE cp.id IS NULL
       GROUP BY cb.id, cb.column_id

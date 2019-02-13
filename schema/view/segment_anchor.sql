@@ -4,7 +4,7 @@
  *  to grow new synapses on. Best matching segments to learn on.
  * @TemporalMemory
  */
-CREATE VIEW htm.segment_distal_anchor AS (
+CREATE VIEW htm.segment_anchor AS (
   SELECT
     s.id,
     COUNT(sd.id) AS synapse_count,

@@ -132,14 +132,12 @@ SELECT (columns_active || columns_predict) FROM htm.input;
 ```
 
 
-## Schema
+## Schema Map
 
 ![pgHTM Schema Entity Relationship Diagram](meta/pghtm-schema.png)
 
 
 ## Spatial Pooler
-
-![pgHTM Spatial Pooling Diagram](meta/pghtm-spatialpooler.png)
 
 1. **INPUT**. New input row is inserted.
 

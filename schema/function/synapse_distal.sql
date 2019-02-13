@@ -101,7 +101,7 @@ BEGIN
       FROM htm.cell_anchor AS ca
       JOIN htm.segment AS s
         ON s.cell_id = ca.id
-      JOIN htm.segment_distal_anchor AS sda
+      JOIN htm.segment_anchor AS sda
         ON sda.id = s.id
         AND sda.order_id = 1
       WHERE NOT ca.segment_grow
