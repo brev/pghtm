@@ -1,7 +1,6 @@
 # Current Work
 
 [x] Temporal Memory
-  * Update dox charts
   * building.htm.systems - numenta or more open? sell related stuff? me take?
   * BAMI TP final table, pseudocode, chooseRandom() listed twice
   * Mass input insert not working like individual inserts?
