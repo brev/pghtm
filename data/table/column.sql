@@ -10,8 +10,6 @@ BEGIN
   -- disable triggers on table for initial data fill
   ALTER TABLE htm.column DISABLE TRIGGER USER;
 
-  RAISE NOTICE 'Inserting % Columns...', column_count;
-
   FOR columnId IN 1..column_count LOOP
     INSERT INTO htm.column (region_id, x_coord)
     VALUES (1, columnId);

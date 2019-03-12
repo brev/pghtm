@@ -10,8 +10,6 @@ DECLARE
   columnId INT;
   ycount INT;
 BEGIN
-  RAISE NOTICE 'Inserting % Cells...', (column_count * row_count);
-
   FOR columnId IN 1..column_count LOOP
     FOR yCount IN 1..row_count LOOP
       INSERT

@@ -12,9 +12,6 @@ DECLARE
   input_index_id INT;
 BEGIN
   -- fill static proximal synapses data for the SP algo/functions
-  RAISE NOTICE 'Inserting % Synapses (Proximal)...',
-    (column_count * synapse_proximal_count);
-
   FOR column_id IN 1..column_count LOOP
     -- reset possible input list for each column
     SELECT ARRAY(
