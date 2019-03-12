@@ -1,15 +1,15 @@
 # Current Work
 
-[x] Temporal Memory
-  * building.htm.systems - numenta or more open? sell related stuff? me take?
-  * BAMI TP final table, pseudocode, chooseRandom() listed twice
+* UI
+  * Work with @jsfowles on react components
+  * Split UI out to separate repo
+* Algo
+  * htm.input_encode_integer(10, 0.3, 1, 10, False, 10)
+    * should be: ARRAY[7, 8, 9], *not* ARRAY[9]
+  * Finish dox tying to nupic SP/TM naming
   * Mass input insert not working like individual inserts?
     * synapse_distal_active subquery input ?
-  * Finish dox tying to nupic SP/TM naming
-[x] WebUI
-  * Work with @jsfowles on react components
-[ ] Encoders
-[ ] Anomaly Detection
+* Anomaly Detection
 
 # Future Work
 
@@ -85,4 +85,8 @@
       WHERE ca.segment_grow
       ORDER BY ca.id
     ```
+* Encoders Phase 2
+  * Category
+  * RDSE
+  * etc.
 

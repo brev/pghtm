@@ -11,12 +11,7 @@ detection.
 [NuPIC](https://github.com/numenta/nupic) is our base reference implementation, 
 but we have varied somewhat.
 
-**Progress:**
-
-* [ ] Encoders
-* [X] Spatial Pooler
-* [X] Temporal Memory
-* [ ] Anomaly Prediction
+We have basic Encoders, Spatial Pooler, and Temporal Memory working here.
 
 
 ## Setup

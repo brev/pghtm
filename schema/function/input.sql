@@ -71,6 +71,52 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
+ * Encode an integer (w/specs) into a Sparse Distributed Representation,
+ * suitable for input into the Spatial Pooler.
+ */
+CREATE OR REPLACE FUNCTION htm.input_encode_integer(
+  width INT,
+  sparsity NUMERIC,
+  min INT,
+  max INT,
+  wrap BOOL,
+  value INT
+)
+RETURNS INT[]
+AS $$
+DECLARE
+  sparse_width CONSTANT INT := width * sparsity;
+  value_count CONSTANT INT := (max - min) + 1;
+  out_index INT;
+  out_indexes INT[];
+  this_index INT;
+  value_width INT;
+BEGIN
+  IF wrap THEN
+    value_width := (width + (sparse_width - 1)) / value_count;
+  ELSE
+    value_width := width / value_count;
+  END IF;
+
+  out_index := (value - min) * value_width;
+
+  FOR spare_index IN 0..(sparse_width - 1) LOOP
+    this_index := out_index + spare_index;
+
+    IF (wrap AND (this_index >= width)) THEN
+      this_index := htm.wrap_array_index(this_index, width);
+    END IF;
+
+    IF (this_index < width) THEN
+      out_indexes := ARRAY_APPEND(out_indexes, this_index);
+    END IF;
+  END LOOP;
+
+  RETURN out_indexes;
+END;
+$$ LANGUAGE plpgsql IMMUTABLE;
+
+/**
  * Get current system compute iteration count. # of Rows from htm.input.
  *  Used for duty cyle period and calcs.
  * @SpatialPooler
