@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(17);  -- Test count
+SELECT plan(23);  -- Test count
 
 
 -- test input_columns_active_update()
@@ -21,23 +21,53 @@ SELECT function_returns('input_columns_predict_update', 'trigger');
 SELECT has_function('input_encode_integer', ARRAY[
   'integer',
   'numeric',
-  'integer',
-  'integer',
   'boolean',
+  'integer',
+  'integer',
   'integer'
 ]);
 SELECT function_lang_is('input_encode_integer', 'plpgsql');
 SELECT volatility_is('input_encode_integer', 'immutable');
 SELECT function_returns('input_encode_integer', 'integer[]');
 SELECT is(
-  input_encode_integer(10, 0.3, 1, 10, False, 1),
+  input_encode_integer(10, 0.3, False, 1, 10, 1),
   ARRAY[0, 1, 2],
-  'input_encode_integer() works min nowrap'
+  'input_encode_integer() works low, not wrapped'
 );
 SELECT is(
-  input_encode_integer(10, 0.3, 1, 10, True, 1),
+  input_encode_integer(10, 0.3, False, 1, 10, 10),
+  ARRAY[7, 8, 9],
+  'input_encode_integer() works high, not wrapped'
+);
+SELECT is(
+  input_encode_integer(10, 0.3, True, 1, 10, 1),
+  ARRAY[0, 1, 9],
+  'input_encode_integer() works low, wrapped'
+);
+SELECT is(
+  input_encode_integer(10, 0.3, True, 1, 10, 10),
+  ARRAY[0, 8, 9],
+  'input_encode_integer() works high, wrapped'
+);
+SELECT is(
+  input_encode_integer(10, 0.3, False, 11, 20, 11),
   ARRAY[0, 1, 2],
-  'input_encode_integer() works min wrapped'
+  'input_encode_integer() works low, not wrapped, with min/max'
+);
+SELECT is(
+  input_encode_integer(10, 0.3, False, 11, 20, 20),
+  ARRAY[7, 8, 9],
+  'input_encode_integer() works high, not wrapped, with min/max'
+);
+SELECT is(
+  input_encode_integer(10, 0.3, True, 11, 20, 11),
+  ARRAY[0, 1, 9],
+  'input_encode_integer() works low, wrapped, with min/max'
+);
+SELECT is(
+  input_encode_integer(10, 0.3, True, 11, 20, 20),
+  ARRAY[0, 8, 9],
+  'input_encode_integer() works high, wrapped, with min/max'
 );
 
 -- test input_rows_count()

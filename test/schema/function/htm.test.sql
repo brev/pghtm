@@ -4,7 +4,7 @@
 
 BEGIN;
 SET search_path TO htm, public;
-SELECT plan(32);  -- Test count
+SELECT plan(37);  -- Test count
 
 
 -- test debug()
@@ -59,6 +59,13 @@ SELECT is(
 SELECT has_function('schema_modified_update');
 SELECT function_lang_is('schema_modified_update', 'plpgsql');
 SELECT function_returns('schema_modified_update', 'trigger');
+
+-- test sort_array()
+SELECT has_function('sort_array', ARRAY['integer[]']);
+SELECT function_lang_is('sort_array', 'plpgsql');
+SELECT volatility_is('sort_array', 'immutable');
+SELECT function_returns('sort_array', 'integer[]');
+SELECT is(sort_array(ARRAY[3,1,2]), ARRAY[1,2,3], 'sort_array() works');
 
 -- test wrap_array_index()
 SELECT has_function('wrap_array_index', ARRAY['integer', 'integer']);

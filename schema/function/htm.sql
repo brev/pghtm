@@ -69,6 +69,23 @@ END;
 $$ LANGUAGE plpgsql;
 
 /**
+ * Sort an integer array
+ */
+CREATE FUNCTION htm.sort_array(input INT[])
+RETURNS INT[]
+AS $$
+DECLARE
+  results INT[];
+BEGIN
+  SELECT ARRAY(
+    SELECT UNNEST(input) ORDER BY 1
+  ) INTO results;
+
+  RETURN results;
+END;
+$$ LANGUAGE plpgsql IMMUTABLE;
+
+/**
  * Wrap array index around the array, either direction.
  */
 CREATE FUNCTION htm.wrap_array_index(target INT, max INT)
