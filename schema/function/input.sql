@@ -77,42 +77,42 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION htm.input_encode_integer(
   width INT,
   sparsity NUMERIC,
+  wrap BOOL,
   min INT,
   max INT,
-  wrap BOOL,
   value INT
 )
 RETURNS INT[]
 AS $$
 DECLARE
   sparse_width CONSTANT INT := width * sparsity;
+  sparse_half CONSTANT INT := FLOOR(sparse_width / 2);
   value_count CONSTANT INT := (max - min) + 1;
-  out_index INT;
-  out_indexes INT[];
-  this_index INT;
-  value_width INT;
+  index_start INT := 0;
+  index_stop INT := width - 1;
+  index_count INT;
+  output_indexes INT[];
+  step_start INT;
+  step_stop INT;
+  step_width NUMERIC;
 BEGIN
-  IF wrap THEN
-    value_width := (width + (sparse_width - 1)) / value_count;
-  ELSE
-    value_width := width / value_count;
+  IF NOT wrap THEN
+    index_start := index_start + sparse_half;
+    index_stop := index_stop - sparse_half;
   END IF;
+  index_count := (index_stop - index_start) + 1;
+  step_width := index_count::NUMERIC / width::NUMERIC;
+  step_start := index_start + ((value - min) * step_width) - sparse_half;
+  step_stop := step_start + sparse_width - 1;
 
-  out_index := (value - min) * value_width;
-
-  FOR spare_index IN 0..(sparse_width - 1) LOOP
-    this_index := out_index + spare_index;
-
-    IF (wrap AND (this_index >= width)) THEN
-      this_index := htm.wrap_array_index(this_index, width);
+  FOR index IN step_start..step_stop LOOP
+    IF wrap THEN
+      index := htm.wrap_array_index(index, width);
     END IF;
-
-    IF (this_index < width) THEN
-      out_indexes := ARRAY_APPEND(out_indexes, this_index);
-    END IF;
+    output_indexes := ARRAY_APPEND(output_indexes, index);
   END LOOP;
 
-  RETURN out_indexes;
+  RETURN htm.sort_array(output_indexes);
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
