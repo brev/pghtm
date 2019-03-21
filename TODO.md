@@ -1,14 +1,13 @@
 # Current Work
 
+* Finish dox tying to nupic SP/TM naming
+* Mass input insert not working like individual inserts? 
+    synapse_distal_active subquery input ?
+* Reflected Binary Gray Encoder
 * UI
   * Work with @jsfowles on react components
   * github: hasura/graphsql-engine/community/tools/graphql2chartjs/
   * Split UI out to separate repo
-* Schema tests require data fill again, needs fixing
-* Finish dox tying to nupic SP/TM naming
-* Mass input insert not working like individual inserts?
-  * synapse_distal_active subquery input ?
-* Reflected Binary Gray Encoder
 * Anomaly Detection
 
 # Future Work

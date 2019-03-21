@@ -1,6 +1,6 @@
 #!/bin/sh
 SQL=".."
-TESTS="$SQL/test"
+DATA="$SQL/data"
 
-pg_prove --ext=.sql --recurse $TESTS/data/
+pg_prove --recurse $DATA/**/*.test.sql
 
