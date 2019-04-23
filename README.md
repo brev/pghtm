@@ -2,16 +2,17 @@
 
 > **PRIVATE! Internal use only. Not yet for public release.**
 
-[Hierarchical Temporal Memory](https://www.numenta.com/machine-intelligence-technology/) 
-(HTM) in PostgreSQL. 
+[Hierarchical Temporal Memory](https://www.numenta.com/machine-intelligence-technology/)
+(HTM) in PostgreSQL.
 
-Machine Intelligence Neurotechnology for streaming prediction and anomaly 
-detection. 
+Machine Intelligence Neurotechnology for streaming prediction and anomaly
+detection.
 
-[NuPIC](https://github.com/numenta/nupic) is our base reference implementation, 
+[NuPIC](https://github.com/numenta/nupic) is our base reference implementation,
 but we have varied somewhat.
 
-We have basic Encoders, Spatial Pooler, and Temporal Memory working here.
+We have basic Encoders, Spatial Pooler, and Temporal Memory working here. See
+[TODO.md](./TODO.md) for more details on current state.
 
 
 ## Setup
@@ -80,7 +81,7 @@ cd pghtm/webui
 ##  On Mac, like: postgres://USERNAME@host.docker.internal/htmdb
 ./docker-run.sh
 ## Open graphql layer in Browser: http://localhost:8080/console
-##  Select DATA tab, change Schema to "htm". Use buttons to Add All Tables, 
+##  Select DATA tab, change Schema to "htm". Use buttons to Add All Tables,
 ##  and Track All Relations.
 
 cd ../..
@@ -108,7 +109,11 @@ npm start
 psql
 
 -- example 3-step sequence
-INSERT INTO htm.input (indexes) VALUES (ARRAY[0,1,2,3]);
+---- encoder
+INSERT INTO htm.input (indexes) VALUES (
+  htm.input_encode_integer(10, 0.3, False, 1, 10, 1),
+);
+---- direct indexes
 INSERT INTO htm.input (indexes) VALUES (ARRAY[10,11,12,13]);
 INSERT INTO htm.input (indexes) VALUES (ARRAY[20,21,22,23]);
 INSERT INTO htm.input (indexes) VALUES (ARRAY[0,1,2,3]);
@@ -139,14 +144,14 @@ SELECT (columns_active || columns_predict) FROM htm.input;
     INSERT | `input.indexes`
     -------|----------------
 
-    1. **VIEWS**. New input row is combined with connected synapses to 
+    1. **VIEWS**. New input row is combined with connected synapses to
         auto-compute active synapses.
 
         VIEW   | `synapse_proximal_active`
         -------|--------------------------
         Source | `input.indexes`
         Source | `synapse_proximal_connect`
-      
+
         1. Active synapses cause auto-update of active segments and overlap
             scores.
 
@@ -154,80 +159,80 @@ SELECT (columns_active || columns_predict) FROM htm.input;
             -------|-----------------------------------
             Source | `synapse_proximal_active`
 
-            1. Active segments cause auto-update of possibly active columns 
-                and their overlaps. This is a pre-boosting, 
-                pre-global-inhibition list of possible winner columns. Before 
-                inhibition and winner column selection, the next section of 
-                computations (below) will execute, and the values in this view 
+            1. Active segments cause auto-update of possibly active columns
+                and their overlaps. This is a pre-boosting,
+                pre-global-inhibition list of possible winner columns. Before
+                inhibition and winner column selection, the next section of
+                computations (below) will execute, and the values in this view
                 will adapt accordingly.
 
                 VIEW   | `column_overlap_boost`
                 -------|-----------------------------------
                 Source | `segment_proximal_overlap_active`
 
-    1. **TRIGGERS**. Column boost factors and duty cycles are re-calculated 
-        and stored for new input. Column and related views (previous section 
+    1. **TRIGGERS**. Column boost factors and duty cycles are re-calculated
+        and stored for new input. Column and related views (previous section
         above) will auto-update dynamically in step.
-      
+
         TRIGGER  | `trigger_input_column_boost_duty_change`
         ---------|-----------------------------------------
         Source   | `input.indexes`
         Function | `column_boost_duty_update()`
         Target   | `column.(boost_factor, duty_cycle_active/overlap)`
-      
-        1. Perform global inhibition to select final winner columns, and flag. 
-            
+
+        1. Perform global inhibition to select final winner columns, and flag.
+
             TRIGGER  | `trigger_column_active_change`
             ---------|--------------------------
             Source   | `column.(boost_factor, duty_cycle_active/overlap)`
             Function | `column_active_update()`
             Target   | `column.active`
-        
-            1. **OUTPUT**. Active columns are are now stored back alongside 
+
+            1. **OUTPUT**. Active columns are are now stored back alongside
                 the original new input row. Spatial Pooler compute cycle is
                 basically complete, besides next-timestep prep (the rest of
-                this section). These active columns are the input to the 
+                this section). These active columns are the input to the
                 Temporal Memory (next section below).
 
-                TRIGGER  | `trigger_column_input_columns_active_change` 
+                TRIGGER  | `trigger_column_input_columns_active_change`
                 ---------|---------------------------------------------
                 Source   | `column.active`
                 Function | `input_columns_active_update()`
                 Target   | `input.columns_active`
 
-            1. Synaptic Learning is performed on winning columns by 
+            1. Synaptic Learning is performed on winning columns by
                 adjusting proximal synapse permanence values.
-            
+
                 TRIGGER  | `trigger_column_synapse_proximal_permanence_learn_change`
                 ---------|-------------------------------------------------
                 Source   | `column.active`
                 Function | `synapse_proximal_learn_update()`
                 Target   | `synapse.permanence`
 
-        1. Synaptic Boosting is performed by adjusting some synapse 
+        1. Synaptic Boosting is performed by adjusting some synapse
             permanence values.
-        
+
             TRIGGER  | `trigger_column_synapse_permanence_boost_change`
             ---------|-------------------------------------------------
             Source   | `column.(boost_factor, duty_cycle_active/overlap)`
             Function | `synapse_proximal_boost_update()`
             Target   | `synapse.permanence`
-                  
-        1. Re-calculate and store region-wide cross-column statistics for 
+
+        1. Re-calculate and store region-wide cross-column statistics for
             future computations.
-            
-            TRIGGER  | `trigger_column_region_duty_cycles_change`             
+
+            TRIGGER  | `trigger_column_region_duty_cycles_change`
             ---------|-------------------------------------------
             Source   | `column.(boost_factor, duty_cycle_active/overlap)`
             Function | `region_duty_cycles_update()`
             Target   | `region.(duty cycles)`
-            
+
     1. **VIEW** After everything above is complete (boosting/learning/etc),
         the original list of connected synapses auto-updates. Connected
         synapses are now ready for the next new input, and the cycle starts
         over from top.
 
-        VIEW   | `synapse_proximal_connect`        
+        VIEW   | `synapse_proximal_connect`
         -------|---------------------------
         Source | `synapse.permanence`
 
@@ -235,7 +240,7 @@ SELECT (columns_active || columns_predict) FROM htm.input;
 ## Temporal Memory
 
 1. **INPUT**. Active columns are provided by a finsihed Spatial Pooler.
-    
+
     UPDATE | `input.columns_active`
     -------|-----------------------
 
@@ -245,9 +250,9 @@ SELECT (columns_active || columns_predict) FROM htm.input;
         -------|--------------------------
         Source | `input.columns_active`
         Source | `synapse_distal_connect`
-        
+
         VIEW | `cell_anchor`
-        
+
         **TODO**
 
     1. **TRIGGERS**. With newly active columns, but before we change
@@ -255,18 +260,18 @@ SELECT (columns_active || columns_predict) FROM htm.input;
         punish predicted cells that were predicted but did not become
         active. This is accomplished through synaptic permenance
         decrements.
-        
+
         TRIGGER  | `trigger_input_a_synapse_nonpredict_punish_change`
         ---------|--------------------------------
         Source   | `input.columns_active`
         Function | `synapse_nonpredict_punish_update()`
         Target   | `synapse.permanence`
-        
-    1. Newly active columns means we can now compute newly 
-        active cells. Decide between distally-activated predicted cells 
+
+    1. Newly active columns means we can now compute newly
+        active cells. Decide between distally-activated predicted cells
         or proximally-activated bursting column-cells. Predictions
         will automatically update afterword.
-                    
+
         TRIGGER  | `trigger_input_cell_active_change`
         ---------|--------------------------------
         Source   | `input.columns_active`
@@ -282,22 +287,22 @@ SELECT (columns_active || columns_predict) FROM htm.input;
             Function | `cell_active_last_update()`
             Target   | `cell.active_last`
 
-        1. **OUTPUT**. Newly activated cells cause next-step predicted 
-            cell views to update. These newly Predicted cell/columns are 
-            now stored back alongside their original parent new input 
+        1. **OUTPUT**. Newly activated cells cause next-step predicted
+            cell views to update. These newly Predicted cell/columns are
+            now stored back alongside their original parent new input
             row, and SP active columns. Temporal Memory compute cycle
-            is complete, except for next-timestep prep (rest of 
+            is complete, except for next-timestep prep (rest of
             this section).
-            
+
             TRIGGER  | `trigger_cell_input_columns_predict_change`
             ---------|---------------------------------------------
             Source   | `cell.active`
             Function | `input_columns_predict_update()`
             Target   | `input.columns_predict`
 
-        1. Perform distal synaptic learning on learning anchor cells which 
+        1. Perform distal synaptic learning on learning anchor cells which
             already have existing segments/synapses connections.
-        
+
             TRIGGER  | `trigger_cell_anchor_synapse_learn_change`
             ---------|-------------------------------------------------
             Source   | `cell.active`
@@ -306,7 +311,7 @@ SELECT (columns_active || columns_predict) FROM htm.input;
 
         1. Grow new segments/synapses on learning anchor cells which did
             not have them before. Connections will be made to cells
-            active on the pevious timestep, and will be learned on 
+            active on the pevious timestep, and will be learned on
             next time.
 
             TRIGGER  | `trigger_cell_anchor_synapse_segment_grow_change`
@@ -353,13 +358,13 @@ SET auto_explain.log_analyze  = TRUE;
 ### Copyright
 
 Copyright © 2018-2019 · Brev Patterson · Lux Rota LLC
- 
+
 > Other owners retain copyright to their respective works.
 
 ### Dual License
 
 Purpose                  | License
--------------------------|-------- 
+-------------------------|--------
 Non-Commercial, Internal | [AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html)
 Commercial               | [Numenta](https://numenta.com/)
 
@@ -382,11 +387,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #### Numenta
 
-This code is an implementation of 
-[Hierarchical Temporal Memory](https://en.wikipedia.org/wiki/Hierarchical_temporal_memory), 
-on which [Numenta](https://numenta.com) owns patents and intellectual property. 
-While this code was written without using any of Numenta’s code, it is likely 
-that those patent laws still apply for commerical applications. Before using 
-this code commercially, it is reccomended to contact 
+This code is an implementation of
+[Hierarchical Temporal Memory](https://en.wikipedia.org/wiki/Hierarchical_temporal_memory),
+on which [Numenta](https://numenta.com) owns patents and intellectual property.
+While this code was written without using any of Numenta’s code, it is likely
+that those patent laws still apply for commerical applications. Before using
+this code commercially, it is reccomended to contact
 [Numenta](https://numenta.com).
 
