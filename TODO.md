@@ -3,6 +3,7 @@
 
 ## Current Work
 
+* Switch id columns from SERIAL to IDENTITY
 * Rename: Column => Minicolumn
   * CorticalColumn > Region/Layer > Minicolumns > Cells
 * Mass insert not working like individual inserts.
