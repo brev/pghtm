@@ -1,7 +1,5 @@
 # pgHTM
 
-> **PRIVATE! Internal use only. Not yet for public release.**
-
 [Hierarchical Temporal Memory](https://www.numenta.com/machine-intelligence-technology/)
 (HTM) in PostgreSQL.
 
@@ -350,40 +348,11 @@ SET auto_explain.log_analyze  = TRUE;
 # Run a query, Ludicrous amounts of Info
 ```
 
-
-## Legal
-
-> **PRIVATE! Internal use only. Not yet for public release.**
-
 ### Copyright
 
 Copyright © 2018-2019 · Brev Patterson · Lux Rota LLC
 
 > Other owners retain copyright to their respective works.
-
-### Dual License
-
-Purpose                  | License
--------------------------|--------
-Non-Commercial, Internal | [AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html)
-Commercial               | [Numenta](https://numenta.com/)
-
-#### AGPLv3
-
-```
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-```
 
 #### Numenta
 
@@ -394,4 +363,3 @@ While this code was written without using any of Numenta’s code, it is likely
 that those patent laws still apply for commerical applications. Before using
 this code commercially, it is reccomended to contact
 [Numenta](https://numenta.com).
-
